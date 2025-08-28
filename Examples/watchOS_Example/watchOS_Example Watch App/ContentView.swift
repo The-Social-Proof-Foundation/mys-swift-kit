@@ -115,7 +115,7 @@ struct WalletDetailView: View {
                         }
                     }
                 }) {
-                    Text("Airdrop 10 MySo")
+                    Text("Airdrop 5 MySo")
                         .font(.body)
                         .padding()
                         .frame(maxWidth: .infinity)

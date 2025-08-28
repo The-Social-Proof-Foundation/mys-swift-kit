@@ -112,7 +112,7 @@ struct AccountView: View {
                         .clipShape(Capsule())
                         .padding(.top, 8)
                 } else {
-                    Text("Airdrop 10 MySo")
+                    Text("Airdrop 5 MySo")
                         .font(.headline)
                         .foregroundColor(.white)
                         .frame(width: 270, height: 50)

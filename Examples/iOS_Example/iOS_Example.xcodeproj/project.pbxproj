@@ -22,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		05A9FF5F2E6066AC007917CF /* iOS-Example-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "iOS-Example-Info.plist"; sourceTree = SOURCE_ROOT; };
 		7D657D982A000964008D3754 /* iOS_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D657D9B2A000964008D3754 /* iOS_ExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS_ExampleApp.swift; sourceTree = "<group>"; };
 		7D657D9D2A000964008D3754 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -69,6 +70,7 @@
 		7D657D9A2A000964008D3754 /* iOS_Example */ = {
 			isa = PBXGroup;
 			children = (
+				05A9FF5F2E6066AC007917CF /* iOS-Example-Info.plist */,
 				7D657DB02A0546D1008D3754 /* View Models */,
 				7D657DAF2A0546C7008D3754 /* Views */,
 				7D657D9B2A000964008D3754 /* iOS_ExampleApp.swift */,
@@ -329,6 +331,7 @@
 				DEVELOPMENT_TEAM = TEV97DGLYR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS-Example-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -359,6 +362,7 @@
 				DEVELOPMENT_TEAM = TEV97DGLYR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS-Example-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
