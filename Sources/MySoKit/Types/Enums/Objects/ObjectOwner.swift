@@ -131,7 +131,7 @@ public enum ObjectOwner: KeyProtocol, Equatable {
             case 3:
                 return .immutable
             default:
-                throw SuiError.customError(message: "Invalid object owner")
+                throw MySoError.customError(message: "Invalid object owner")
             }
         }
         return .immutable

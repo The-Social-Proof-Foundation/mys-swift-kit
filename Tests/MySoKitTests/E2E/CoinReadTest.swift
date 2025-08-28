@@ -76,11 +76,11 @@ final class CoinReadTest: XCTestCase {
         let toolBox = try self.fetchToolBox()
         let publisherToolBox = try self.fetchPublisherToolBox()
 
-        let suiCoin = try await toolBox.client.getCoins(account: try toolBox.account.publicKey.toSuiAddress())
-        XCTAssertEqual(suiCoin.data.count, 5)
+        let mysoCoin = try await toolBox.client.getCoins(account: try toolBox.account.publicKey.toMySoAddress())
+        XCTAssertEqual(mysoCoin.data.count, 5)
 
         let testCoins = try await publisherToolBox.client.getCoins(
-            account: try publisherToolBox.account.publicKey.toSuiAddress(),
+            account: try publisherToolBox.account.publicKey.toMySoAddress(),
             coinType: try self.fetchTestType()
         )
         XCTAssertEqual(testCoins.data.count, 2)
@@ -93,24 +93,24 @@ final class CoinReadTest: XCTestCase {
         XCTAssertEqual(publisherAllCoins.data.count, 3)
         XCTAssertFalse(publisherAllCoins.hasNextPage!)
 
-        let someSuiCoins = try await toolBox.client.getCoins(
-            account: try toolBox.account.publicKey.toSuiAddress(),
+        let someMySoCoins = try await toolBox.client.getCoins(
+            account: try toolBox.account.publicKey.toMySoAddress(),
             coinType: nil,
             cursor: nil,
             limit: 3
         )
-        XCTAssertEqual(someSuiCoins.data.count, 3)
-        XCTAssertTrue(someSuiCoins.hasNextPage!)
+        XCTAssertEqual(someMySoCoins.data.count, 3)
+        XCTAssertTrue(someMySoCoins.hasNextPage!)
     }
 
     func testThatGettingBalanceWithAndWithoutTypeWorksAsIntended() async throws {
         let toolBox = try self.fetchToolBox()
         let publisherToolBox = try self.fetchPublisherToolBox()
 
-        let suiBalance = try await toolBox.client.getBalance(account: toolBox.account.publicKey)
-        XCTAssertEqual(suiBalance.coinType, try StructTag.fromStr("0x2::sui::SUI"))
-        XCTAssertEqual(suiBalance.coinObjectCount, 5)
-        XCTAssertGreaterThan(Int(suiBalance.totalBalance) ?? 0, 0)
+        let mysoBalance = try await toolBox.client.getBalance(account: toolBox.account.publicKey)
+        XCTAssertEqual(mysoBalance.coinType, try StructTag.fromStr("0x2::mys::MYS"))
+        XCTAssertEqual(mysoBalance.coinObjectCount, 5)
+        XCTAssertGreaterThan(Int(mysoBalance.totalBalance) ?? 0, 0)
 
         let testBalance = try await publisherToolBox.client.getBalance(
             account: publisherToolBox.account.publicKey,

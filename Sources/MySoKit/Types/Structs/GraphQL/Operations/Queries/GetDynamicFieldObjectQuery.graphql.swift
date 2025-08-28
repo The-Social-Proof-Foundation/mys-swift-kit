@@ -7,14 +7,14 @@ public class GetDynamicFieldObjectQuery: GraphQLQuery {
   public static let operationName: String = "getDynamicFieldObject"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query getDynamicFieldObject($parentId: SuiAddress!, $name: DynamicFieldName!) { owner(address: $parentId) { __typename dynamicObjectField(name: $name) { __typename value { __typename ... on MoveObject { owner { __typename ... on Parent { parent { __typename asObject { __typename address digest version storageRebate owner { __typename ... on Parent { parent { __typename address } } } previousTransactionBlock { __typename digest } asMoveObject { __typename contents { __typename data type { __typename repr layout } } hasPublicTransfer } } } } } } } } } }"#
+      #"query getDynamicFieldObject($parentId: MysAddress!, $name: DynamicFieldName!) { owner(address: $parentId) { __typename dynamicObjectField(name: $name) { __typename value { __typename ... on MoveObject { owner { __typename ... on Parent { parent { __typename asObject { __typename address digest version storageRebate owner { __typename ... on Parent { parent { __typename address } } } previousTransactionBlock { __typename digest } asMoveObject { __typename contents { __typename data type { __typename repr layout } } hasPublicTransfer } } } } } } } } } }"#
     ))
 
-  public var parentId: SuiAddressApollo
+  public var parentId: MySoAddressApollo
   public var name: DynamicFieldNameApollo
 
   public init(
-    parentId: SuiAddressApollo,
+    parentId: MySoAddressApollo,
     name: DynamicFieldNameApollo
   ) {
     self.parentId = parentId
@@ -35,7 +35,7 @@ public class GetDynamicFieldObjectQuery: GraphQLQuery {
       .field("owner", Owner?.self, arguments: ["address": .variable("parentId")])
     ] }
 
-    /// Look up an Owner by its SuiAddressApollo.
+    /// Look up an Owner by its MySoAddressApollo.
     ///
     /// `rootVersion` represents the version of the root object in some nested chain of dynamic
     /// fields. It allows consistent historical queries for the case of wrapped objects, which don't
@@ -47,7 +47,7 @@ public class GetDynamicFieldObjectQuery: GraphQLQuery {
     /// from above when querying `Owner.asObject`. This can be used, for example, to get the
     /// contents of a dynamic object field when its parent was at `rootVersion`.
     ///
-    /// If `rootVersion` is omitted, dynamic fields will be from a consistent snapshot of the Sui
+    /// If `rootVersion` is omitted, dynamic fields will be from a consistent snapshot of the MySo
     /// state at the latest checkpoint known to the GraphQL RPC. Similarly, `Owner.asObject` will
     /// return the object's version at the latest checkpoint.
     public var owner: Owner? { __data["owner"] }
@@ -178,7 +178,7 @@ public class GetDynamicFieldObjectQuery: GraphQLQuery {
                     public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.Object }
                     public static var __selections: [ApolloAPI.Selection] { [
                       .field("__typename", String.self),
-                      .field("address", MySoKit.SuiAddressApollo.self),
+                      .field("address", MySoKit.MySoAddressApollo.self),
                       .field("digest", String?.self),
                       .field("version", MySoKit.UInt53Apollo.self),
                       .field("storageRebate", MySoKit.BigIntApollo?.self),
@@ -187,11 +187,11 @@ public class GetDynamicFieldObjectQuery: GraphQLQuery {
                       .field("asMoveObject", AsMoveObject?.self)
                     ] }
 
-                    public var address: MySoKit.SuiAddressApollo { __data["address"] }
+                    public var address: MySoKit.MySoAddressApollo { __data["address"] }
                     /// 32-byte hash that identifies the object's current contents, encoded as a Base58 string.
                     public var digest: String? { __data["digest"] }
                     public var version: MySoKit.UInt53Apollo { __data["version"] }
-                    /// The amount of SUI we would rebate if this object gets deleted or mutated. This number is
+                    /// The amount of MYS we would rebate if this object gets deleted or mutated. This number is
                     /// recalculated based on the present storage gas price.
                     public var storageRebate: MySoKit.BigIntApollo? { __data["storageRebate"] }
                     /// The owner type of this object: Immutable, Shared, Parent, Address
@@ -242,10 +242,10 @@ public class GetDynamicFieldObjectQuery: GraphQLQuery {
                           public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.Owner }
                           public static var __selections: [ApolloAPI.Selection] { [
                             .field("__typename", String.self),
-                            .field("address", MySoKit.SuiAddressApollo.self)
+                            .field("address", MySoKit.MySoAddressApollo.self)
                           ] }
 
-                          public var address: MySoKit.SuiAddressApollo { __data["address"] }
+                          public var address: MySoKit.MySoAddressApollo { __data["address"] }
                         }
                       }
                     }
@@ -287,7 +287,7 @@ public class GetDynamicFieldObjectQuery: GraphQLQuery {
                       /// data.
                       public var contents: Contents? { __data["contents"] }
                       /// Determines whether a transaction can transfer this object, using the TransferObjects
-                      /// transaction command or `sui::transfer::public_transfer`, both of which require the object to
+                      /// transaction command or `mys::transfer::public_transfer`, both of which require the object to
                       /// have the `key` and `store` abilities.
                       public var hasPublicTransfer: Bool { __data["hasPublicTransfer"] }
 

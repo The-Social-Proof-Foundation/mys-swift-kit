@@ -7,15 +7,15 @@ public class GetAllBalancesQuery: GraphQLQuery {
   public static let operationName: String = "getAllBalances"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query getAllBalances($owner: SuiAddress!, $limit: Int, $cursor: String) { address(address: $owner) { __typename balances(first: $limit, after: $cursor) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename coinType { __typename repr } coinObjectCount totalBalance } } } }"#
+      #"query getAllBalances($owner: MysAddress!, $limit: Int, $cursor: String) { address(address: $owner) { __typename balances(first: $limit, after: $cursor) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename coinType { __typename repr } coinObjectCount totalBalance } } } }"#
     ))
 
-  public var owner: SuiAddressApollo
+  public var owner: MySoAddressApollo
   public var limit: GraphQLNullable<Int>
   public var cursor: GraphQLNullable<String>
 
   public init(
-    owner: SuiAddressApollo,
+    owner: MySoAddressApollo,
     limit: GraphQLNullable<Int>,
     cursor: GraphQLNullable<String>
   ) {
@@ -39,7 +39,7 @@ public class GetAllBalancesQuery: GraphQLQuery {
       .field("address", Address?.self, arguments: ["address": .variable("owner")])
     ] }
 
-    /// Look-up an Account by its SuiAddressApollo.
+    /// Look-up an Account by its MySoAddressApollo.
     public var address: Address? { __data["address"] }
 
     /// Address
@@ -115,7 +115,7 @@ public class GetAllBalancesQuery: GraphQLQuery {
             .field("totalBalance", MySoKit.BigIntApollo?.self)
           ] }
 
-          /// Coin type for the balance, such as 0x2::sui::SUI
+          /// Coin type for the balance, such as 0x2::mys::MYS
           public var coinType: CoinType { __data["coinType"] }
           /// How many coins of this type constitute the balance
           public var coinObjectCount: MySoKit.UInt53Apollo? { __data["coinObjectCount"] }

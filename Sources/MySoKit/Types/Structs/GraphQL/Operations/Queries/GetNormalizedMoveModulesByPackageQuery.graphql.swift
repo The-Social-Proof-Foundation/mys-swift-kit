@@ -7,15 +7,15 @@ public class GetNormalizedMoveModulesByPackageQuery: GraphQLQuery {
   public static let operationName: String = "getNormalizedMoveModulesByPackage"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query getNormalizedMoveModulesByPackage($packageId: SuiAddress!, $cursor: String) { object(address: $packageId) { __typename asMovePackage { __typename address modules(after: $cursor) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename ...RPC_MOVE_MODULE_FIELDS } } } } }"#,
+      #"query getNormalizedMoveModulesByPackage($packageId: MysAddress!, $cursor: String) { object(address: $packageId) { __typename asMovePackage { __typename address modules(after: $cursor) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename ...RPC_MOVE_MODULE_FIELDS } } } } }"#,
       fragments: [RPC_MOVE_ENUM_FIELDS.self, RPC_MOVE_FUNCTION_FIELDS.self, RPC_MOVE_MODULE_FIELDS.self, RPC_MOVE_STRUCT_FIELDS.self]
     ))
 
-  public var packageId: SuiAddressApollo
+  public var packageId: MySoAddressApollo
   public var cursor: GraphQLNullable<String>
 
   public init(
-    packageId: SuiAddressApollo,
+    packageId: MySoAddressApollo,
     cursor: GraphQLNullable<String>
   ) {
     self.packageId = packageId
@@ -66,11 +66,11 @@ public class GetNormalizedMoveModulesByPackageQuery: GraphQLQuery {
         public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.MovePackage }
         public static var __selections: [ApolloAPI.Selection] { [
           .field("__typename", String.self),
-          .field("address", MySoKit.SuiAddressApollo.self),
+          .field("address", MySoKit.MySoAddressApollo.self),
           .field("modules", Modules?.self, arguments: ["after": .variable("cursor")])
         ] }
 
-        public var address: MySoKit.SuiAddressApollo { __data["address"] }
+        public var address: MySoKit.MySoAddressApollo { __data["address"] }
         /// Paginate through the MoveModules defined in this package.
         public var modules: Modules? { __data["modules"] }
 

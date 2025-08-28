@@ -7,5 +7,5 @@
 
 import ApolloAPI
 
-/// String containing 32B hex-encoded address, with a leading "0x". Leading zeroes can be omitted on input but will always appear in outputs (SuiAddress in output is guaranteed to be 66 characters long).
-public typealias SuiAddressApollo = String
+/// String containing 32B hex-encoded address, with a leading "0x". Leading zeroes can be omitted on input but will always appear in outputs (MySoAddress in output is guaranteed to be 66 characters long).
+public typealias MySoAddressApollo = String

@@ -70,7 +70,7 @@ final class ED25519WalletTest: XCTestCase {
         for testCase in testCases {
             // Keypair derived from mnemonic
             let wallet = try Wallet(mnemonicString: testCase[0])
-            XCTAssertEqual(try wallet.accounts[0].publicKey.toSuiAddress(), testCase[2])
+            XCTAssertEqual(try wallet.accounts[0].publicKey.toMySoAddress(), testCase[2])
 
             // Keypair derived from 32-byte secret key
             guard let raw = Data.fromBase64(testCase[1]) else {
@@ -83,7 +83,7 @@ final class ED25519WalletTest: XCTestCase {
             }
             let secretKey = try ED25519PrivateKey(key: raw.dropFirst())
             let imported = try Account(privateKey: secretKey)
-            XCTAssertEqual(try imported.publicKey.toSuiAddress(), testCase[2])
+            XCTAssertEqual(try imported.publicKey.toMySoAddress(), testCase[2])
 
             // Exported secret key matches the 32-byte secret key.
             let exported = try imported.export()
@@ -123,7 +123,7 @@ final class ED25519WalletTest: XCTestCase {
 
     func testThatIncoorectPurposeNodeWillThrowForWallet() throws {
         func incorrectPurposeNode() throws {
-            _ = try ED25519PrivateKey(testMnemonic, "m/54'/784'/0'/0'/0'")
+            _ = try ED25519PrivateKey(testMnemonic, "m/54'/6976'/0'/0'/0'")
         }
 
         XCTAssertThrowsError(
@@ -134,14 +134,14 @@ final class ED25519WalletTest: XCTestCase {
     func testThatSigningTransactionBlockFunctionsAsIntended() async throws {
         let wallet = try Wallet()
         let txBlock = try TransactionBlock()
-        let provider = SuiProvider(connection: DevnetConnection())
+        let provider = MySoProvider(connection: DevnetConnection())
 
-        try txBlock.setSender(sender: try wallet.accounts[0].publicKey.toSuiAddress())
+        try txBlock.setSender(sender: try wallet.accounts[0].publicKey.toMySoAddress())
         txBlock.setGasPrice(price: 5)
         txBlock.setGasBudget(price: 100)
         let digest: [UInt8] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
         try txBlock.setGasPayment(payments: [
-            SuiObjectRef(
+            MySoObjectRef(
                 objectId: String(
                     format: "%.0f",
                     Double.random(in: 0..<100000)

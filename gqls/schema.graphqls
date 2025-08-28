@@ -1,6 +1,6 @@
 type ActiveJwk {
 	"""
-	The string (Issuing Authority) that identifies the OIDC provider.
+	The string (Ismysng Authority) that identifies the OIDC provider.
 	"""
 	iss: String!
 	"""
@@ -62,14 +62,14 @@ type ActiveJwkEdge {
 The 32-byte address that is an account address (corresponding to a public key).
 """
 type Address implements IOwner {
-	address: SuiAddress!
+	address: MysAddress!
 	"""
 	Objects owned by this address, optionally `filter`-ed.
 	"""
 	objects(first: Int, after: String, last: Int, before: String, filter: ObjectFilter): MoveObjectConnection!
 	"""
 	Total balance of all coins with marker type owned by this address. If type is not supplied,
-	it defaults to `0x2::sui::SUI`.
+	it defaults to `0x2::mys::MYS`.
 	"""
 	balance(type: String): Balance
 	"""
@@ -79,22 +79,22 @@ type Address implements IOwner {
 	"""
 	The coin objects for this address.
 	
-	`type` is a filter on the coin's type parameter, defaulting to `0x2::sui::SUI`.
+	`type` is a filter on the coin's type parameter, defaulting to `0x2::mys::MYS`.
 	"""
 	coins(first: Int, after: String, last: Int, before: String, type: String): CoinConnection!
 	"""
-	The `0x3::staking_pool::StakedSui` objects owned by this address.
+	The `0x3::staking_pool::StakedMys` objects owned by this address.
 	"""
-	stakedSuis(first: Int, after: String, last: Int, before: String): StakedSuiConnection!
+	stakedMyss(first: Int, after: String, last: Int, before: String): StakedMysConnection!
 	"""
 	The domain explicitly configured as the default domain pointing to this address.
 	"""
-	defaultSuinsName(format: DomainFormat): String
+	defaultMysnsName(format: DomainFormat): String
 	"""
-	The SuinsRegistration NFTs owned by this address. These grant the owner the capability to
+	The MysnsRegistration NFTs owned by this address. These grant the owner the capability to
 	manage the associated domain.
 	"""
-	suinsRegistrations(first: Int, after: String, last: Int, before: String): SuinsRegistrationConnection!
+	mysnsRegistrations(first: Int, after: String, last: Int, before: String): MysnsRegistrationConnection!
 	"""
 	Similar behavior to the `transactionBlocks` in Query but supporting the additional
 	`AddressTransactionBlockRelationship` filter, which defaults to `SENT`.
@@ -235,7 +235,7 @@ The total balance for a particular coin type.
 """
 type Balance {
 	"""
-	Coin type for the balance, such as 0x2::sui::SUI
+	Coin type for the balance, such as 0x2::mys::MYS
 	"""
 	coinType: MoveType!
 	"""
@@ -257,7 +257,7 @@ type BalanceChange {
 	"""
 	owner: Owner
 	"""
-	The inner type of the coin whose balance has changed (e.g. `0x2::sui::SUI`).
+	The inner type of the coin whose balance has changed (e.g. `0x2::mys::MYS`).
 	"""
 	coinType: MoveType
 	"""
@@ -368,7 +368,7 @@ type ChangeEpochTransaction {
 	"""
 	computationCharge: BigInt!
 	"""
-	The SUI returned to transaction senders for cleaning up objects (in MIST).
+	The MYS returned to transaction senders for cleaning up objects (in MIST).
 	"""
 	storageRebate: BigInt!
 	"""
@@ -500,14 +500,14 @@ input CheckpointId {
 Some 0x2::coin::Coin Move object.
 """
 type Coin implements IMoveObject & IObject & IOwner {
-	address: SuiAddress!
+	address: MysAddress!
 	"""
 	Objects owned by this object, optionally `filter`-ed.
 	"""
 	objects(first: Int, after: String, last: Int, before: String, filter: ObjectFilter): MoveObjectConnection!
 	"""
 	Total balance of all coins with marker type owned by this object. If type is not supplied,
-	it defaults to `0x2::sui::SUI`.
+	it defaults to `0x2::mys::MYS`.
 	"""
 	balance(type: String): Balance
 	"""
@@ -517,22 +517,22 @@ type Coin implements IMoveObject & IObject & IOwner {
 	"""
 	The coin objects for this object.
 	
-	`type` is a filter on the coin's type parameter, defaulting to `0x2::sui::SUI`.
+	`type` is a filter on the coin's type parameter, defaulting to `0x2::mys::MYS`.
 	"""
 	coins(first: Int, after: String, last: Int, before: String, type: String): CoinConnection!
 	"""
-	The `0x3::staking_pool::StakedSui` objects owned by this object.
+	The `0x3::staking_pool::StakedMys` objects owned by this object.
 	"""
-	stakedSuis(first: Int, after: String, last: Int, before: String): StakedSuiConnection!
+	stakedMyss(first: Int, after: String, last: Int, before: String): StakedMysConnection!
 	"""
 	The domain explicitly configured as the default domain pointing to this object.
 	"""
-	defaultSuinsName(format: DomainFormat): String
+	defaultMysnsName(format: DomainFormat): String
 	"""
-	The SuinsRegistration NFTs owned by this object. These grant the owner the capability to
+	The MysnsRegistration NFTs owned by this object. These grant the owner the capability to
 	manage the associated domain.
 	"""
-	suinsRegistrations(first: Int, after: String, last: Int, before: String): SuinsRegistrationConnection!
+	mysnsRegistrations(first: Int, after: String, last: Int, before: String): MysnsRegistrationConnection!
 	version: UInt53!
 	"""
 	The current status of the object as read from the off-chain store. The possible states are:
@@ -557,7 +557,7 @@ type Coin implements IMoveObject & IObject & IOwner {
 	"""
 	previousTransactionBlock: TransactionBlock
 	"""
-	The amount of SUI we would rebate if this object gets deleted or mutated. This number is
+	The amount of MYS we would rebate if this object gets deleted or mutated. This number is
 	recalculated based on the present storage gas price.
 	"""
 	storageRebate: BigInt
@@ -596,7 +596,7 @@ type Coin implements IMoveObject & IObject & IOwner {
 	contents: MoveValue
 	"""
 	Determines whether a transaction can transfer this object, using the TransferObjects
-	transaction command or `sui::transfer::public_transfer`, both of which require the object to
+	transaction command or `mys::transfer::public_transfer`, both of which require the object to
 	have the `key` and `store` abilities.
 	"""
 	hasPublicTransfer: Boolean!
@@ -678,14 +678,14 @@ type CoinEdge {
 The metadata for a coin type.
 """
 type CoinMetadata implements IMoveObject & IObject & IOwner {
-	address: SuiAddress!
+	address: MysAddress!
 	"""
 	Objects owned by this object, optionally `filter`-ed.
 	"""
 	objects(first: Int, after: String, last: Int, before: String, filter: ObjectFilter): MoveObjectConnection!
 	"""
 	Total balance of all coins with marker type owned by this object. If type is not supplied,
-	it defaults to `0x2::sui::SUI`.
+	it defaults to `0x2::mys::MYS`.
 	"""
 	balance(type: String): Balance
 	"""
@@ -695,22 +695,22 @@ type CoinMetadata implements IMoveObject & IObject & IOwner {
 	"""
 	The coin objects for this object.
 	
-	`type` is a filter on the coin's type parameter, defaulting to `0x2::sui::SUI`.
+	`type` is a filter on the coin's type parameter, defaulting to `0x2::mys::MYS`.
 	"""
 	coins(first: Int, after: String, last: Int, before: String, type: String): CoinConnection!
 	"""
-	The `0x3::staking_pool::StakedSui` objects owned by this object.
+	The `0x3::staking_pool::StakedMys` objects owned by this object.
 	"""
-	stakedSuis(first: Int, after: String, last: Int, before: String): StakedSuiConnection!
+	stakedMyss(first: Int, after: String, last: Int, before: String): StakedMysConnection!
 	"""
 	The domain explicitly configured as the default domain pointing to this object.
 	"""
-	defaultSuinsName(format: DomainFormat): String
+	defaultMysnsName(format: DomainFormat): String
 	"""
-	The SuinsRegistration NFTs owned by this object. These grant the owner the capability to
+	The MysnsRegistration NFTs owned by this object. These grant the owner the capability to
 	manage the associated domain.
 	"""
-	suinsRegistrations(first: Int, after: String, last: Int, before: String): SuinsRegistrationConnection!
+	mysnsRegistrations(first: Int, after: String, last: Int, before: String): MysnsRegistrationConnection!
 	version: UInt53!
 	"""
 	The current status of the object as read from the off-chain store. The possible states are:
@@ -735,7 +735,7 @@ type CoinMetadata implements IMoveObject & IObject & IOwner {
 	"""
 	previousTransactionBlock: TransactionBlock
 	"""
-	The amount of SUI we would rebate if this object gets deleted or mutated. This number is
+	The amount of MYS we would rebate if this object gets deleted or mutated. This number is
 	recalculated based on the present storage gas price.
 	"""
 	storageRebate: BigInt
@@ -774,7 +774,7 @@ type CoinMetadata implements IMoveObject & IObject & IOwner {
 	contents: MoveValue
 	"""
 	Determines whether a transaction can transfer this object, using the TransferObjects
-	transaction command or `sui::transfer::public_transfer`, both of which require the object to
+	transaction command or `mys::transfer::public_transfer`, both of which require the object to
 	have the `key` and `store` abilities.
 	"""
 	hasPublicTransfer: Boolean!
@@ -972,7 +972,7 @@ fields:
 1) Dynamic Fields can store any value that has the `store` ability, however an object
 stored in this kind of field will be considered wrapped and will not be accessible
 directly via its ID by external tools (explorers, wallets, etc) accessing storage.
-2) Dynamic Object Fields values must be Sui objects (have the `key` and `store`
+2) Dynamic Object Fields values must be Mys objects (have the `key` and `store`
 abilities, and id: UID as the first field), but will still be directly accessible off-chain
 via their object ID after being attached.
 """
@@ -1078,7 +1078,7 @@ type EndOfEpochTransactionKindEdge {
 }
 
 """
-Operation of the Sui network is temporally partitioned into non-overlapping epochs,
+Operation of the Mys network is temporally partitioned into non-overlapping epochs,
 and the network aims to keep epochs roughly the same duration as each other.
 During a particular epoch the following data is fixed:
 
@@ -1153,7 +1153,7 @@ type Epoch {
 	"""
 	protocolConfigs: ProtocolConfigs!
 	"""
-	SUI set aside to account for objects stored on-chain, at the start of the epoch.
+	MYS set aside to account for objects stored on-chain, at the start of the epoch.
 	This is also used for storage rebates.
 	"""
 	storageFund: StorageFund
@@ -1163,7 +1163,7 @@ type Epoch {
 	"""
 	safeMode: SafeMode
 	"""
-	The value of the `version` field of `0x5`, the `0x3::sui::SuiSystemState` object.  This
+	The value of the `version` field of `0x5`, the `0x3::mys::MysSystemState` object.  This
 	version changes whenever the fields contained in the system state object (held in a dynamic
 	field attached to `0x5`) change.
 	"""
@@ -1303,7 +1303,7 @@ input EventFilter {
 	"""
 	Filter down to events from transactions sent by this address.
 	"""
-	sender: SuiAddress
+	sender: MysAddress
 	"""
 	Filter down to the events from this transaction (given by its transaction digest).
 	"""
@@ -1326,7 +1326,7 @@ input EventFilter {
 	
 	Generic types can be queried by either the generic type name, e.g.
 	`0x2::coin::Coin`, or by the full type name, such as
-	`0x2::coin::Coin<0x2::sui::SUI>`.
+	`0x2::coin::Coin<0x2::mys::MYS>`.
 	"""
 	eventType: String
 }
@@ -1379,7 +1379,7 @@ enum Feature {
 	"""
 	DYNAMIC_FIELDS
 	"""
-	SuiNS name and reverse name look-up.
+	MysNS name and reverse name look-up.
 	"""
 	NAME_SERVICE
 	"""
@@ -1511,7 +1511,7 @@ interface IMoveObject {
 	"""
 	contents: MoveValue
 	"""
-	Determines whether a transaction can transfer this object, using the TransferObjects transaction command or `sui::transfer::public_transfer`, both of which require the object to have the `key` and `store` abilities.
+	Determines whether a transaction can transfer this object, using the TransferObjects transaction command or `mys::transfer::public_transfer`, both of which require the object to have the `key` and `store` abilities.
 	"""
 	hasPublicTransfer: Boolean!
 	"""
@@ -1582,13 +1582,13 @@ object. The same address can only refer to an account or an object, never both, 
 possible to know which up-front.
 """
 interface IOwner {
-	address: SuiAddress!
+	address: MysAddress!
 	"""
 	Objects owned by this object or address, optionally `filter`-ed.
 	"""
 	objects(first: Int, after: String, last: Int, before: String, filter: ObjectFilter): MoveObjectConnection!
 	"""
-	Total balance of all coins with marker type owned by this object or address. If type is not supplied, it defaults to `0x2::sui::SUI`.
+	Total balance of all coins with marker type owned by this object or address. If type is not supplied, it defaults to `0x2::mys::MYS`.
 	"""
 	balance(type: String): Balance
 	"""
@@ -1598,21 +1598,21 @@ interface IOwner {
 	"""
 	The coin objects for this object or address.
 	
-	`type` is a filter on the coin's type parameter, defaulting to `0x2::sui::SUI`.
+	`type` is a filter on the coin's type parameter, defaulting to `0x2::mys::MYS`.
 	"""
 	coins(first: Int, after: String, last: Int, before: String, type: String): CoinConnection!
 	"""
-	The `0x3::staking_pool::StakedSui` objects owned by this object or address.
+	The `0x3::staking_pool::StakedMys` objects owned by this object or address.
 	"""
-	stakedSuis(first: Int, after: String, last: Int, before: String): StakedSuiConnection!
+	stakedMyss(first: Int, after: String, last: Int, before: String): StakedMysConnection!
 	"""
 	The domain explicitly configured as the default domain pointing to this object or address.
 	"""
-	defaultSuinsName(format: DomainFormat): String
+	defaultMysnsName(format: DomainFormat): String
 	"""
-	The SuinsRegistration NFTs owned by this object or address. These grant the owner the capability to manage the associated domain.
+	The MysnsRegistration NFTs owned by this object or address. These grant the owner the capability to manage the associated domain.
 	"""
-	suinsRegistrations(first: Int, after: String, last: Int, before: String): SuinsRegistrationConnection!
+	mysnsRegistrations(first: Int, after: String, last: Int, before: String): MysnsRegistrationConnection!
 }
 
 """
@@ -1646,11 +1646,11 @@ type Linkage {
 	"""
 	The ID on-chain of the first version of the dependency.
 	"""
-	originalId: SuiAddress!
+	originalId: MysAddress!
 	"""
 	The ID on-chain of the version of the dependency that this package depends on.
 	"""
-	upgradedId: SuiAddress!
+	upgradedId: MysAddress!
 	"""
 	The version of the dependency that this package depends on.
 	"""
@@ -1686,7 +1686,7 @@ type MergeCoinsTransaction {
 }
 
 """
-Abilities are keywords in Sui Move that define how types behave at the compiler level.
+Abilities are keywords in Mys Move that define how types behave at the compiler level.
 """
 enum MoveAbility {
 	"""
@@ -1714,7 +1714,7 @@ type MoveCallTransaction {
 	"""
 	The storage ID of the package the function being called is defined in.
 	"""
-	package: SuiAddress!
+	package: MysAddress!
 	"""
 	The name of the module the function being called is defined in.
 	"""
@@ -1741,9 +1741,9 @@ type MoveCallTransaction {
 The contents of a Move Value, corresponding to the following recursive type:
 
 type MoveData =
-    { Address: SuiAddress }
-  | { UID:     SuiAddress }
-  | { ID:      SuiAddress }
+    { Address: MysAddress }
+  | { UID:     MysAddress }
+  | { ID:      MysAddress }
   | { Bool:    bool }
   | { Number:  BigInt }
   | { String:  string }
@@ -2048,14 +2048,14 @@ The representation of an object as a Move Object, which exposes additional infor
 (content, module that governs it, version, is transferrable, etc.) about this object.
 """
 type MoveObject implements IMoveObject & IObject & IOwner {
-	address: SuiAddress!
+	address: MysAddress!
 	"""
 	Objects owned by this object, optionally `filter`-ed.
 	"""
 	objects(first: Int, after: String, last: Int, before: String, filter: ObjectFilter): MoveObjectConnection!
 	"""
 	Total balance of all coins with marker type owned by this object. If type is not supplied,
-	it defaults to `0x2::sui::SUI`.
+	it defaults to `0x2::mys::MYS`.
 	"""
 	balance(type: String): Balance
 	"""
@@ -2065,22 +2065,22 @@ type MoveObject implements IMoveObject & IObject & IOwner {
 	"""
 	The coin objects for this object.
 	
-	`type` is a filter on the coin's type parameter, defaulting to `0x2::sui::SUI`.
+	`type` is a filter on the coin's type parameter, defaulting to `0x2::mys::MYS`.
 	"""
 	coins(first: Int, after: String, last: Int, before: String, type: String): CoinConnection!
 	"""
-	The `0x3::staking_pool::StakedSui` objects owned by this object.
+	The `0x3::staking_pool::StakedMys` objects owned by this object.
 	"""
-	stakedSuis(first: Int, after: String, last: Int, before: String): StakedSuiConnection!
+	stakedMyss(first: Int, after: String, last: Int, before: String): StakedMysConnection!
 	"""
 	The domain explicitly configured as the default domain pointing to this object.
 	"""
-	defaultSuinsName(format: DomainFormat): String
+	defaultMysnsName(format: DomainFormat): String
 	"""
-	The SuinsRegistration NFTs owned by this object. These grant the owner the capability to
+	The MysnsRegistration NFTs owned by this object. These grant the owner the capability to
 	manage the associated domain.
 	"""
-	suinsRegistrations(first: Int, after: String, last: Int, before: String): SuinsRegistrationConnection!
+	mysnsRegistrations(first: Int, after: String, last: Int, before: String): MysnsRegistrationConnection!
 	version: UInt53!
 	"""
 	The current status of the object as read from the off-chain store. The possible states are:
@@ -2105,7 +2105,7 @@ type MoveObject implements IMoveObject & IObject & IOwner {
 	"""
 	previousTransactionBlock: TransactionBlock
 	"""
-	The amount of SUI we would rebate if this object gets deleted or mutated. This number is
+	The amount of MYS we would rebate if this object gets deleted or mutated. This number is
 	recalculated based on the present storage gas price.
 	"""
 	storageRebate: BigInt
@@ -2144,7 +2144,7 @@ type MoveObject implements IMoveObject & IObject & IOwner {
 	contents: MoveValue
 	"""
 	Determines whether a transaction can transfer this object, using the TransferObjects
-	transaction command or `sui::transfer::public_transfer`, both of which require the object to
+	transaction command or `mys::transfer::public_transfer`, both of which require the object to
 	have the `key` and `store` abilities.
 	"""
 	hasPublicTransfer: Boolean!
@@ -2185,17 +2185,17 @@ type MoveObject implements IMoveObject & IObject & IOwner {
 	"""
 	asCoin: Coin
 	"""
-	Attempts to convert the Move object into a `0x3::staking_pool::StakedSui`.
+	Attempts to convert the Move object into a `0x3::staking_pool::StakedMys`.
 	"""
-	asStakedSui: StakedSui
+	asStakedMys: StakedMys
 	"""
 	Attempts to convert the Move object into a `0x2::coin::CoinMetadata`.
 	"""
 	asCoinMetadata: CoinMetadata
 	"""
-	Attempts to convert the Move object into a `SuinsRegistration` object.
+	Attempts to convert the Move object into a `MysnsRegistration` object.
 	"""
-	asSuinsRegistration: SuinsRegistration
+	asMysnsRegistration: MysnsRegistration
 }
 
 type MoveObjectConnection {
@@ -2232,7 +2232,7 @@ A MovePackage is a kind of Move object that represents code that has been publis
 It exposes information about its modules, type definitions, functions, and dependencies.
 """
 type MovePackage implements IObject & IOwner {
-	address: SuiAddress!
+	address: MysAddress!
 	"""
 	Objects owned by this package, optionally `filter`-ed.
 	
@@ -2242,7 +2242,7 @@ type MovePackage implements IObject & IOwner {
 	objects(first: Int, after: String, last: Int, before: String, filter: ObjectFilter): MoveObjectConnection!
 	"""
 	Total balance of all coins with marker type owned by this package. If type is not supplied,
-	it defaults to `0x2::sui::SUI`.
+	it defaults to `0x2::mys::MYS`.
 	
 	Note that coins owned by a package are inaccessible, because packages are immutable and
 	cannot be owned by an address.
@@ -2258,31 +2258,31 @@ type MovePackage implements IObject & IOwner {
 	"""
 	The coin objects owned by this package.
 	
-	`type` is a filter on the coin's type parameter, defaulting to `0x2::sui::SUI`.
+	`type` is a filter on the coin's type parameter, defaulting to `0x2::mys::MYS`.
 	
 	Note that coins owned by a package are inaccessible, because packages are immutable and
 	cannot be owned by an address.
 	"""
 	coins(first: Int, after: String, last: Int, before: String, type: String): CoinConnection!
 	"""
-	The `0x3::staking_pool::StakedSui` objects owned by this package.
+	The `0x3::staking_pool::StakedMys` objects owned by this package.
 	
 	Note that objects owned by a package are inaccessible, because packages are immutable and
 	cannot be owned by an address.
 	"""
-	stakedSuis(first: Int, after: String, last: Int, before: String): StakedSuiConnection!
+	stakedMyss(first: Int, after: String, last: Int, before: String): StakedMysConnection!
 	"""
 	The domain explicitly configured as the default domain pointing to this object.
 	"""
-	defaultSuinsName(format: DomainFormat): String
+	defaultMysnsName(format: DomainFormat): String
 	"""
-	The SuinsRegistration NFTs owned by this package. These grant the owner the capability to
+	The MysnsRegistration NFTs owned by this package. These grant the owner the capability to
 	manage the associated domain.
 	
 	Note that objects owned by a package are inaccessible, because packages are immutable and
 	cannot be owned by an address.
 	"""
-	suinsRegistrations(first: Int, after: String, last: Int, before: String): SuinsRegistrationConnection!
+	mysnsRegistrations(first: Int, after: String, last: Int, before: String): MysnsRegistrationConnection!
 	version: UInt53!
 	"""
 	The current status of the object as read from the off-chain store. The possible states are:
@@ -2308,7 +2308,7 @@ type MovePackage implements IObject & IOwner {
 	"""
 	previousTransactionBlock: TransactionBlock
 	"""
-	The amount of SUI we would rebate if this object gets deleted or mutated. This number is
+	The amount of MYS we would rebate if this object gets deleted or mutated. This number is
 	recalculated based on the present storage gas price.
 	
 	Note that packages cannot be deleted or mutated, so this number is provided purely for
@@ -2630,7 +2630,7 @@ enum MoveVisibility {
 }
 
 """
-Mutations are used to write to the Sui network.
+Mutations are used to write to the Mys network.
 """
 type Mutation {
 	"""
@@ -2653,19 +2653,19 @@ type Mutation {
 }
 
 """
-An object in Sui is a package (set of Move bytecode modules) or object (typed data structure
+An object in Mys is a package (set of Move bytecode modules) or object (typed data structure
 with fields) with additional metadata detailing its id, version, transaction digest, owner
 field indicating how this object can be accessed.
 """
 type Object implements IObject & IOwner {
-	address: SuiAddress!
+	address: MysAddress!
 	"""
 	Objects owned by this object, optionally `filter`-ed.
 	"""
 	objects(first: Int, after: String, last: Int, before: String, filter: ObjectFilter): MoveObjectConnection!
 	"""
 	Total balance of all coins with marker type owned by this object. If type is not supplied,
-	it defaults to `0x2::sui::SUI`.
+	it defaults to `0x2::mys::MYS`.
 	"""
 	balance(type: String): Balance
 	"""
@@ -2675,22 +2675,22 @@ type Object implements IObject & IOwner {
 	"""
 	The coin objects for this object.
 	
-	`type` is a filter on the coin's type parameter, defaulting to `0x2::sui::SUI`.
+	`type` is a filter on the coin's type parameter, defaulting to `0x2::mys::MYS`.
 	"""
 	coins(first: Int, after: String, last: Int, before: String, type: String): CoinConnection!
 	"""
-	The `0x3::staking_pool::StakedSui` objects owned by this object.
+	The `0x3::staking_pool::StakedMys` objects owned by this object.
 	"""
-	stakedSuis(first: Int, after: String, last: Int, before: String): StakedSuiConnection!
+	stakedMyss(first: Int, after: String, last: Int, before: String): StakedMysConnection!
 	"""
 	The domain explicitly configured as the default domain pointing to this object.
 	"""
-	defaultSuinsName(format: DomainFormat): String
+	defaultMysnsName(format: DomainFormat): String
 	"""
-	The SuinsRegistration NFTs owned by this object. These grant the owner the capability to
+	The MysnsRegistration NFTs owned by this object. These grant the owner the capability to
 	manage the associated domain.
 	"""
-	suinsRegistrations(first: Int, after: String, last: Int, before: String): SuinsRegistrationConnection!
+	mysnsRegistrations(first: Int, after: String, last: Int, before: String): MysnsRegistrationConnection!
 	version: UInt53!
 	"""
 	The current status of the object as read from the off-chain store. The possible states are:
@@ -2716,7 +2716,7 @@ type Object implements IObject & IOwner {
 	"""
 	previousTransactionBlock: TransactionBlock
 	"""
-	The amount of SUI we would rebate if this object gets deleted or mutated. This number is
+	The amount of MYS we would rebate if this object gets deleted or mutated. This number is
 	recalculated based on the present storage gas price.
 	"""
 	storageRebate: BigInt
@@ -2796,7 +2796,7 @@ type ObjectChange {
 	"""
 	The address of the object that has changed.
 	"""
-	address: SuiAddress!
+	address: MysAddress!
 	"""
 	The contents of the object immediately before the transaction.
 	"""
@@ -2887,17 +2887,17 @@ input ObjectFilter {
 	name.
 	
 	Generic types can be queried by either the generic type name, e.g. `0x2::coin::Coin`, or by
-	the full type name, such as `0x2::coin::Coin<0x2::sui::SUI>`.
+	the full type name, such as `0x2::coin::Coin<0x2::mys::MYS>`.
 	"""
 	type: String
 	"""
 	Filter for live objects by their current owners.
 	"""
-	owner: SuiAddress
+	owner: MysAddress
 	"""
 	Filter for live objects by their IDs.
 	"""
-	objectIds: [SuiAddress!]
+	objectIds: [MysAddress!]
 	"""
 	Filter for live objects by their ID and version. NOTE:  this input filter has been
 	deprecated in favor of `multiGetObjects` query as it does not make sense to query for live
@@ -2907,7 +2907,7 @@ input ObjectFilter {
 }
 
 input ObjectKey {
-	objectId: SuiAddress!
+	objectId: MysAddress!
 	version: UInt53!
 }
 
@@ -2932,7 +2932,7 @@ input ObjectRef {
 	"""
 	ID of the object.
 	"""
-	address: SuiAddress!
+	address: MysAddress!
 	"""
 	Version or sequence number of the object.
 	"""
@@ -2990,7 +2990,7 @@ type OwnedOrImmutable {
 	"""
 	ID of the object being read.
 	"""
-	address: SuiAddress!
+	address: MysAddress!
 	"""
 	Version of the object being read.
 	"""
@@ -3007,19 +3007,19 @@ type OwnedOrImmutable {
 }
 
 """
-An Owner is an entity that can own an object. Each Owner is identified by a SuiAddress which
+An Owner is an entity that can own an object. Each Owner is identified by a MysAddress which
 represents either an Address (corresponding to a public key of an account) or an Object, but
 never both (it is not known up-front whether a given Owner is an Address or an Object).
 """
 type Owner implements IOwner {
-	address: SuiAddress!
+	address: MysAddress!
 	"""
 	Objects owned by this object or address, optionally `filter`-ed.
 	"""
 	objects(first: Int, after: String, last: Int, before: String, filter: ObjectFilter): MoveObjectConnection!
 	"""
 	Total balance of all coins with marker type owned by this object or address. If type is not
-	supplied, it defaults to `0x2::sui::SUI`.
+	supplied, it defaults to `0x2::mys::MYS`.
 	"""
 	balance(type: String): Balance
 	"""
@@ -3029,22 +3029,22 @@ type Owner implements IOwner {
 	"""
 	The coin objects for this object or address.
 	
-	`type` is a filter on the coin's type parameter, defaulting to `0x2::sui::SUI`.
+	`type` is a filter on the coin's type parameter, defaulting to `0x2::mys::MYS`.
 	"""
 	coins(first: Int, after: String, last: Int, before: String, type: String): CoinConnection!
 	"""
-	The `0x3::staking_pool::StakedSui` objects owned by this object or address.
+	The `0x3::staking_pool::StakedMys` objects owned by this object or address.
 	"""
-	stakedSuis(first: Int, after: String, last: Int, before: String): StakedSuiConnection!
+	stakedMyss(first: Int, after: String, last: Int, before: String): StakedMysConnection!
 	"""
 	The domain explicitly configured as the default domain pointing to this object or address.
 	"""
-	defaultSuinsName(format: DomainFormat): String
+	defaultMysnsName(format: DomainFormat): String
 	"""
-	The SuinsRegistration NFTs owned by this object or address. These grant the owner the
+	The MysnsRegistration NFTs owned by this object or address. These grant the owner the
 	capability to manage the associated domain.
 	"""
-	suinsRegistrations(first: Int, after: String, last: Int, before: String): SuinsRegistrationConnection!
+	mysnsRegistrations(first: Int, after: String, last: Int, before: String): MysnsRegistrationConnection!
 	asAddress: Address
 	asObject: Object
 	"""
@@ -3213,7 +3213,7 @@ type PublishTransaction {
 	"""
 	IDs of the transitive dependencies of the package to be published.
 	"""
-	dependencies: [SuiAddress!]!
+	dependencies: [MysAddress!]!
 }
 
 """
@@ -3262,7 +3262,7 @@ type Query {
 	"""
 	dryRunTransactionBlock(txBytes: String!, txMeta: TransactionMetadata, skipChecks: Boolean): DryRunResult!
 	"""
-	Look up an Owner by its SuiAddress.
+	Look up an Owner by its MysAddress.
 	
 	`rootVersion` represents the version of the root object in some nested chain of dynamic
 	fields. It allows consistent historical queries for the case of wrapped objects, which don't
@@ -3274,16 +3274,16 @@ type Query {
 	from above when querying `Owner.asObject`. This can be used, for example, to get the
 	contents of a dynamic object field when its parent was at `rootVersion`.
 	
-	If `rootVersion` is omitted, dynamic fields will be from a consistent snapshot of the Sui
+	If `rootVersion` is omitted, dynamic fields will be from a consistent snapshot of the Mys
 	state at the latest checkpoint known to the GraphQL RPC. Similarly, `Owner.asObject` will
 	return the object's version at the latest checkpoint.
 	"""
-	owner(address: SuiAddress!, rootVersion: UInt53): Owner
+	owner(address: MysAddress!, rootVersion: UInt53): Owner
 	"""
 	The object corresponding to the given address at the (optionally) given version.
 	When no version is given, the latest version is returned.
 	"""
-	object(address: SuiAddress!, version: UInt53): Object
+	object(address: MysAddress!, version: UInt53): Object
 	"""
 	The package corresponding to the given address (at the optionally given version).
 	
@@ -3296,18 +3296,18 @@ type Query {
 	Note that this interpretation of `version` is different from a historical object read (the
 	interpretation of `version` for the `object` query).
 	"""
-	package(address: SuiAddress!, version: UInt53): MovePackage
+	package(address: MysAddress!, version: UInt53): MovePackage
 	"""
 	The latest version of the package at `address`.
 	
 	This corresponds to the package with the highest `version` that shares its original ID with
 	the package at `address`.
 	"""
-	latestPackage(address: SuiAddress!): MovePackage
+	latestPackage(address: MysAddress!): MovePackage
 	"""
-	Look-up an Account by its SuiAddress.
+	Look-up an Account by its MysAddress.
 	"""
-	address(address: SuiAddress!): Address
+	address(address: MysAddress!): Address
 	"""
 	Fetch a structured representation of a concrete type, including its layout information.
 	Fails if the type is malformed.
@@ -3334,7 +3334,7 @@ type Query {
 	The coin objects that exist in the network.
 	
 	The type field is a string of the inner type of the coin by which to filter (e.g.
-	`0x2::sui::SUI`). If no type is provided, it will default to `0x2::sui::SUI`.
+	`0x2::mys::MYS`). If no type is provided, it will default to `0x2::mys::MYS`.
 	"""
 	coins(first: Int, after: String, last: Int, before: String, type: String): CoinConnection!
 	epochs(first: Int, after: String, last: Int, before: String): EpochConnection!
@@ -3388,16 +3388,16 @@ type Query {
 	optionally bounding the versions exclusively from below with `afterVersion`, or from above
 	with `beforeVersion`.
 	"""
-	packageVersions(first: Int, after: String, last: Int, before: String, address: SuiAddress!, filter: MovePackageVersionFilter): MovePackageConnection!
+	packageVersions(first: Int, after: String, last: Int, before: String, address: MysAddress!, filter: MovePackageVersionFilter): MovePackageConnection!
 	"""
 	Fetch the protocol config by protocol version (defaults to the latest protocol
 	version known to the GraphQL service).
 	"""
 	protocolConfig(protocolVersion: UInt53): ProtocolConfigs!
 	"""
-	Resolves a SuiNS `domain` name to an address, if it has been bound.
+	Resolves a MysNS `domain` name to an address, if it has been bound.
 	"""
-	resolveSuinsAddress(domain: String!): Address
+	resolveMysnsAddress(domain: String!): Address
 	"""
 	Fetch a package by its name (using dot move service)
 	"""
@@ -3424,7 +3424,7 @@ type Query {
 	- `intentScope` is an enum that specifies the intent scope to be used to parse bytes.
 	- `author` is the address of the signer of the transaction or personal msg.
 	"""
-	verifyZkloginSignature(bytes: Base64!, signature: Base64!, intentScope: zkLoginIntentScope!, author: SuiAddress!): zkLoginVerifyResult!
+	verifyZkloginSignature(bytes: Base64!, signature: Base64!, intentScope: zkLoginIntentScope!, author: MysAddress!): zkLoginVerifyResult!
 }
 
 type RandomnessStateCreateTransaction {
@@ -3463,7 +3463,7 @@ type Receiving {
 	"""
 	ID of the object being read.
 	"""
-	address: SuiAddress!
+	address: MysAddress!
 	"""
 	Version of the object being read.
 	"""
@@ -3557,7 +3557,7 @@ type ServiceConfig {
 	"""
 	maxPageSize: Int!
 	"""
-	Maximum time in milliseconds spent waiting for a response from fullnode after issuing a
+	Maximum time in milliseconds spent waiting for a response from fullnode after ismysng a
 	a transaction to execute. Note that the transaction may still succeed even in the case of a
 	timeout. Transactions are idempotent, so a transaction that times out should be resubmitted
 	until the network returns a definite response (success or failure, not timeout).
@@ -3626,7 +3626,7 @@ type Shared {
 A Move object that's shared.
 """
 type SharedInput {
-	address: SuiAddress!
+	address: MysAddress!
 	"""
 	The version that this this object was shared at.
 	"""
@@ -3648,7 +3648,7 @@ type SharedObjectCancelled {
 	"""
 	ID of the shared object.
 	"""
-	address: SuiAddress!
+	address: MysAddress!
 	"""
 	The assigned shared object version. It is a special version indicating transaction cancellation reason.
 	"""
@@ -3663,7 +3663,7 @@ type SharedObjectDelete {
 	"""
 	ID of the shared object.
 	"""
-	address: SuiAddress!
+	address: MysAddress!
 	"""
 	The version of the shared object that was assigned to this transaction during by consensus,
 	during sequencing.
@@ -3683,7 +3683,7 @@ type SharedObjectRead {
 	"""
 	ID of the object being read.
 	"""
-	address: SuiAddress!
+	address: MysAddress!
 	"""
 	Version of the object being read.
 	"""
@@ -3737,7 +3737,7 @@ Parameters that control the distribution of the stake subsidy.
 """
 type StakeSubsidy {
 	"""
-	SUI set aside for stake subsidies -- reduces over time as stake subsidies are paid out over
+	MYS set aside for stake subsidies -- reduces over time as stake subsidies are paid out over
 	time.
 	"""
 	balance: BigInt
@@ -3763,17 +3763,17 @@ type StakeSubsidy {
 }
 
 """
-Represents a `0x3::staking_pool::StakedSui` Move object on-chain.
+Represents a `0x3::staking_pool::StakedMys` Move object on-chain.
 """
-type StakedSui implements IMoveObject & IObject & IOwner {
-	address: SuiAddress!
+type StakedMys implements IMoveObject & IObject & IOwner {
+	address: MysAddress!
 	"""
 	Objects owned by this object, optionally `filter`-ed.
 	"""
 	objects(first: Int, after: String, last: Int, before: String, filter: ObjectFilter): MoveObjectConnection!
 	"""
 	Total balance of all coins with marker type owned by this object. If type is not supplied,
-	it defaults to `0x2::sui::SUI`.
+	it defaults to `0x2::mys::MYS`.
 	"""
 	balance(type: String): Balance
 	"""
@@ -3783,22 +3783,22 @@ type StakedSui implements IMoveObject & IObject & IOwner {
 	"""
 	The coin objects for this object.
 	
-	`type` is a filter on the coin's type parameter, defaulting to `0x2::sui::SUI`.
+	`type` is a filter on the coin's type parameter, defaulting to `0x2::mys::MYS`.
 	"""
 	coins(first: Int, after: String, last: Int, before: String, type: String): CoinConnection!
 	"""
-	The `0x3::staking_pool::StakedSui` objects owned by this object.
+	The `0x3::staking_pool::StakedMys` objects owned by this object.
 	"""
-	stakedSuis(first: Int, after: String, last: Int, before: String): StakedSuiConnection!
+	stakedMyss(first: Int, after: String, last: Int, before: String): StakedMysConnection!
 	"""
 	The domain explicitly configured as the default domain pointing to this object.
 	"""
-	defaultSuinsName(format: DomainFormat): String
+	defaultMysnsName(format: DomainFormat): String
 	"""
-	The SuinsRegistration NFTs owned by this object. These grant the owner the capability to
+	The MysnsRegistration NFTs owned by this object. These grant the owner the capability to
 	manage the associated domain.
 	"""
-	suinsRegistrations(first: Int, after: String, last: Int, before: String): SuinsRegistrationConnection!
+	mysnsRegistrations(first: Int, after: String, last: Int, before: String): MysnsRegistrationConnection!
 	version: UInt53!
 	"""
 	The current status of the object as read from the off-chain store. The possible states are:
@@ -3823,7 +3823,7 @@ type StakedSui implements IMoveObject & IObject & IOwner {
 	"""
 	previousTransactionBlock: TransactionBlock
 	"""
-	The amount of SUI we would rebate if this object gets deleted or mutated. This number is
+	The amount of MYS we would rebate if this object gets deleted or mutated. This number is
 	recalculated based on the present storage gas price.
 	"""
 	storageRebate: BigInt
@@ -3862,7 +3862,7 @@ type StakedSui implements IMoveObject & IObject & IOwner {
 	contents: MoveValue
 	"""
 	Determines whether a transaction can transfer this object, using the TransferObjects
-	transaction command or `sui::transfer::public_transfer`, both of which require the object to
+	transaction command or `mys::transfer::public_transfer`, both of which require the object to
 	have the `key` and `store` abilities.
 	"""
 	hasPublicTransfer: Boolean!
@@ -3913,9 +3913,9 @@ type StakedSui implements IMoveObject & IObject & IOwner {
 	"""
 	The object id of the validator staking pool this stake belongs to.
 	"""
-	poolId: SuiAddress
+	poolId: MysAddress
 	"""
-	The SUI that was initially staked.
+	The MYS that was initially staked.
 	"""
 	principal: BigInt
 	"""
@@ -3933,7 +3933,7 @@ type StakedSui implements IMoveObject & IObject & IOwner {
 	estimatedReward: BigInt
 }
 
-type StakedSuiConnection {
+type StakedMysConnection {
 	"""
 	Information to aid in pagination.
 	"""
@@ -3941,21 +3941,21 @@ type StakedSuiConnection {
 	"""
 	A list of edges.
 	"""
-	edges: [StakedSuiEdge!]!
+	edges: [StakedMysEdge!]!
 	"""
 	A list of nodes.
 	"""
-	nodes: [StakedSui!]!
+	nodes: [StakedMys!]!
 }
 
 """
 An edge in a connection.
 """
-type StakedSuiEdge {
+type StakedMysEdge {
 	"""
 	The item at the end of the edge
 	"""
-	node: StakedSui!
+	node: StakedMys!
 	"""
 	A cursor for use in pagination
 	"""
@@ -3963,7 +3963,7 @@ type StakedSuiEdge {
 }
 
 """
-SUI set aside to account for objects stored on-chain.
+MYS set aside to account for objects stored on-chain.
 """
 type StorageFund {
 	"""
@@ -3982,19 +3982,19 @@ type StorageFund {
 
 
 """
-String containing 32B hex-encoded address, with a leading "0x". Leading zeroes can be omitted on input but will always appear in outputs (SuiAddress in output is guaranteed to be 66 characters long).
+String containing 32B hex-encoded address, with a leading "0x". Leading zeroes can be omitted on input but will always appear in outputs (MysAddress in output is guaranteed to be 66 characters long).
 """
-scalar SuiAddress
+scalar MysAddress
 
-type SuinsRegistration implements IMoveObject & IObject & IOwner {
-	address: SuiAddress!
+type MysnsRegistration implements IMoveObject & IObject & IOwner {
+	address: MysAddress!
 	"""
 	Objects owned by this object, optionally `filter`-ed.
 	"""
 	objects(first: Int, after: String, last: Int, before: String, filter: ObjectFilter): MoveObjectConnection!
 	"""
 	Total balance of all coins with marker type owned by this object. If type is not supplied,
-	it defaults to `0x2::sui::SUI`.
+	it defaults to `0x2::mys::MYS`.
 	"""
 	balance(type: String): Balance
 	"""
@@ -4004,22 +4004,22 @@ type SuinsRegistration implements IMoveObject & IObject & IOwner {
 	"""
 	The coin objects for this object.
 	
-	`type` is a filter on the coin's type parameter, defaulting to `0x2::sui::SUI`.
+	`type` is a filter on the coin's type parameter, defaulting to `0x2::mys::MYS`.
 	"""
 	coins(first: Int, after: String, last: Int, before: String, type: String): CoinConnection!
 	"""
-	The `0x3::staking_pool::StakedSui` objects owned by this object.
+	The `0x3::staking_pool::StakedMys` objects owned by this object.
 	"""
-	stakedSuis(first: Int, after: String, last: Int, before: String): StakedSuiConnection!
+	stakedMyss(first: Int, after: String, last: Int, before: String): StakedMysConnection!
 	"""
 	The domain explicitly configured as the default domain pointing to this object.
 	"""
-	defaultSuinsName(format: DomainFormat): String
+	defaultMysnsName(format: DomainFormat): String
 	"""
-	The SuinsRegistration NFTs owned by this object. These grant the owner the capability to
+	The MysnsRegistration NFTs owned by this object. These grant the owner the capability to
 	manage the associated domain.
 	"""
-	suinsRegistrations(first: Int, after: String, last: Int, before: String): SuinsRegistrationConnection!
+	mysnsRegistrations(first: Int, after: String, last: Int, before: String): MysnsRegistrationConnection!
 	version: UInt53!
 	"""
 	The current status of the object as read from the off-chain store. The possible states are:
@@ -4044,7 +4044,7 @@ type SuinsRegistration implements IMoveObject & IObject & IOwner {
 	"""
 	previousTransactionBlock: TransactionBlock
 	"""
-	The amount of SUI we would rebate if this object gets deleted or mutated. This number is
+	The amount of MYS we would rebate if this object gets deleted or mutated. This number is
 	recalculated based on the present storage gas price.
 	"""
 	storageRebate: BigInt
@@ -4083,7 +4083,7 @@ type SuinsRegistration implements IMoveObject & IObject & IOwner {
 	contents: MoveValue
 	"""
 	Determines whether a transaction can transfer this object, using the TransferObjects
-	transaction command or `sui::transfer::public_transfer`, both of which require the object to
+	transaction command or `mys::transfer::public_transfer`, both of which require the object to
 	have the `key` and `store` abilities.
 	"""
 	hasPublicTransfer: Boolean!
@@ -4120,12 +4120,12 @@ type SuinsRegistration implements IMoveObject & IObject & IOwner {
 	"""
 	dynamicFields(first: Int, after: String, last: Int, before: String): DynamicFieldConnection!
 	"""
-	Domain name of the SuinsRegistration object
+	Domain name of the MysnsRegistration object
 	"""
 	domain: String!
 }
 
-type SuinsRegistrationConnection {
+type MysnsRegistrationConnection {
 	"""
 	Information to aid in pagination.
 	"""
@@ -4133,21 +4133,21 @@ type SuinsRegistrationConnection {
 	"""
 	A list of edges.
 	"""
-	edges: [SuinsRegistrationEdge!]!
+	edges: [MysnsRegistrationEdge!]!
 	"""
 	A list of nodes.
 	"""
-	nodes: [SuinsRegistration!]!
+	nodes: [MysnsRegistration!]!
 }
 
 """
 An edge in a connection.
 """
-type SuinsRegistrationEdge {
+type MysnsRegistrationEdge {
 	"""
 	The item at the end of the edge
 	"""
-	node: SuinsRegistration!
+	node: MysnsRegistration!
 	"""
 	A cursor for use in pagination
 	"""
@@ -4366,11 +4366,11 @@ input TransactionBlockFilter {
 	Limit to transactions that interacted with the given address. The address could be a
 	sender, sponsor, or recipient of the transaction.
 	"""
-	affectedAddress: SuiAddress
+	affectedAddress: MysAddress
 	"""
 	Limit to transactions that were sent by the given address.
 	"""
-	sentAddress: SuiAddress
+	sentAddress: MysAddress
 	"""
 	Limit to transactions that accepted the given object as an input. NOTE: this input filter
 	has been deprecated in favor of `affectedObject` which offers an easier to under behavior.
@@ -4378,7 +4378,7 @@ input TransactionBlockFilter {
 	This filter will be removed with 1.36.0 (2024-10-14), or at least one release after
 	`affectedObject` is introduced, whichever is later.
 	"""
-	inputObject: SuiAddress
+	inputObject: MysAddress
 	"""
 	Limit to transactions that output a versioon of this object. NOTE: this input filter has
 	been deprecated in favor of `affectedObject` which offers an easier to understand behavor.
@@ -4386,7 +4386,7 @@ input TransactionBlockFilter {
 	This filter will be removed with 1.36.0 (2024-10-14), or at least one release after
 	`affectedObject` is introduced, whichever is later.
 	"""
-	changedObject: SuiAddress
+	changedObject: MysAddress
 	"""
 	Select transactions by their digest.
 	"""
@@ -4452,11 +4452,11 @@ gas price, `gasBudget` defaults to the max gas budget and `gasSponsor` defaults
 to the sender.
 """
 input TransactionMetadata {
-	sender: SuiAddress
+	sender: MysAddress
 	gasPrice: UInt53
 	gasObjects: [ObjectRef!]
 	gasBudget: UInt53
-	gasSponsor: SuiAddress
+	gasSponsor: MysAddress
 }
 
 """
@@ -4489,7 +4489,7 @@ type TypeOrigin {
 	"""
 	The storage ID of the package that first defined this type.
 	"""
-	definingId: SuiAddress!
+	definingId: MysAddress!
 }
 
 """
@@ -4546,11 +4546,11 @@ type UpgradeTransaction {
 	"""
 	IDs of the transitive dependencies of the package to be published.
 	"""
-	dependencies: [SuiAddress!]!
+	dependencies: [MysAddress!]!
 	"""
 	ID of the package being upgraded.
 	"""
-	currentPackage: SuiAddress!
+	currentPackage: MysAddress!
 	"""
 	The `UpgradeTicket` authorizing the upgrade.
 	"""
@@ -4600,16 +4600,16 @@ type Validator {
 	"""
 	The ID of this validator's `0x3::staking_pool::StakingPool`.
 	"""
-	stakingPoolId: SuiAddress!
+	stakingPoolId: MysAddress!
 	"""
 	The validator's current exchange object. The exchange rate is used to determine
-	the amount of SUI tokens that each past SUI staker can withdraw in the future.
+	the amount of MYS tokens that each past MYS staker can withdraw in the future.
 	"""
 	exchangeRates: MoveObject @deprecated(reason: "The exchange object is a wrapped object. Access its dynamic fields through the `exchangeRatesTable` query.")
 	"""
 	A wrapped object containing the validator's exchange rates. This is a table from epoch
 	number to `PoolTokenExchangeRate` value. The exchange rate is used to determine the amount
-	of SUI tokens that each past SUI staker can withdraw in the future.
+	of MYS tokens that each past MYS staker can withdraw in the future.
 	"""
 	exchangeRatesTable: Owner
 	"""
@@ -4621,9 +4621,9 @@ type Validator {
 	"""
 	stakingPoolActivationEpoch: UInt53
 	"""
-	The total number of SUI tokens in this pool.
+	The total number of MYS tokens in this pool.
 	"""
-	stakingPoolSuiBalance: BigInt
+	stakingPoolMysBalance: BigInt
 	"""
 	The epoch stake rewards will be added here at the end of each epoch.
 	"""
@@ -4639,7 +4639,7 @@ type Validator {
 	"""
 	Pending stake withdrawn during the current epoch, emptied at epoch boundaries.
 	"""
-	pendingTotalSuiWithdraw: BigInt
+	pendingTotalMysWithdraw: BigInt
 	"""
 	Pending pool token withdrawn during the current epoch, emptied at epoch boundaries.
 	"""
@@ -4657,7 +4657,7 @@ type Validator {
 	"""
 	commissionRate: Int
 	"""
-	The total number of SUI tokens in this pool plus
+	The total number of MYS tokens in this pool plus
 	the pending stake amount for this epoch.
 	"""
 	nextEpochStake: BigInt
@@ -4744,7 +4744,7 @@ type ValidatorSet {
 	"""
 	Object ID of the wrapped object `TableVec` storing the pending active validators.
 	"""
-	pendingActiveValidatorsId: SuiAddress
+	pendingActiveValidatorsId: MysAddress
 	"""
 	Size of the pending active validators table.
 	"""
@@ -4754,7 +4754,7 @@ type ValidatorSet {
 	of the corresponding validators. This is needed because a validator's address
 	can potentially change but the object ID of its pool will not.
 	"""
-	stakingPoolMappingsId: SuiAddress
+	stakingPoolMappingsId: MysAddress
 	"""
 	Size of the stake pool mappings `Table`.
 	"""
@@ -4762,7 +4762,7 @@ type ValidatorSet {
 	"""
 	Object ID of the `Table` storing the inactive staking pools.
 	"""
-	inactivePoolsId: SuiAddress
+	inactivePoolsId: MysAddress
 	"""
 	Size of the inactive pools `Table`.
 	"""
@@ -4770,7 +4770,7 @@ type ValidatorSet {
 	"""
 	Object ID of the `Table` storing the validator candidates.
 	"""
-	validatorCandidatesId: SuiAddress
+	validatorCandidatesId: MysAddress
 	"""
 	Size of the validator candidates `Table`.
 	"""

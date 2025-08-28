@@ -34,8 +34,8 @@ public class HomeViewModel: ObservableObject {
     @Published var walletAddress: String = ""
     @Published var collectionId: String = ""
 
-    public let restClient = SuiProvider(connection: DevnetConnection())
-    public let faucetClient = FaucetClient(connection: DevnetConnection())
+    public let restClient = MySoProvider(connection: TestnetConnection())
+    public let faucetClient = FaucetClient(connection: TestnetConnection())
 
     public init(_ mnemos: [[String]]? = nil) throws {
         if let mnemos {
@@ -105,7 +105,7 @@ public class HomeViewModel: ObservableObject {
                 target: "\(objectId)::devnet_nft::mint",
                 arguments: txArguments.map { .input(try tx.pure(value: .string($0))) }
             )
-            let options = SuiTransactionBlockResponseOptions(showEffects: true)
+            let options = MySoTransactionBlockResponseOptions(showEffects: true)
             var result = try await self.restClient.signAndExecuteTransactionBlock(
                 transactionBlock: &tx,
                 signer: self.currentWallet.accounts[0],
@@ -137,7 +137,7 @@ public class HomeViewModel: ObservableObject {
                 dependencies: fileData["dependencies"].arrayObject as! [String]
             )
             _ = try tx.transferObject(objects: [publish], address: try self.currentWallet.accounts[0].address())
-            let options = SuiTransactionBlockResponseOptions(showEffects: true, showObjectChanges: true)
+            let options = MySoTransactionBlockResponseOptions(showEffects: true, showObjectChanges: true)
             var result = try await self.restClient.signAndExecuteTransactionBlock(
                 transactionBlock: &tx,
                 signer: self.currentWallet.accounts[0],
@@ -172,7 +172,7 @@ public class HomeViewModel: ObservableObject {
                 ]
             )
             _ = try txBlock.transferObject(objects: [coin], address: receiverAddress.hex())
-            let options = SuiTransactionBlockResponseOptions(showEffects: true)
+            let options = MySoTransactionBlockResponseOptions(showEffects: true)
             var result = try await self.restClient.signAndExecuteTransactionBlock(
                 transactionBlock: &txBlock,
                 signer: self.currentWallet.accounts[0],

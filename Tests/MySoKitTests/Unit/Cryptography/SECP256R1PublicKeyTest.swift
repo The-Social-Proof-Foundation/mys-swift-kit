@@ -33,14 +33,14 @@ import BigInt
 final class SECP256R1PublicKeyTest: XCTestCase {
     struct PublicKeyTestStructure {
         let rawPublicKey: String
-        let suiPublicKey: String
-        let suiAddress: String
+        let mysoPublicKey: String
+        let mysoAddress: String
     }
 
     let testCase = PublicKeyTestStructure(
         rawPublicKey: "A8Ju2r5X3EZ3aYuZzH+Ofs6cd1j2WOwY7lhoJQenulBl",
-        suiPublicKey: "AgPCbtq+V9xGd2mLmcx/jn7OnHdY9ljsGO5YaCUHp7pQZQ==",
-        suiAddress: "0xafd0f5a4f41c5770c201879518740b83743164ed2445016fbba9ae98e04af8a5"
+        mysoPublicKey: "AgPCbtq+V9xGd2mLmcx/jn7OnHdY9ljsGO5YaCUHp7pQZQ==",
+        mysoAddress: "0xafd0f5a4f41c5770c201879518740b83743164ed2445016fbba9ae98e04af8a5"
     )
 
     let validSecp256r1PublicKey: [UInt8] = [
@@ -91,10 +91,10 @@ final class SECP256R1PublicKeyTest: XCTestCase {
         XCTAssertEqual(try SECP256R1PublicKey(data: publicKey.key.compressedRepresentation), publicKey)
     }
 
-    func testThatSuiAddressDerivationWorksAsIntended() throws {
+    func testThatMySoAddressDerivationWorksAsIntended() throws {
         let key = try SECP256R1PublicKey(value: self.testCase.rawPublicKey)
 
-        XCTAssertEqual(try key.toSuiAddress(), self.testCase.suiAddress)
-        XCTAssertEqual(try key.toSuiPublicKey(), self.testCase.suiPublicKey)
+        XCTAssertEqual(try key.toMySoAddress(), self.testCase.mysoAddress)
+        XCTAssertEqual(try key.toMySoPublicKey(), self.testCase.mysoPublicKey)
     }
 }

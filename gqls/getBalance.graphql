@@ -1,7 +1,7 @@
-# Copyright (c) Mysten Labs, Inc.
+# Copyright (c) The Social Proof Foundation, LLC.
 # SPDX-License-Identifier: Apache-2.0
 
-query getBalance($owner: SuiAddress!, $type: String = "0x2::sui::SUI") {
+query getBalance($owner: MysAddress!, $type: String = "0x2::mys::MYS") {
 	address(address: $owner) {
 		balance(type: $type) {
 			coinType {

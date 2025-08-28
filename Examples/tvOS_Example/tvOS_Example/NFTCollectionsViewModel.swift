@@ -65,7 +65,7 @@ struct NFTApi {
 
     func fetchCollections() async throws -> [NFTCollection] {
         try await withThrowingTaskGroup(of: Swift.Result<NFTItem, Error>.self) { group in
-            let provider = SuiProvider(connection: MainnetConnection())
+            let provider = MySoProvider(connection: MainnetConnection())
             let kiosk = KioskClient(client: provider, network: .mainnet)
 
             let kioskCollections = try await kiosk.getOwnedKiosks(address: walletAddress)
@@ -116,7 +116,7 @@ struct NFTApi {
         }
     }
 
-    func fetchNFTCollectionName(type: String, provider: SuiProvider) async throws -> String {
+    func fetchNFTCollectionName(type: String, provider: MySoProvider) async throws -> String {
         let url = URL(string: "https://api.blockberry.one/sui/v1/collections/\(type)")!
         let apiKey = "XTWKsL0UXo8PximtNKy1SsjXvPbO23"  // TODO: Remove this before putting into PROD
         var request = URLRequest(url: url)
@@ -128,11 +128,11 @@ struct NFTApi {
         return try JSONDecoder().decode(CollectionDecoder.self, from: data).collectionName
     }
 
-    func fetchNFT(objectId: String, provider: SuiProvider) async -> Swift.Result<NFTItem, Error> {
+    func fetchNFT(objectId: String, provider: MySoProvider) async -> Swift.Result<NFTItem, Error> {
         do {
             guard let nft = try await provider.getObject(
                 objectId: objectId,
-                options: SuiObjectDataOptions(showDisplay: true)
+                options: MySoObjectDataOptions(showDisplay: true)
             ) else {
                 throw NSError(domain: "Unable to fetch NFT", code: 2)
             }
@@ -161,21 +161,21 @@ struct NFTApi {
 }
 
 // {
-//  "collectionType": "0xcc2650b0d0b949e9cf4da71c22377fcbb78d71ce9cf0fed3e724ed3e2dc57813::boredapesuiclub_collection::BoredApeSuiClub",
-//  "collectionName": "Bored Ape Sui Club",
+//  "collectionType": "0xcc2650b0d0b949e9cf4da71c22377fcbb78d71ce9cf0fed3e724ed3e2dc57813::boredapemysoclub_collection::BoredApeMySoClub",
+//  "collectionName": "Bored Ape MySo Club",
 //  "collectionImg": "https://ipfs.io/ipfs/bafybeicnuu37rwdmxcn3oobmbvgtji6kn52xtrkysgjn4nrxcnhchfsu4q/assets/235.png",
-//  "description": "Bored Ape Sui Club is a whole new existence of 5000 unique Bored Apes with new traits compositions living in the Sui Ecosystem. Not affiliated with Yuga Labs.",
+//  "description": "Bored Ape MySo Club is a whole new existence of 5000 unique Bored Apes with new traits compositions living in the MySo Ecosystem. Not affiliated with Yuga Labs.",
 //  "securityMessage": null,
 //  "projectSecurityMessage": null,
 //  "packageId": "0xcc2650b0d0b949e9cf4da71c22377fcbb78d71ce9cf0fed3e724ed3e2dc57813",
-//  "packageName": "Bored Ape Sui Club NFT",
+//  "packageName": "Bored Ape MySo Club NFT",
 //  "projectName": null,
 //  "projectImg": null,
 //  "creatorAddress": "0x6b47af23232ef8fa0c5a3c7d73b74253f6545e94a26eef0e05840c4b69e13667",
 //  "creatorName": null,
 //  "creatorImg": null,
 //  "creatorSecurityMessage": null,
-//  "socialWebsite": "https://twitter.com/BoredApeSuiClub",
+//  "socialWebsite": "https://twitter.com/BoredApeMySoClub",
 //  "nftsCount": 4994,
 //  "latestPrice": 1.111,
 //  "volume": 0,

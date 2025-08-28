@@ -158,14 +158,14 @@ public struct zkLoginUtilities {
 
     public static func lengthChecks(jwt: String) throws {
         let parts = jwt.split(separator: ".")
-        guard parts.count >= 2 else { throw SuiError.customError(message: "Invalid JWT format") }
+        guard parts.count >= 2 else { throw MySoError.customError(message: "Invalid JWT format") }
 
         let header = parts[0]
         let payload = parts[1]
 
         // Check if the header is small enough
         if header.count > Self.maxHeaderLengthBase64 {
-            throw SuiError.customError(message: "Header too large")
+            throw MySoError.customError(message: "Header too large")
         }
 
         // Check if the combined length of (header, payload, SHA2 padding) is small enough
@@ -174,7 +174,7 @@ public struct zkLoginUtilities {
         let paddedUnsignedJwtLen = (L + 1 + K + 64) / 8
 
         if paddedUnsignedJwtLen > Self.maxPaddedUnsignedJwtLength {
-            throw SuiError.customError(message: "JWT too large")
+            throw MySoError.customError(message: "JWT too large")
         }
     }
 
@@ -186,7 +186,7 @@ public struct zkLoginUtilities {
             let sub = decodedJwt.body["sub"] as? String,
             let iss = decodedJwt.body["iss"] as? String,
             let aud = decodedJwt.body["aud"] as? String
-        else { throw SuiError.customError(message: "Invalid JWT format") }
+        else { throw MySoError.customError(message: "Invalid JWT format") }
 
         return try Self.computezkLoginAddress(
             claimName: "sub",
@@ -212,6 +212,6 @@ public struct zkLoginUtilities {
                 aud: aud
             ),
             iss: iss
-        ).toSuiAddress()
+        ).toMySoAddress()
     }
 }

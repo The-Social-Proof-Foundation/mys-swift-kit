@@ -1,8 +1,8 @@
-# Copyright (c) Mysten Labs, Inc.
+# Copyright (c) The Social Proof Foundation, LLC.
 # SPDX-License-Identifier: Apache-2.0
 
 query getOwnedObjects(
-	$owner: SuiAddress!
+	$owner: MysAddress!
 	$limit: Int
 	$cursor: String
 	$showBcs: Boolean = false
@@ -28,7 +28,7 @@ query getOwnedObjects(
 }
 
 query getObject(
-	$id: SuiAddress!
+	$id: MysAddress!
 	$showBcs: Boolean = false
 	$showOwner: Boolean = false
 	$showPreviousTransaction: Boolean = false
@@ -43,7 +43,7 @@ query getObject(
 }
 
 query tryGetPastObject(
-	$id: SuiAddress!
+	$id: MysAddress!
 	$version: UInt53
 	$showBcs: Boolean = false
 	$showOwner: Boolean = false
@@ -63,7 +63,7 @@ query tryGetPastObject(
 }
 
 query multiGetObjects(
-	$ids: [SuiAddress!]!
+	$ids: [MysAddress!]!
 	$limit: Int
 	$cursor: String
 	$showBcs: Boolean = false

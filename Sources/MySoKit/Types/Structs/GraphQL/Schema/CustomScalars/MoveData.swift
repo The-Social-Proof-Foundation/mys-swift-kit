@@ -10,9 +10,9 @@ import ApolloAPI
 /// The contents of a Move Value, corresponding to the following recursive type:
 ///
 /// type MoveData =
-///     { Address: SuiAddress }
-///   | { UID:     SuiAddress }
-///   | { ID:      SuiAddress }
+///     { Address: MySoAddress }
+///   | { UID:     MySoAddress }
+///   | { ID:      MySoAddress }
 ///   | { Bool:    bool }
 ///   | { Number:  BigInt }
 ///   | { String:  string }

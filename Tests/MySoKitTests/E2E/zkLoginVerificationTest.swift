@@ -39,8 +39,8 @@ final class zkLoginVerificationTest: XCTestCase {
 
     override func setUp() async throws {
         // Set up GraphQL client for tests
-        if let graphqlUrl = URL(string: "https://sui-mainnet.mystenlabs.com/graphql") {
-            graphQLClient = SuiGraphQLClient(url: graphqlUrl)
+        if let graphqlUrl = URL(string: "https://mys-graphql-rpc-testnet.up.railway.app") {
+            graphQLClient = MySoGraphQLClient(url: graphqlUrl)
         } else {
             XCTFail("Failed to create GraphQL URL")
         }

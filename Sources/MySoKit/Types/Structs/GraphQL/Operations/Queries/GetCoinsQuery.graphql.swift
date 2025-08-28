@@ -7,19 +7,19 @@ public class GetCoinsQuery: GraphQLQuery {
   public static let operationName: String = "getCoins"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query getCoins($owner: SuiAddress!, $first: Int, $cursor: String, $type: String = "0x2::sui::SUI") { address(address: $owner) { __typename address coins(first: $first, after: $cursor, type: $type) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename coinBalance contents { __typename type { __typename repr } } address version digest previousTransactionBlock { __typename digest } } } } }"#
+      #"query getCoins($owner: MysAddress!, $first: Int, $cursor: String, $type: String = "0x2::mys::MYS") { address(address: $owner) { __typename address coins(first: $first, after: $cursor, type: $type) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename coinBalance contents { __typename type { __typename repr } } address version digest previousTransactionBlock { __typename digest } } } } }"#
     ))
 
-  public var owner: SuiAddressApollo
+  public var owner: MySoAddressApollo
   public var first: GraphQLNullable<Int>
   public var cursor: GraphQLNullable<String>
   public var type: GraphQLNullable<String>
 
   public init(
-    owner: SuiAddressApollo,
+    owner: MySoAddressApollo,
     first: GraphQLNullable<Int>,
     cursor: GraphQLNullable<String>,
-    type: GraphQLNullable<String> = "0x2::sui::SUI"
+    type: GraphQLNullable<String> = "0x2::mys::MYS"
   ) {
     self.owner = owner
     self.first = first
@@ -43,7 +43,7 @@ public class GetCoinsQuery: GraphQLQuery {
       .field("address", Address?.self, arguments: ["address": .variable("owner")])
     ] }
 
-    /// Look-up an Account by its SuiAddressApollo.
+    /// Look-up an Account by its MySoAddressApollo.
     public var address: Address? { __data["address"] }
 
     /// Address
@@ -56,7 +56,7 @@ public class GetCoinsQuery: GraphQLQuery {
       public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.Address }
       public static var __selections: [ApolloAPI.Selection] { [
         .field("__typename", String.self),
-        .field("address", MySoKit.SuiAddressApollo.self),
+        .field("address", MySoKit.MySoAddressApollo.self),
         .field("coins", Coins.self, arguments: [
           "first": .variable("first"),
           "after": .variable("cursor"),
@@ -64,10 +64,10 @@ public class GetCoinsQuery: GraphQLQuery {
         ])
       ] }
 
-      public var address: MySoKit.SuiAddressApollo { __data["address"] }
+      public var address: MySoKit.MySoAddressApollo { __data["address"] }
       /// The coin objects for this address.
       ///
-      /// `type` is a filter on the coin's type parameter, defaulting to `0x2::sui::SUI`.
+      /// `type` is a filter on the coin's type parameter, defaulting to `0x2::mys::MYS`.
       public var coins: Coins { __data["coins"] }
 
       /// Address.Coins
@@ -121,7 +121,7 @@ public class GetCoinsQuery: GraphQLQuery {
             .field("__typename", String.self),
             .field("coinBalance", MySoKit.BigIntApollo?.self),
             .field("contents", Contents?.self),
-            .field("address", MySoKit.SuiAddressApollo.self),
+            .field("address", MySoKit.MySoAddressApollo.self),
             .field("version", MySoKit.UInt53Apollo.self),
             .field("digest", String?.self),
             .field("previousTransactionBlock", PreviousTransactionBlock?.self)
@@ -133,7 +133,7 @@ public class GetCoinsQuery: GraphQLQuery {
           /// provides the flat representation of the type signature, and the BCS of the corresponding
           /// data.
           public var contents: Contents? { __data["contents"] }
-          public var address: MySoKit.SuiAddressApollo { __data["address"] }
+          public var address: MySoKit.MySoAddressApollo { __data["address"] }
           public var version: MySoKit.UInt53Apollo { __data["version"] }
           /// 32-byte hash that identifies the object's contents, encoded as a Base58 string.
           public var digest: String? { __data["digest"] }

@@ -28,9 +28,9 @@ import BigInt
 
 /// Manages the zkLogin authentication flow
 public class ZkLoginAuthenticator {
-    private let provider: SuiProvider
+    private let provider: MySoProvider
 
-    public init(provider: SuiProvider) {
+    public init(provider: MySoProvider) {
         self.provider = provider
     }
 
@@ -46,7 +46,7 @@ public class ZkLoginAuthenticator {
         case .SECP256R1:
             return try Account(accountType: .secp256r1)
         default:
-            throw SuiError.error(code: .unsupportedSignatureScheme)
+            throw MySoError.error(code: .unsupportedSignatureScheme)
         }
     }
 
@@ -78,7 +78,7 @@ public class ZkLoginAuthenticator {
         let status = SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes)
 
         guard status == errSecSuccess else {
-            throw SuiError.error(code: .failedToGenerateRandomData)
+            throw MySoError.error(code: .failedToGenerateRandomData)
         }
 
         return randomBytes
@@ -87,7 +87,7 @@ public class ZkLoginAuthenticator {
     /// Get the current epoch from the network
     /// - Returns: The current epoch and related information
     public func getCurrentEpoch() async throws -> EpochInfo {
-        let systemState = try await provider.getSuiSystemState()
+        let systemState = try await provider.getMySoSystemState()
         return EpochInfo(
             epoch: systemState["epoch"].uInt64Value,
             epochStartTimestampMs: systemState["epochStartTimestampMs"].uInt64Value,
@@ -133,7 +133,7 @@ public class ZkLoginAuthenticator {
             let proof = try await service.generateProof(
                 jwt: jwt,
                 userSalt: userSalt,
-                ephemeralPublicKey: ephemeralKeyPair.publicKey.toSuiBytes(),
+                ephemeralPublicKey: ephemeralKeyPair.publicKey.toMySoBytes(),
                 maxEpoch: maxEpoch,
                 jwtRandomness: randomness
             )
@@ -142,7 +142,7 @@ public class ZkLoginAuthenticator {
             headerBase64 = proof.headerBase64
             issBase64Details = proof.issBase64Details
         } else {
-            throw SuiError.error(code: .missingProofService)
+            throw MySoError.error(code: .missingProofService)
         }
 
         // Create signature inputs
@@ -165,7 +165,7 @@ public class ZkLoginAuthenticator {
     /// - Parameters:
     ///   - jwt: The JWT token
     ///   - userSalt: The user's salt
-    /// - Returns: The zkLogin Sui address
+    /// - Returns: The zkLogin MySo address
     public func derivezkLoginAddress(jwt: String, userSalt: String) throws -> String {
         let jwtClaims = try JWTUtilities.extractClaims(from: jwt)
 

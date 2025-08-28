@@ -1,7 +1,7 @@
-# Copyright (c) Mysten Labs, Inc.
+# Copyright (c) The Social Proof Foundation, LLC.
 # SPDX-License-Identifier: Apache-2.0
 
-query getNormalizedMoveStruct($packageId: SuiAddress!, $module: String!, $struct: String!) {
+query getNormalizedMoveStruct($packageId: MysAddress!, $module: String!, $struct: String!) {
 	object(address: $packageId) {
 		asMovePackage {
 			address

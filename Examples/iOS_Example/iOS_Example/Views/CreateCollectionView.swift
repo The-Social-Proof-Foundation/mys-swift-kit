@@ -40,7 +40,7 @@ struct CreateCollectionView: View {
 
     var body: some View {
         VStack {
-            Image("suiLogo")
+            Image("mysoLogo")
                 .resizable()
                 .scaledToFit()
                 .frame(width: UIScreen.main.bounds.width - 200)

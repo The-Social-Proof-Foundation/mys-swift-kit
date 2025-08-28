@@ -79,33 +79,33 @@ public struct SECP256R1PublicKey: PublicKeyProtocol {
         return "0x\(self.key.compressedRepresentation.hexEncodedString())"
     }
 
-    public func toSuiAddress() throws -> String {
-        return try Inputs.normalizeSuiAddress(
+    public func toMySoAddress() throws -> String {
+        return try Inputs.normalizeMySoAddress(
             value: try Blake2b.hash(
                 size: 32,
-                data: Data(try self.toSuiBytes())
+                data: Data(try self.toMySoBytes())
             ).hexEncodedString()[0..<(32 * 2)]
         )
     }
 
-    /// Converts the public key to a Sui address.
+    /// Converts the public key to a MySo address.
     /// - Throws: If any error occurs during conversion.
-    /// - Returns: A string representing the Sui address.
-    public func toSuiPublicKey() throws -> String {
-        let bytes = try self.toSuiBytes()
+    /// - Returns: A string representing the MySo address.
+    public func toMySoPublicKey() throws -> String {
+        let bytes = try self.toMySoBytes()
         return bytes.toBase64()
     }
 
-    /// Converts the public key to Sui bytes.
+    /// Converts the public key to MySo bytes.
     /// - Throws: If any error occurs during conversion.
-    /// - Returns: An array of bytes representing the Sui public key.
-    public func toSuiBytes() throws -> [UInt8] {
+    /// - Returns: An array of bytes representing the MySo public key.
+    public func toMySoBytes() throws -> [UInt8] {
         let rawBytes = self.key.compressedRepresentation
-        var suiBytes = Data(count: rawBytes.count + 1)
-        try suiBytes.set([SignatureSchemeFlags.SIGNATURE_SCHEME_TO_FLAG["SECP256R1"]!])
-        try suiBytes.set([UInt8](rawBytes), offset: 1)
+        var mysoBytes = Data(count: rawBytes.count + 1)
+        try mysoBytes.set([SignatureSchemeFlags.SIGNATURE_SCHEME_TO_FLAG["SECP256R1"]!])
+        try mysoBytes.set([UInt8](rawBytes), offset: 1)
 
-        return [UInt8](suiBytes)
+        return [UInt8](mysoBytes)
     }
 
     public func toSerializedSignature(signature: Signature) throws -> String {

@@ -1,7 +1,7 @@
-# Copyright (c) Mysten Labs, Inc.
+# Copyright (c) The Social Proof Foundation, LLC.
 # SPDX-License-Identifier: Apache-2.0
 
-query getNormalizedMoveModule($packageId: SuiAddress!, $module: String!) {
+query getNormalizedMoveModule($packageId: MysAddress!, $module: String!) {
 	object(address: $packageId) {
 		asMovePackage {
 			module(name: $module) {
@@ -12,7 +12,7 @@ query getNormalizedMoveModule($packageId: SuiAddress!, $module: String!) {
 }
 
 query paginateMoveModuleLists(
-	$packageId: SuiAddress!
+	$packageId: MysAddress!
 	$module: String!
 	$hasMoreFriends: Boolean!
 	$hasMoreStructs: Boolean!

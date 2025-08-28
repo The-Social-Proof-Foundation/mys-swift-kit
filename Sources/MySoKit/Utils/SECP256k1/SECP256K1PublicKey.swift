@@ -117,27 +117,27 @@ public struct SECP256K1PublicKey: Equatable, PublicKeyProtocol {
         return "0x\(key.hexEncodedString())"
     }
 
-    public func toSuiAddress() throws -> String {
-        return try Inputs.normalizeSuiAddress(
+    public func toMySoAddress() throws -> String {
+        return try Inputs.normalizeMySoAddress(
             value: try Blake2b.hash(
                 size: 32,
-                data: Data(try self.toSuiBytes())
+                data: Data(try self.toMySoBytes())
             ).hexEncodedString()[0..<(32 * 2)]
         )
     }
 
-    public func toSuiPublicKey() throws -> String {
-        let bytes = try self.toSuiBytes()
+    public func toMySoPublicKey() throws -> String {
+        let bytes = try self.toMySoBytes()
         return bytes.toBase64()
     }
 
-    public func toSuiBytes() throws -> [UInt8] {
+    public func toMySoBytes() throws -> [UInt8] {
         let rawBytes = self.key
-        var suiBytes = Data(count: rawBytes.count + 1)
-        try suiBytes.set([SignatureSchemeFlags.SIGNATURE_SCHEME_TO_FLAG["SECP256K1"]!])
-        try suiBytes.set([UInt8](rawBytes), offset: 1)
+        var mysoBytes = Data(count: rawBytes.count + 1)
+        try mysoBytes.set([SignatureSchemeFlags.SIGNATURE_SCHEME_TO_FLAG["SECP256K1"]!])
+        try mysoBytes.set([UInt8](rawBytes), offset: 1)
 
-        return [UInt8](suiBytes)
+        return [UInt8](mysoBytes)
     }
 
     public func toSerializedSignature(signature: Signature) throws -> String {

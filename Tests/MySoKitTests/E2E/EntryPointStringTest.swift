@@ -61,7 +61,7 @@ final class EntryPointStringTest: XCTestCase {
                 .input(tx.pure(value: .number(UInt64(len))))
             ]
         )
-        let options = SuiTransactionBlockResponseOptions(showEffects: true)
+        let options = MySoTransactionBlockResponseOptions(showEffects: true)
         var result = try await self.fetchToolBox().client.signAndExecuteTransactionBlock(
             transactionBlock: &tx,
             signer: try self.fetchToolBox().account,
@@ -83,7 +83,7 @@ final class EntryPointStringTest: XCTestCase {
                 .input(tx.pure(value: .number(UInt64(len))))
             ]
         )
-        let options = SuiTransactionBlockResponseOptions(showEffects: true)
+        let options = MySoTransactionBlockResponseOptions(showEffects: true)
         var result = try await self.fetchToolBox().client.signAndExecuteTransactionBlock(
             transactionBlock: &tx,
             signer: try self.fetchToolBox().account,

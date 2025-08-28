@@ -7,15 +7,15 @@ public class GetMoveFunctionArgTypesQuery: GraphQLQuery {
   public static let operationName: String = "getMoveFunctionArgTypes"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query getMoveFunctionArgTypes($packageId: SuiAddress!, $module: String!, $function: String!) { object(address: $packageId) { __typename asMovePackage { __typename module(name: $module) { __typename fileFormatVersion function(name: $function) { __typename parameters { __typename signature } } } } } }"#
+      #"query getMoveFunctionArgTypes($packageId: MysAddress!, $module: String!, $function: String!) { object(address: $packageId) { __typename asMovePackage { __typename module(name: $module) { __typename fileFormatVersion function(name: $function) { __typename parameters { __typename signature } } } } } }"#
     ))
 
-  public var packageId: SuiAddressApollo
+  public var packageId: MySoAddressApollo
   public var module: String
   public var function: String
 
   public init(
-    packageId: SuiAddressApollo,
+    packageId: MySoAddressApollo,
     module: String,
     function: String
   ) {

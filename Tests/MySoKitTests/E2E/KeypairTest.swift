@@ -96,7 +96,7 @@ final class KeypairTest: XCTestCase {
         for testCase in testCases {
             let account = try Account(testCase[0], accountType: .ed25519)
             XCTAssertEqual(account.publicKey.base64(), testCase[1])
-            XCTAssertEqual(try account.publicKey.toSuiAddress(), testCase[2])
+            XCTAssertEqual(try account.publicKey.toMySoAddress(), testCase[2])
 
             let signature = try account.signTransactionBlock([UInt8](txBytesData))
             XCTAssertEqual(signature.signature.base64EncodedString(), testCase[3])
@@ -140,7 +140,7 @@ final class KeypairTest: XCTestCase {
         for testCase in testCasesSecp256k1 {
             let account = try Account(testCase[0], accountType: .secp256k1)
             XCTAssertEqual(account.publicKey.base64(), testCase[1])
-            XCTAssertEqual(try account.publicKey.toSuiAddress(), testCase[2])
+            XCTAssertEqual(try account.publicKey.toMySoAddress(), testCase[2])
 
             let signature = try account.signTransactionBlock([UInt8](txBytesData))
             XCTAssertEqual(signature.signature.base64EncodedString(), testCase[3])

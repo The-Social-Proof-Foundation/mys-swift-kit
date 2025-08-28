@@ -7,11 +7,11 @@ public class PaginateMoveModuleListsQuery: GraphQLQuery {
   public static let operationName: String = "paginateMoveModuleLists"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query paginateMoveModuleLists($packageId: SuiAddress!, $module: String!, $hasMoreFriends: Boolean!, $hasMoreStructs: Boolean!, $hasMoreFunctions: Boolean!, $hasMoreEnums: Boolean!, $afterFriends: String, $afterStructs: String, $afterFunctions: String, $afterEnums: String) { object(address: $packageId) { __typename asMovePackage { __typename module(name: $module) { __typename friends(after: $afterFriends) @include(if: $hasMoreFriends) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename name package { __typename address } } } structs(after: $afterStructs) @include(if: $hasMoreStructs) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename ...RPC_MOVE_STRUCT_FIELDS } } enums(after: $afterEnums) @include(if: $hasMoreEnums) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename ...RPC_MOVE_ENUM_FIELDS } } functions(after: $afterFunctions) @include(if: $hasMoreFunctions) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename ...RPC_MOVE_FUNCTION_FIELDS } } } } } }"#,
+      #"query paginateMoveModuleLists($packageId: MysAddress!, $module: String!, $hasMoreFriends: Boolean!, $hasMoreStructs: Boolean!, $hasMoreFunctions: Boolean!, $hasMoreEnums: Boolean!, $afterFriends: String, $afterStructs: String, $afterFunctions: String, $afterEnums: String) { object(address: $packageId) { __typename asMovePackage { __typename module(name: $module) { __typename friends(after: $afterFriends) @include(if: $hasMoreFriends) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename name package { __typename address } } } structs(after: $afterStructs) @include(if: $hasMoreStructs) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename ...RPC_MOVE_STRUCT_FIELDS } } enums(after: $afterEnums) @include(if: $hasMoreEnums) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename ...RPC_MOVE_ENUM_FIELDS } } functions(after: $afterFunctions) @include(if: $hasMoreFunctions) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename ...RPC_MOVE_FUNCTION_FIELDS } } } } } }"#,
       fragments: [RPC_MOVE_ENUM_FIELDS.self, RPC_MOVE_FUNCTION_FIELDS.self, RPC_MOVE_STRUCT_FIELDS.self]
     ))
 
-  public var packageId: SuiAddressApollo
+  public var packageId: MySoAddressApollo
   public var module: String
   public var hasMoreFriends: Bool
   public var hasMoreStructs: Bool
@@ -23,7 +23,7 @@ public class PaginateMoveModuleListsQuery: GraphQLQuery {
   public var afterEnums: GraphQLNullable<String>
 
   public init(
-    packageId: SuiAddressApollo,
+    packageId: MySoAddressApollo,
     module: String,
     hasMoreFriends: Bool,
     hasMoreStructs: Bool,
@@ -199,10 +199,10 @@ public class PaginateMoveModuleListsQuery: GraphQLQuery {
                 public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.MovePackage }
                 public static var __selections: [ApolloAPI.Selection] { [
                   .field("__typename", String.self),
-                  .field("address", MySoKit.SuiAddressApollo.self)
+                  .field("address", MySoKit.MySoAddressApollo.self)
                 ] }
 
-                public var address: MySoKit.SuiAddressApollo { __data["address"] }
+                public var address: MySoKit.MySoAddressApollo { __data["address"] }
               }
             }
           }

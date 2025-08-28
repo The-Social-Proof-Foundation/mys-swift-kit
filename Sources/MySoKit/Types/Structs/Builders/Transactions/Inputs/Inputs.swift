@@ -34,28 +34,28 @@ public struct Inputs {
         return PureCallArg(value: data)
     }
 
-    /// Creates a `PureCallArg` object from the provided `SuiJsonValue`.
+    /// Creates a `PureCallArg` object from the provided `MySoJsonValue`.
     ///
-    /// - Parameter json: The `SuiJsonValue` used to initialize the `PureCallArg` object.
+    /// - Parameter json: The `MySoJsonValue` used to initialize the `PureCallArg` object.
     /// - Throws: If unable to serialize the provided `json` value.
     /// - Returns: A `PureCallArg` object initialized with the serialized output of the provided JSON value.
-    public static func pure(json: SuiJsonValue) throws -> PureCallArg {
+    public static func pure(json: MySoJsonValue) throws -> PureCallArg {
         let ser = Serializer()
         try Serializer._struct(ser, value: json)
         return PureCallArg(value: ser.output())
     }
 
-    /// Creates an `ObjectArg` of type `.immOrOwned` from the provided `SuiObjectRef`.
+    /// Creates an `ObjectArg` of type `.immOrOwned` from the provided `MySoObjectRef`.
     ///
-    /// - Parameter suiObjectRef: The `SuiObjectRef` used to initialize the `ObjectArg`.
-    /// - Throws: If unable to normalize the SUI address contained in `suiObjectRef`.
+    /// - Parameter mysoObjectRef: The `MySoObjectRef` used to initialize the `ObjectArg`.
+    /// - Throws: If unable to normalize the MYS address contained in `mysoObjectRef`.
     /// - Returns: An `ObjectArg` object initialized with the `.immOrOwned` variant.
-    public static func immOrOwnedRef(suiObjectRef: SuiObjectRef) throws -> ObjectArg {
+    public static func immOrOwnedRef(mysoObjectRef: MySoObjectRef) throws -> ObjectArg {
         let immOrOwned = ImmOrOwned(
-            ref: SuiObjectRef(
-                objectId: try normalizeSuiAddress(value: suiObjectRef.objectId),
-                version: suiObjectRef.version,
-                digest: suiObjectRef.digest
+            ref: MySoObjectRef(
+                objectId: try normalizeMySoAddress(value: mysoObjectRef.objectId),
+                version: mysoObjectRef.version,
+                digest: mysoObjectRef.digest
             )
         )
         return .immOrOwned(immOrOwned)
@@ -64,11 +64,11 @@ public struct Inputs {
     /// Creates an `ObjectArg` of type `.shared` from the provided `SharedObjectRef`.
     ///
     /// - Parameter sharedObjectRef: The `SharedObjectRef` used to initialize the `ObjectArg`.
-    /// - Throws: If unable to normalize the SUI address contained in `sharedObjectRef`.
+    /// - Throws: If unable to normalize the MYS address contained in `sharedObjectRef`.
     /// - Returns: An `ObjectArg` object initialized with the `.shared` variant.
     public static func sharedObjectRef(sharedObjectRef: SharedObjectRef) throws -> ObjectArg {
         let sharedArg = try SharedObjectArg(
-            objectId: normalizeSuiAddress(value: sharedObjectRef.objectId),
+            objectId: normalizeMySoAddress(value: sharedObjectRef.objectId),
             initialSharedVersion: sharedObjectRef.initialSharedVersion,
             mutable: sharedObjectRef.mutable
         )
@@ -83,38 +83,38 @@ public struct Inputs {
         return .shared(sharedObjectArg)
     }
 
-    /// Normalizes the SUI address from the provided `objectId`.
+    /// Normalizes the MYS address from the provided `objectId`.
     ///
     /// - Parameter arg: The `objectId` to be normalized.
     /// - Throws: If unable to normalize the provided `objectId`.
-    /// - Returns: A normalized SUI address as a string.
+    /// - Returns: A normalized MYS address as a string.
     public static func getIdFromCallArg(arg: ObjectId) throws -> String {
-        return try normalizeSuiAddress(value: arg)
+        return try normalizeMySoAddress(value: arg)
     }
 
     public static func getIdFromCallArg(arg: ObjectCallArg) throws -> String {
         if case .immOrOwned(let immOrOwned) = arg.object {
-            return try normalizeSuiAddress(value: immOrOwned.ref.objectId)
+            return try normalizeMySoAddress(value: immOrOwned.ref.objectId)
         }
 
         if case .shared(let shared) = arg.object {
-            return try normalizeSuiAddress(value: shared.objectId)
+            return try normalizeMySoAddress(value: shared.objectId)
         }
 
-        throw SuiError.notImplemented
+        throw MySoError.notImplemented
     }
 
-    /// Normalizes the SUI address from the provided `ObjectArg`.
+    /// Normalizes the MYS address from the provided `ObjectArg`.
     ///
     /// - Parameter arg: The `ObjectArg` instance containing the address to be normalized.
     /// - Throws: If unable to normalize the address contained in `arg`.
-    /// - Returns: A normalized SUI address as a string.
+    /// - Returns: A normalized MYS address as a string.
     public static func getIdFromCallArg(arg: ObjectArg) throws -> String {
         switch arg {
         case .immOrOwned(let immOwned):
-            return try normalizeSuiAddress(value: immOwned.ref.objectId)
+            return try normalizeMySoAddress(value: immOwned.ref.objectId)
         case .shared(let shared):
-            return try normalizeSuiAddress(value: shared.objectId)
+            return try normalizeMySoAddress(value: shared.objectId)
         }
     }
 
@@ -123,30 +123,30 @@ public struct Inputs {
             return try Self.getIdFromCallArg(arg: objCallArg)
         }
         if case .string(let string) = value {
-            return try Self.normalizeSuiAddress(value: string)
+            return try Self.normalizeMySoAddress(value: string)
         }
-        throw SuiError.notImplemented
+        throw MySoError.notImplemented
     }
 
-    /// The constant value defining the length of a SUI address.
-    public static let suiAddressLength = 32
+    /// The constant value defining the length of a MYS address.
+    public static let mysoAddressLength = 32
 
     /// The constant value defining the maximum length of a pure argument.
     public static let maxPureArgumentLength = 16 * 1024
 
-    /// Normalizes a SUI address value.
+    /// Normalizes a MYS address value.
     ///
     /// - Parameters:
     ///   - value: The string value to be normalized.
     ///   - forceAdd0x: If `true`, forcibly adds "0x" prefix to the address, if not already present.
-    /// - Throws: `SuiError.addressTooLong` if the input address is too long.
-    /// - Returns: A string representing the normalized SUI address.
-    public static func normalizeSuiAddress(value: String, forceAdd0x: Bool = false) throws -> String {
+    /// - Throws: `MySoError.addressTooLong` if the input address is too long.
+    /// - Returns: A string representing the normalized MYS address.
+    public static func normalizeMySoAddress(value: String, forceAdd0x: Bool = false) throws -> String {
         var address = value.lowercased()
         if !forceAdd0x && address.hasPrefix("0x") {
             address = String(address.dropFirst(2))
         }
-        guard address.count <= (Self.suiAddressLength * 2) else { throw SuiError.customError(message: "Address too long (max \(Self.suiAddressLength * 2) characters)") }
-        return "0x" + String().padding(toLength: ((Self.suiAddressLength * 2) - address.count), withPad: "0", startingAt: 0) + address
+        guard address.count <= (Self.mysoAddressLength * 2) else { throw MySoError.customError(message: "Address too long (max \(Self.mysoAddressLength * 2) characters)") }
+        return "0x" + String().padding(toLength: ((Self.mysoAddressLength * 2) - address.count), withPad: "0", startingAt: 0) + address
     }
 }

@@ -84,10 +84,10 @@ public class SecureZkLoginStorage: ZkLoginSecureStorage {
             let updateStatus = SecItemUpdate(updateQuery as CFDictionary, updateAttributes as CFDictionary)
 
             guard updateStatus == errSecSuccess else {
-                throw SuiError.error(code: .keyChainError)
+                throw MySoError.error(code: .keyChainError)
             }
         } else if status != errSecSuccess {
-            throw SuiError.error(code: .keyChainError)
+            throw MySoError.error(code: .keyChainError)
         }
     }
 
@@ -106,11 +106,11 @@ public class SecureZkLoginStorage: ZkLoginSecureStorage {
         let status = SecItemCopyMatching(query as CFDictionary, &keyData)
 
         guard status == errSecSuccess else {
-            throw SuiError.error(code: .keyChainError)
+            throw MySoError.error(code: .keyChainError)
         }
 
         guard let keyData = keyData as? Data else {
-            throw SuiError.error(code: .missingKeyItem)
+            throw MySoError.error(code: .missingKeyItem)
         }
 
         return keyData
@@ -135,7 +135,7 @@ public class SecureZkLoginStorage: ZkLoginSecureStorage {
         let status = SecItemAdd(query as CFDictionary, nil)
 
         guard status == errSecSuccess else {
-            throw SuiError.error(code: .keyChainError)
+            throw MySoError.error(code: .keyChainError)
         }
     }
 
@@ -155,11 +155,11 @@ public class SecureZkLoginStorage: ZkLoginSecureStorage {
         let status = SecItemCopyMatching(query as CFDictionary, &item)
 
         guard status == errSecSuccess, let saltData = item as? Data else {
-            throw SuiError.error(code: .keyChainError)
+            throw MySoError.error(code: .keyChainError)
         }
 
         guard let saltString = String(data: saltData, encoding: .utf8) else {
-            throw SuiError.error(code: .dataEncodingFailed)
+            throw MySoError.error(code: .dataEncodingFailed)
         }
 
         return saltString

@@ -5,7 +5,7 @@
 
 public struct RPC_VALIDATOR_FIELDS: MySoKit.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment RPC_VALIDATOR_FIELDS on Validator { __typename atRisk commissionRate exchangeRatesSize exchangeRates { __typename contents { __typename json } address } description gasPrice imageUrl name credentials { __typename ...RPC_CREDENTIAL_FIELDS } nextEpochCommissionRate nextEpochGasPrice nextEpochCredentials { __typename ...RPC_CREDENTIAL_FIELDS } nextEpochStake nextEpochCommissionRate operationCap { __typename address } pendingPoolTokenWithdraw pendingStake pendingTotalSuiWithdraw poolTokenBalance projectUrl rewardsPool stakingPool { __typename address } stakingPoolActivationEpoch stakingPoolSuiBalance address { __typename address } votingPower }"#
+    #"fragment RPC_VALIDATOR_FIELDS on Validator { __typename atRisk commissionRate exchangeRatesSize exchangeRates { __typename contents { __typename json } address } description gasPrice imageUrl name credentials { __typename ...RPC_CREDENTIAL_FIELDS } nextEpochCommissionRate nextEpochGasPrice nextEpochCredentials { __typename ...RPC_CREDENTIAL_FIELDS } nextEpochStake nextEpochCommissionRate operationCap { __typename address } pendingPoolTokenWithdraw pendingStake pendingTotalMysWithdraw poolTokenBalance projectUrl rewardsPool stakingPool { __typename address } stakingPoolActivationEpoch stakingPoolMysBalance address { __typename address } votingPower }"#
   }
 
   public let __data: DataDict
@@ -30,13 +30,13 @@ public struct RPC_VALIDATOR_FIELDS: MySoKit.SelectionSet, Fragment {
     .field("operationCap", OperationCap?.self),
     .field("pendingPoolTokenWithdraw", MySoKit.BigIntApollo?.self),
     .field("pendingStake", MySoKit.BigIntApollo?.self),
-    .field("pendingTotalSuiWithdraw", MySoKit.BigIntApollo?.self),
+    .field("pendingTotalMysWithdraw", MySoKit.BigIntApollo?.self),
     .field("poolTokenBalance", MySoKit.BigIntApollo?.self),
     .field("projectUrl", String?.self),
     .field("rewardsPool", MySoKit.BigIntApollo?.self),
     .field("stakingPool", StakingPool?.self),
     .field("stakingPoolActivationEpoch", MySoKit.UInt53Apollo?.self),
-    .field("stakingPoolSuiBalance", MySoKit.BigIntApollo?.self),
+    .field("stakingPoolMysBalance", MySoKit.BigIntApollo?.self),
     .field("address", Address.self),
     .field("votingPower", Int?.self)
   ] }
@@ -49,7 +49,7 @@ public struct RPC_VALIDATOR_FIELDS: MySoKit.SelectionSet, Fragment {
   /// Number of exchange rates in the table.
   public var exchangeRatesSize: MySoKit.UInt53Apollo? { __data["exchangeRatesSize"] }
   /// The validator's current exchange object. The exchange rate is used to determine
-  /// the amount of SUI tokens that each past SUI staker can withdraw in the future.
+  /// the amount of MYS tokens that each past MYS staker can withdraw in the future.
   @available(*, deprecated, message: "The exchange object is a wrapped object. Access its dynamic fields through the `exchangeRatesTable` query.")
   public var exchangeRates: ExchangeRates? { __data["exchangeRates"] }
   /// Validator's description.
@@ -68,7 +68,7 @@ public struct RPC_VALIDATOR_FIELDS: MySoKit.SelectionSet, Fragment {
   public var nextEpochGasPrice: MySoKit.BigIntApollo? { __data["nextEpochGasPrice"] }
   /// Validator's set of credentials for the next epoch.
   public var nextEpochCredentials: NextEpochCredentials? { __data["nextEpochCredentials"] }
-  /// The total number of SUI tokens in this pool plus
+  /// The total number of MYS tokens in this pool plus
   /// the pending stake amount for this epoch.
   public var nextEpochStake: MySoKit.BigIntApollo? { __data["nextEpochStake"] }
   /// The validator's current valid `Cap` object. Validators can delegate
@@ -80,7 +80,7 @@ public struct RPC_VALIDATOR_FIELDS: MySoKit.SelectionSet, Fragment {
   /// Pending stake amount for this epoch.
   public var pendingStake: MySoKit.BigIntApollo? { __data["pendingStake"] }
   /// Pending stake withdrawn during the current epoch, emptied at epoch boundaries.
-  public var pendingTotalSuiWithdraw: MySoKit.BigIntApollo? { __data["pendingTotalSuiWithdraw"] }
+  public var pendingTotalMySoWithdraw: MySoKit.BigIntApollo? { __data["pendingTotalMysWithdraw"] }
   /// Total number of pool tokens issued by the pool.
   public var poolTokenBalance: MySoKit.BigIntApollo? { __data["poolTokenBalance"] }
   /// Validator's homepage URL.
@@ -93,8 +93,8 @@ public struct RPC_VALIDATOR_FIELDS: MySoKit.SelectionSet, Fragment {
   public var stakingPool: StakingPool? { __data["stakingPool"] }
   /// The epoch at which this pool became active.
   public var stakingPoolActivationEpoch: MySoKit.UInt53Apollo? { __data["stakingPoolActivationEpoch"] }
-  /// The total number of SUI tokens in this pool.
-  public var stakingPoolSuiBalance: MySoKit.BigIntApollo? { __data["stakingPoolSuiBalance"] }
+  /// The total number of MYS tokens in this pool.
+  public var stakingPoolMySoBalance: MySoKit.BigIntApollo? { __data["stakingPoolMysBalance"] }
   /// The validator's address.
   public var address: Address { __data["address"] }
   /// The voting power of this validator in basis points (e.g., 100 = 1% voting power).
@@ -111,14 +111,14 @@ public struct RPC_VALIDATOR_FIELDS: MySoKit.SelectionSet, Fragment {
     public static var __selections: [ApolloAPI.Selection] { [
       .field("__typename", String.self),
       .field("contents", Contents?.self),
-      .field("address", MySoKit.SuiAddressApollo.self)
+      .field("address", MySoKit.MySoAddressApollo.self)
     ] }
 
     /// Displays the contents of the Move object in a JSON string and through GraphQL types. Also
     /// provides the flat representation of the type signature, and the BCS of the corresponding
     /// data.
     public var contents: Contents? { __data["contents"] }
-    public var address: MySoKit.SuiAddressApollo { __data["address"] }
+    public var address: MySoKit.MySoAddressApollo { __data["address"] }
 
     /// ExchangeRates.Contents
     ///
@@ -219,10 +219,10 @@ public struct RPC_VALIDATOR_FIELDS: MySoKit.SelectionSet, Fragment {
     public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.MoveObject }
     public static var __selections: [ApolloAPI.Selection] { [
       .field("__typename", String.self),
-      .field("address", MySoKit.SuiAddressApollo.self)
+      .field("address", MySoKit.MySoAddressApollo.self)
     ] }
 
-    public var address: MySoKit.SuiAddressApollo { __data["address"] }
+    public var address: MySoKit.MySoAddressApollo { __data["address"] }
   }
 
   /// StakingPool
@@ -235,10 +235,10 @@ public struct RPC_VALIDATOR_FIELDS: MySoKit.SelectionSet, Fragment {
     public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.MoveObject }
     public static var __selections: [ApolloAPI.Selection] { [
       .field("__typename", String.self),
-      .field("address", MySoKit.SuiAddressApollo.self)
+      .field("address", MySoKit.MySoAddressApollo.self)
     ] }
 
-    public var address: MySoKit.SuiAddressApollo { __data["address"] }
+    public var address: MySoKit.MySoAddressApollo { __data["address"] }
   }
 
   /// Address
@@ -251,9 +251,9 @@ public struct RPC_VALIDATOR_FIELDS: MySoKit.SelectionSet, Fragment {
     public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.Address }
     public static var __selections: [ApolloAPI.Selection] { [
       .field("__typename", String.self),
-      .field("address", MySoKit.SuiAddressApollo.self)
+      .field("address", MySoKit.MySoAddressApollo.self)
     ] }
 
-    public var address: MySoKit.SuiAddressApollo { __data["address"] }
+    public var address: MySoKit.MySoAddressApollo { __data["address"] }
   }
 }

@@ -53,7 +53,7 @@ final class DevInspectTest: XCTestCase {
     }
 
     private func validateDevInspectTransaction(
-        _ client: SuiProvider,
+        _ client: MySoProvider,
         _ signer: Account,
         _ transactionBlock: inout TransactionBlock,
         _ status: ExecutionStatusType
@@ -74,7 +74,7 @@ final class DevInspectTest: XCTestCase {
         let coin = try txBlock.splitCoin(coin: txBlock.gas, amounts: [txBlock.pure(value: .number(10))])
         _ = try txBlock.transferObject(
             objects: [coin],
-            address: try toolBox.account.publicKey.toSuiAddress()
+            address: try toolBox.account.publicKey.toMySoAddress()
         )
         try await self.validateDevInspectTransaction(
             toolBox.client,
@@ -93,12 +93,12 @@ final class DevInspectTest: XCTestCase {
         let obj = try tx.moveCall(
             target: "\(try self.fetchPackageId())::serializer_tests::return_struct",
             arguments: [.input(tx.pure(value: .string(coin0.coinObjectId)))],
-            typeArguments: ["0x2::coin::Coin<0x2::sui::SUI>"]
+            typeArguments: ["0x2::coin::Coin<0x2::mys::MYS>"]
         )
 
         _ = try tx.transferObject(
             objects: [obj[0]],
-            address: try toolBox.account.publicKey.toSuiAddress()
+            address: try toolBox.account.publicKey.toMySoAddress()
         )
 
         try await self.validateDevInspectTransaction(

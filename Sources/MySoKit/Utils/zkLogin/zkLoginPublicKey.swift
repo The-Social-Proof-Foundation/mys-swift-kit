@@ -104,7 +104,7 @@ public struct zkLoginPublicIdentifier: PublicKeyProtocol {
     }
 
     public func toBase58() throws -> String {
-        return try toSuiBytes().toBase58String()
+        return try toMySoBytes().toBase58String()
     }
 
     public static func fromBase58(_ base58: String) throws -> zkLoginPublicIdentifier {
@@ -118,27 +118,27 @@ public struct zkLoginPublicIdentifier: PublicKeyProtocol {
         return try zkLoginPublicIdentifier(data: Data(data.dropFirst()))
     }
 
-    public func toSuiAddress() throws -> String {
-        return try Inputs.normalizeSuiAddress(
+    public func toMySoAddress() throws -> String {
+        return try Inputs.normalizeMySoAddress(
             value: try Blake2b.hash(
                 size: 32,
-                data: Data(try self.toSuiBytes())
+                data: Data(try self.toMySoBytes())
             ).hexEncodedString()[0..<(32 * 2)]
         )
     }
 
-    /// Converts the public key to a Sui address.
+    /// Converts the public key to a MySo address.
     /// - Throws: If any error occurs during conversion.
-    /// - Returns: A string representing the Sui address.
-    public func toSuiPublicKey() throws -> String {
-        let bytes = try self.toSuiBytes()
+    /// - Returns: A string representing the MySo address.
+    public func toMySoPublicKey() throws -> String {
+        let bytes = try self.toMySoBytes()
         return bytes.toBase64()
     }
 
-    /// Converts the public key to Sui bytes.
+    /// Converts the public key to MySo bytes.
     /// - Throws: If any error occurs during conversion.
-    /// - Returns: An array of bytes representing the Sui public key.
-    public func toSuiBytes() throws -> [UInt8] {
+    /// - Returns: An array of bytes representing the MySo public key.
+    public func toMySoBytes() throws -> [UInt8] {
         // Create a data structure with the format [flag_byte] + [zkLogin_identifier_bytes]
         var result = [UInt8]()
         result.append(SignatureSchemeFlags.SIGNATURE_SCHEME_TO_FLAG["zkLogin"]!)
@@ -152,7 +152,7 @@ public struct zkLoginPublicIdentifier: PublicKeyProtocol {
     /// Verifies that the signature is valid for the provided transaction data
     public func verifyTransaction(transactionData: [UInt8], signature: zkLoginSignature) async throws -> Bool {
         guard let client = self.client else {
-            throw SuiError.customError(message: "GraphQL client not provided for verification")
+            throw MySoError.customError(message: "GraphQL client not provided for verification")
         }
 
         // Get the address from the signature components
@@ -180,7 +180,7 @@ public struct zkLoginPublicIdentifier: PublicKeyProtocol {
     /// Verifies that the signature is valid for the provided personal message
     public func verifyPersonalMessage(message: [UInt8], signature: zkLoginSignature) async throws -> Bool {
         guard let client = self.client else {
-            throw SuiError.customError(message: "GraphQL client not provided for verification")
+            throw MySoError.customError(message: "GraphQL client not provided for verification")
         }
 
         // Get the address from the signature components  
@@ -219,27 +219,27 @@ public struct zkLoginPublicIdentifier: PublicKeyProtocol {
             client: self.client
         )
 
-        return try publicKey.toSuiAddress()
+        return try publicKey.toMySoAddress()
     }
 
     public func verify(data: Data, signature: Signature) throws -> Bool {
-        throw SuiError.customError(message: "Not implemented")
+        throw MySoError.customError(message: "Not implemented")
     }
 
     public func toSerializedSignature(signature: Signature) throws -> String {
-        throw SuiError.customError(message: "Not implemented")
+        throw MySoError.customError(message: "Not implemented")
     }
 
     public func verifyTransactionBlock(_ transactionBlock: [UInt8], _ signature: Signature) throws -> Bool {
-        throw SuiError.customError(message: "Not implemented")
+        throw MySoError.customError(message: "Not implemented")
     }
 
     public func verifyWithIntent(_ bytes: [UInt8], _ signature: Signature, _ intent: IntentScope) throws -> Bool {
-        throw SuiError.customError(message: "Not implemented")
+        throw MySoError.customError(message: "Not implemented")
     }
 
     public func verifyPersonalMessage(_ message: [UInt8], _ signature: Signature) throws -> Bool {
-        throw SuiError.customError(message: "Not implemented")
+        throw MySoError.customError(message: "Not implemented")
     }
 
     public static func deserialize(from deserializer: Deserializer) throws -> zkLoginPublicIdentifier {
@@ -261,14 +261,14 @@ public struct zkLoginPublicIdentifier: PublicKeyProtocol {
 
 /// Provides functionality for generating zkLogin public keys and addresses
 public struct zkLoginPublicKey {
-    /// Generates a Sui address from zkLogin credentials
+    /// Generates a MySo address from zkLogin credentials
     /// - Parameters:
     ///   - keyClaimName: The name of the key claim (typically "sub")
     ///   - keyClaimValue: The value of the key claim (typically the user ID)
     ///   - issuer: The issuer of the JWT 
     ///   - audience: The audience value from the JWT
     ///   - userSalt: The user's salt value
-    /// - Returns: A Sui address derived from the zkLogin credentials
+    /// - Returns: A MySo address derived from the zkLogin credentials
     public static func deriveAddress(
         keyClaimName: String,
         keyClaimValue: String,

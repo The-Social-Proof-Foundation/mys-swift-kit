@@ -42,7 +42,7 @@ struct HomeView: View {
 
     var body: some View {
         VStack {
-            Image("suiLogo")
+            Image("mysoLogo")
                 .resizable()
                 .scaledToFit()
                 .frame(width: UIScreen.main.bounds.width - 200)
@@ -105,7 +105,7 @@ struct HomeView: View {
                 .padding(.top, 40)
                 .padding(.horizontal)
 
-                Text("Current Wallet Balance: \(self.currentWalletBalance) SUI")
+                Text("Current Wallet Balance: \(self.currentWalletBalance) MySo")
                     .padding(.top)
             } else {
                 Text("Generate or Import a wallet")

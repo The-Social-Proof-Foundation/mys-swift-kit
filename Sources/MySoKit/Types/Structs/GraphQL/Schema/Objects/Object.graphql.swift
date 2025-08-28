@@ -4,7 +4,7 @@
 import ApolloAPI
 
 public extension Objects {
-  /// An object in Sui is a package (set of Move bytecode modules) or object (typed data structure
+  /// An object in MySo is a package (set of Move bytecode modules) or object (typed data structure
   /// with fields) with additional metadata detailing its id, version, transaction digest, owner
   /// field indicating how this object can be accessed.
   static let Object = ApolloAPI.Object(

@@ -32,9 +32,9 @@ public struct ObjectsToResolve {
     /// A `TransactionBlockInput` instance representing the input associated with the object.
     var input: TransactionBlockInput
 
-    /// An optional `SuiMoveNormalizedType` representing the normalized type of the object.
+    /// An optional `MySoMoveNormalizedType` representing the normalized type of the object.
     /// It is `nil` if the normalized type is not defined or available.
-    let normalizedType: SuiMoveNormalizedType?
+    let normalizedType: MySoMoveNormalizedType?
 
     /// Initializes a new instance of `ObjectsToResolve`.
     ///
@@ -42,7 +42,7 @@ public struct ObjectsToResolve {
     ///   - id: The unique identifier for the object.
     ///   - input: The `TransactionBlockInput` associated with the object.
     ///   - normalizedType: The normalized type of the object. Defaults to `nil`.
-    public init(id: String, input: TransactionBlockInput, normalizedType: SuiMoveNormalizedType? = nil) {
+    public init(id: String, input: TransactionBlockInput, normalizedType: MySoMoveNormalizedType? = nil) {
         self.id = id
         self.input = input
         self.normalizedType = normalizedType

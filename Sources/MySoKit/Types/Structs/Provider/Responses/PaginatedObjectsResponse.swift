@@ -25,13 +25,13 @@
 
 import Foundation
 
-/// Represents a paginated response containing a list of `SuiObjectResponse` instances,
-/// which may represent objects retrieved from the Sui blockchain, along with
+/// Represents a paginated response containing a list of `MySoObjectResponse` instances,
+/// which may represent objects retrieved from the MySocial blockchain, along with
 /// pagination information.
 public struct PaginatedObjectsResponse {
-    /// An array of `SuiObjectResponse` instances, each representing the response
+    /// An array of `MySoObjectResponse` instances, each representing the response
     /// for a specific object, possibly containing object data or errors.
-    public var data: [SuiObjectResponse]
+    public var data: [MySoObjectResponse]
 
     /// A Boolean value indicating whether there are more pages of objects available to be retrieved.
     /// `true` if there are more pages available, otherwise `false`.
@@ -44,7 +44,7 @@ public struct PaginatedObjectsResponse {
     /// Page info object for the given Object Response page.
     public var pageInfo: PageInfo?
 
-    public init(data: [SuiObjectResponse], pageInfo: PageInfo? = nil, hasNextPage: Bool? = nil, nextCursor: String? = nil) {
+    public init(data: [MySoObjectResponse], pageInfo: PageInfo? = nil, hasNextPage: Bool? = nil, nextCursor: String? = nil) {
         self.data = data
         self.hasNextPage = hasNextPage
         self.nextCursor = nextCursor

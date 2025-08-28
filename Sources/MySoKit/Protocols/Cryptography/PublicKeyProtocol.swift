@@ -53,10 +53,10 @@ public protocol PublicKeyProtocol: KeyProtocol, CustomStringConvertible, Hashabl
     /// - Throws: An error of type invalidSignature if the signature is invalid or an error occurred during verification.
     func verify(data: Data, signature: Signature) throws -> Bool
 
-    /// Converts the public key to a Sui address.
+    /// Converts the public key to a MySo address.
     /// - Throws: If any error occurs during conversion.
-    /// - Returns: A string representing the Sui address.
-    func toSuiAddress() throws -> String
+    /// - Returns: A string representing the MySo address.
+    func toMySoAddress() throws -> String
 
     /// Serializes the signature along with the public key.
     /// - Parameter signature: The signature to serialize.
@@ -89,5 +89,5 @@ public protocol PublicKeyProtocol: KeyProtocol, CustomStringConvertible, Hashabl
     /// - Returns: `true` if the verification is successful, otherwise `false`.
     func verifyPersonalMessage(_ message: [UInt8], _ signature: Signature) throws -> Bool
 
-    func toSuiBytes() throws -> [UInt8]
+    func toMySoBytes() throws -> [UInt8]
 }

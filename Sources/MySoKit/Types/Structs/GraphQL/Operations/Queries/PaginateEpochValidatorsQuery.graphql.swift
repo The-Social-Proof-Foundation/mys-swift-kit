@@ -131,7 +131,7 @@ public class PaginateEpochValidatorsQuery: GraphQLQuery {
             /// Number of exchange rates in the table.
             public var exchangeRatesSize: MySoKit.UInt53Apollo? { __data["exchangeRatesSize"] }
             /// The validator's current exchange object. The exchange rate is used to determine
-            /// the amount of SUI tokens that each past SUI staker can withdraw in the future.
+            /// the amount of MYS tokens that each past MYS staker can withdraw in the future.
             @available(*, deprecated, message: "The exchange object is a wrapped object. Access its dynamic fields through the `exchangeRatesTable` query.")
             public var exchangeRates: ExchangeRates? { __data["exchangeRates"] }
             /// Validator's description.
@@ -150,7 +150,7 @@ public class PaginateEpochValidatorsQuery: GraphQLQuery {
             public var nextEpochGasPrice: MySoKit.BigIntApollo? { __data["nextEpochGasPrice"] }
             /// Validator's set of credentials for the next epoch.
             public var nextEpochCredentials: NextEpochCredentials? { __data["nextEpochCredentials"] }
-            /// The total number of SUI tokens in this pool plus
+            /// The total number of MYS tokens in this pool plus
             /// the pending stake amount for this epoch.
             public var nextEpochStake: MySoKit.BigIntApollo? { __data["nextEpochStake"] }
             /// The validator's current valid `Cap` object. Validators can delegate
@@ -162,7 +162,7 @@ public class PaginateEpochValidatorsQuery: GraphQLQuery {
             /// Pending stake amount for this epoch.
             public var pendingStake: MySoKit.BigIntApollo? { __data["pendingStake"] }
             /// Pending stake withdrawn during the current epoch, emptied at epoch boundaries.
-            public var pendingTotalSuiWithdraw: MySoKit.BigIntApollo? { __data["pendingTotalSuiWithdraw"] }
+            public var pendingTotalMySoWithdraw: MySoKit.BigIntApollo? { __data["pendingTotalMysWithdraw"] }
             /// Total number of pool tokens issued by the pool.
             public var poolTokenBalance: MySoKit.BigIntApollo? { __data["poolTokenBalance"] }
             /// Validator's homepage URL.
@@ -175,8 +175,8 @@ public class PaginateEpochValidatorsQuery: GraphQLQuery {
             public var stakingPool: StakingPool? { __data["stakingPool"] }
             /// The epoch at which this pool became active.
             public var stakingPoolActivationEpoch: MySoKit.UInt53Apollo? { __data["stakingPoolActivationEpoch"] }
-            /// The total number of SUI tokens in this pool.
-            public var stakingPoolSuiBalance: MySoKit.BigIntApollo? { __data["stakingPoolSuiBalance"] }
+            /// The total number of MYS tokens in this pool.
+            public var stakingPoolMySoBalance: MySoKit.BigIntApollo? { __data["stakingPoolMysBalance"] }
             /// The validator's address.
             public var address: Address { __data["address"] }
             /// The voting power of this validator in basis points (e.g., 100 = 1% voting power).

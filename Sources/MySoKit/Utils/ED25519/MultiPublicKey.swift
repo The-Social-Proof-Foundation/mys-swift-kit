@@ -82,7 +82,7 @@ public struct MultiPublicKey: EncodingProtocol, CustomStringConvertible, Equatab
     ///
     /// - Returns: A MultiPublicKey instance initialized with the deserialized keys and threshold.
     ///
-    /// - Throws: An SuiError object indicating that the given Data object is invalid or cannot be deserialized to a MultiPublicKey instance.
+    /// - Throws: An MySoError object indicating that the given Data object is invalid or cannot be deserialized to a MultiPublicKey instance.
     public static func fromBytes(_ key: Data) throws -> MultiPublicKey {
         let minKeys = MultiPublicKey.minKeys
         let maxKeys = MultiPublicKey.maxKeys

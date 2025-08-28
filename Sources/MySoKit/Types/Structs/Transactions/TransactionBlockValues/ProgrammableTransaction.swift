@@ -30,17 +30,17 @@ public struct ProgrammableTransaction: KeyProtocol {
     /// Array representing the inputs of the programmable transaction.
     public let inputs: [Input]
 
-    /// Array containing the `SuiTransaction` instances associated with the programmable transaction.
-    public let transactions: [SuiTransaction]
+    /// Array containing the `MySoTransaction` instances associated with the programmable transaction.
+    public let transactions: [MySoTransaction]
 
-    public init(inputs: [Input], transactions: [SuiTransaction]) {
+    public init(inputs: [Input], transactions: [MySoTransaction]) {
         self.inputs = inputs
         self.transactions = transactions
     }
 
     public init(input: JSON) {
         self.inputs = input["inputs"].arrayValue.compactMap { Input(input: $0) }
-        self.transactions = input["transactions"].arrayValue.compactMap { SuiTransaction.fromJSON($0) }
+        self.transactions = input["transactions"].arrayValue.compactMap { MySoTransaction.fromJSON($0) }
     }
 
     public func serialize(_ serializer: Serializer) throws {
@@ -50,7 +50,7 @@ public struct ProgrammableTransaction: KeyProtocol {
 
     public static func deserialize(from deserializer: Deserializer) throws -> ProgrammableTransaction {
         let inputs: [Input] = try deserializer.sequence(valueDecoder: Deserializer._struct)
-        let transactions: [SuiTransaction] = try deserializer.sequence(valueDecoder: Deserializer._struct)
+        let transactions: [MySoTransaction] = try deserializer.sequence(valueDecoder: Deserializer._struct)
         return ProgrammableTransaction(
             inputs: inputs,
             transactions: transactions

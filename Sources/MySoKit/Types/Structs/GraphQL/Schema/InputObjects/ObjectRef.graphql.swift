@@ -11,7 +11,7 @@ public struct ObjectRef: InputObject {
   }
 
   public init(
-    address: SuiAddressApollo,
+    address: MySoAddressApollo,
     version: UInt53Apollo,
     digest: String
   ) {
@@ -23,7 +23,7 @@ public struct ObjectRef: InputObject {
   }
 
   /// ID of the object.
-  public var address: SuiAddressApollo {
+  public var address: MySoAddressApollo {
     get { __data["address"] }
     set { __data["address"] = newValue }
   }

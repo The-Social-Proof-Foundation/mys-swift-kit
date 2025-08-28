@@ -29,10 +29,10 @@ import BigInt
 import SwiftyJSON
 
 /// `RawSigner` is a struct that conforms to the `SignerWithProviderProtocol`.
-/// It provides mechanisms to interact with the Sui blockchain, sign data, and handle transaction blocks.
+/// It provides mechanisms to interact with the MySocial blockchain, sign data, and handle transaction blocks.
 public struct RawSigner: SignerWithProviderProtocol {
-    /// A `SuiProvider` instance, providing various blockchain-related services.
-    public var provider: SuiProvider
+    /// A `MySoProvider` instance, providing various blockchain-related services.
+    public var provider: MySoProvider
 
     /// An instance of `FaucetClient`, used for interacting with a blockchain faucet.
     public var faucetProvider: FaucetClient
@@ -40,7 +40,7 @@ public struct RawSigner: SignerWithProviderProtocol {
     /// Represents a user's blockchain account, containing public and private keys.
     public var account: Account
 
-    public init(account: Account, provider: SuiProvider) {
+    public init(account: Account, provider: MySoProvider) {
         self.provider = provider
         self.faucetProvider = FaucetClient(connection: provider.connection)
         self.account = account
@@ -50,7 +50,7 @@ public struct RawSigner: SignerWithProviderProtocol {
     /// - Returns: The blockchain address as a `String`.
     /// - Throws: An error if address retrieval fails.
     public func getAddress() throws -> String {
-        return try account.publicKey.toSuiAddress()
+        return try account.publicKey.toMySoAddress()
     }
 
     /// Signs the provided data with the account's private key.
@@ -65,11 +65,11 @@ public struct RawSigner: SignerWithProviderProtocol {
         return try Self.toSerializedSignature(signature, signatureScheme, pubKey)
     }
 
-    /// Requests Sui from a faucet for the given address.
+    /// Requests MySo from a faucet for the given address.
     /// - Parameter address: The blockchain address as a `String`.
     /// - Returns: An instance of `FaucetCoins` containing the details of the acquired coins.
     /// - Throws: An error if the request fails.
-    public func requestSuiFromFaucet(_ address: String) async throws -> FaucetCoins {
+    public func requestMySoFromFaucet(_ address: String) async throws -> FaucetCoins {
         try await self.faucetProvider.funcAccount(address)
     }
 
@@ -109,15 +109,15 @@ public struct RawSigner: SignerWithProviderProtocol {
     /// Signs and executes a transaction block.
     /// - Parameters:
     ///   - transactionBlock: The `TransactionBlock` instance to be signed and executed.
-    ///   - options: Optional `SuiTransactionBlockResponseOptions` instance.
-    ///   - requestType: Optional `SuiRequestType` instance.
-    /// - Returns: An instance of `SuiTransactionBlockResponse` representing the response to the transaction block execution.
+    ///   - options: Optional `MySoTransactionBlockResponseOptions` instance.
+    ///   - requestType: Optional `MySoRequestType` instance.
+    /// - Returns: An instance of `MySoTransactionBlockResponse` representing the response to the transaction block execution.
     /// - Throws: An error if the transaction block execution fails.
     public func signAndExecuteTransactionBlock(
         _ transactionBlock: inout TransactionBlock,
-        _ options: SuiTransactionBlockResponseOptions? = nil,
-        _ requestType: SuiRequestType? = nil
-    ) async throws -> SuiTransactionBlockResponse {
+        _ options: MySoTransactionBlockResponseOptions? = nil,
+        _ requestType: MySoRequestType? = nil
+    ) async throws -> MySoTransactionBlockResponse {
         let signedTxBlock = try await self.signTransactionBlock(transactionBlock: &transactionBlock)
         return try await self.provider.executeTransactionBlock(
             transactionBlock: signedTxBlock.transactionBlockBytes,
@@ -138,7 +138,7 @@ public struct RawSigner: SignerWithProviderProtocol {
 
     /// Dry-runs a transaction block and returns the response.
     /// - Parameter transactionBlock: The `TransactionBlock` instance to be dry-run.
-    /// - Returns: An instance of `SuiTransactionBlockResponse` representing the response to the dry-run.
+    /// - Returns: An instance of `MySoTransactionBlockResponse` representing the response to the dry-run.
     /// - Throws: An error if the dry-run fails.
     public func getTransactionBlockDigest(_ tx: inout Data) throws -> String {
         return try TransactionBlockDataBuilder.getDigestFromBytes(bytes: tx)
@@ -146,9 +146,9 @@ public struct RawSigner: SignerWithProviderProtocol {
 
     /// Performs a dry-run of the provided transaction block.
     /// - Parameter transactionBlock: A reference to a `TransactionBlock` instance to be dry-run.
-    /// - Returns: A `SuiTransactionBlockResponse` instance representing the response of the dry-run.
+    /// - Returns: A `MySoTransactionBlockResponse` instance representing the response of the dry-run.
     /// - Throws: An error if the dry-run process fails.
-    public func dryRunTransactionBlock(_ transactionBlock: inout TransactionBlock) async throws -> SuiTransactionBlockResponse {
+    public func dryRunTransactionBlock(_ transactionBlock: inout TransactionBlock) async throws -> MySoTransactionBlockResponse {
         try transactionBlock.setSenderIfNotSet(sender: try self.getAddress())
         let dryRunTxBytes = try await transactionBlock.build(self.provider)
         return try await self.provider.dryRunTransactionBlock(transactionBlock: [UInt8](dryRunTxBytes))
@@ -156,18 +156,18 @@ public struct RawSigner: SignerWithProviderProtocol {
 
     /// Performs a dry-run of the provided transaction block.
     /// - Parameter transactionBlock: A `String` representing the base64-encoded transaction block to be dry-run.
-    /// - Returns: A `SuiTransactionBlockResponse` instance representing the response of the dry-run.
+    /// - Returns: A `MySoTransactionBlockResponse` instance representing the response of the dry-run.
     /// - Throws: An error if the dry-run process fails or if the input string is not valid base64.
-    public func dryRunTransactionBlock(_ transactionBlock: String) async throws -> SuiTransactionBlockResponse {
-        guard let dryRunTxBytes = Data.fromBase64(transactionBlock) else { throw SuiError.customError(message: "Failed data") }
+    public func dryRunTransactionBlock(_ transactionBlock: String) async throws -> MySoTransactionBlockResponse {
+        guard let dryRunTxBytes = Data.fromBase64(transactionBlock) else { throw MySoError.customError(message: "Failed data") }
         return try await self.provider.dryRunTransactionBlock(transactionBlock: [UInt8](dryRunTxBytes))
     }
 
     /// Performs a dry-run of the provided transaction block.
     /// - Parameter transactionBlock: A `Data` instance representing the transaction block to be dry-run.
-    /// - Returns: A `SuiTransactionBlockResponse` instance representing the response of the dry-run.
+    /// - Returns: A `MySoTransactionBlockResponse` instance representing the response of the dry-run.
     /// - Throws: An error if the dry-run process fails.
-    public func dryRunTransactionBlock(_ transactionBlock: Data) async throws -> SuiTransactionBlockResponse {
+    public func dryRunTransactionBlock(_ transactionBlock: Data) async throws -> MySoTransactionBlockResponse {
         return try await self.provider.dryRunTransactionBlock(transactionBlock: [UInt8](transactionBlock))
     }
 
@@ -177,7 +177,7 @@ public struct RawSigner: SignerWithProviderProtocol {
     /// - Parameter scope: An `IntentScope` instance defining the scope of the intent.
     /// - Returns: An `Intent` instance representing the generated intent.
     public static func intentWithScope(_ scope: IntentScope) -> Intent {
-        return (scope, .V0, .Sui)
+        return (scope, .V0, .MySo)
     }
 
     /// Converts the provided `Intent` to an array of `UInt8`.
@@ -217,9 +217,9 @@ public struct RawSigner: SignerWithProviderProtocol {
         _ signatureScheme: KeyType,
         _ pubKey: String
     ) throws -> String {
-        guard let pubKeyData = Data(base64Encoded: pubKey) else { throw SuiError.customError(message: "Failed data") }
+        guard let pubKeyData = Data(base64Encoded: pubKey) else { throw MySoError.customError(message: "Failed data") }
         guard let encryptionType = SignatureSchemeFlags.SIGNATURE_SCHEME_TO_FLAG[signatureScheme.rawValue] else {
-            throw SuiError.customError(message: "Cannot find signature type for \(signatureScheme.rawValue)")
+            throw MySoError.customError(message: "Cannot find signature type for \(signatureScheme.rawValue)")
         }
         var serializedSignature = Data(count: signature.signature.count + pubKeyData.count)
         serializedSignature[0] = encryptionType

@@ -28,8 +28,8 @@ import XCTest
 @testable import MySoKit
 
 final class BCSTest: XCTestCase {
-    private func ref() -> SuiObjectRef {
-        return SuiObjectRef(
+    private func ref() -> MySoObjectRef {
+        return MySoObjectRef(
             objectId: "1000000000000000000000000000000000000000000000000000000000000000",
             version: "10000",
             digest: ([UInt8]([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9])).base58EncodedString
@@ -66,7 +66,7 @@ final class BCSTest: XCTestCase {
         try serArguments.sequence(["name", "description", "img_url"], Serializer.str)
         try Serializer._struct(serAccount, value: AccountAddress.fromHex(self.ref().objectId))
 
-        let sui = try Inputs.normalizeSuiAddress(value: "0x2").replacingOccurrences(of: "0x", with: "")
+        let myso = try Inputs.normalizeMySoAddress(value: "0x2").replacingOccurrences(of: "0x", with: "")
         let values = serValue.output()
         let arguments = serArguments.output()
         let account = serAccount.output()
@@ -90,8 +90,8 @@ final class BCSTest: XCTestCase {
                     transactions: [
                         .moveCall(
                             try MoveCallTransaction(
-                                target: "\(sui)::display::new",
-                                typeArguments: ["\(sui)::capy::Capy"],
+                                target: "\(myso)::display::new",
+                                typeArguments: ["\(myso)::capy::Capy"],
                                 arguments: [
                                     // publisher object
                                     .input(TransactionBlockInput(index: 0))
@@ -100,8 +100,8 @@ final class BCSTest: XCTestCase {
                         ),
                         .moveCall(
                             try MoveCallTransaction(
-                                target: "\(sui)::display::add_multiple",
-                                typeArguments: ["\(sui)::capy::Capy"],
+                                target: "\(myso)::display::add_multiple",
+                                typeArguments: ["\(myso)::capy::Capy"],
                                 arguments: [
                                     // result of the first transaction
                                     .result(Result(index: 0)),
@@ -114,8 +114,8 @@ final class BCSTest: XCTestCase {
                         ),
                         .moveCall(
                             try MoveCallTransaction(
-                                target: "\(sui)::display::update_version",
-                                typeArguments: ["\(sui)::capy::Capy"],
+                                target: "\(myso)::display::update_version",
+                                typeArguments: ["\(myso)::capy::Capy"],
                                 arguments: [
                                     // result of the first transaction again
                                     .result(Result(index: 0))
@@ -135,8 +135,8 @@ final class BCSTest: XCTestCase {
                     ]
                 )
             ),
-            sender: try AccountAddress.fromHex(try Inputs.normalizeSuiAddress(value: "0xBAD")),
-            gasData: SuiGasData(payment: [self.ref()], owner: sui, price: "1", budget: "1000000"),
+            sender: try AccountAddress.fromHex(try Inputs.normalizeMySoAddress(value: "0xBAD")),
+            gasData: MySoGasData(payment: [self.ref()], owner: myso, price: "1", budget: "1000000"),
             expiration: .none
         ))
 

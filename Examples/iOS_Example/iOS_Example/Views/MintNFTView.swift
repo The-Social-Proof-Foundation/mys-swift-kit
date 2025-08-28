@@ -29,8 +29,8 @@ struct MintNFTView: View {
     @ObservedObject var viewModel: HomeViewModel
 
     @State private var objectId: String = "0xf0048471654fd5cad2e9c0db7243fc5094693153802bec6dcf49e255ec29a6a1"
-    @State private var tokenName: String = "SuiTestingCollectionNFT"
-    @State private var tokenDescription: String = "SuiTestingCollection"
+    @State private var tokenName: String = "MySoTestingCollectionNFT"
+    @State private var tokenDescription: String = "MySoTestingCollection"
     @State private var supply: String = "100"
     @State private var tokenURL: String = "https://assets-global.website-files.com/6425f546844727ce5fb9e5ab/6439ab96e20cad137a4c80d0_TopNavLogo.svg"
 
@@ -44,7 +44,7 @@ struct MintNFTView: View {
 
     var body: some View {
         VStack {
-            Image("suiLogo")
+            Image("mysoLogo")
                 .resizable()
                 .scaledToFit()
                 .frame(width: UIScreen.main.bounds.width - 200)

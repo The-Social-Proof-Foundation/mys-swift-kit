@@ -50,7 +50,7 @@ public struct PureCallArg: KeyProtocol {
     /// - Parameter input: A JSON object containing the required data.
     /// - Returns: An optional `PureCallArg`. Will be `nil` if any of the required fields are missing or invalid in the JSON object.
     public init?(input: JSON) {
-        guard let value = SuiJsonValue.fromJSON(input["value"]) else { return nil }
+        guard let value = MySoJsonValue.fromJSON(input["value"]) else { return nil }
         let ser = Serializer()
         guard (try? Serializer._struct(ser, value: value)) != nil else { return nil }
         self.value = [UInt8](ser.output())

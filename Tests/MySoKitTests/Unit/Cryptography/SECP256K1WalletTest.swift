@@ -142,7 +142,7 @@ final class SECP256K1WalletTest: XCTestCase {
     func testThatCreatingSecp256k1AccountFromSecretKeyAndMnemonicsMatchesTheTestCases() throws {
         for testCase in self.testCases {
             let account = try Account(testCase[0], accountType: .secp256k1)
-            XCTAssertEqual(try account.publicKey.toSuiAddress(), testCase[2])
+            XCTAssertEqual(try account.publicKey.toMySoAddress(), testCase[2])
 
             guard let raw = Data.fromBase64(testCase[1]) else {
                 XCTFail("Failed to decrypt raw Base64 String")
@@ -155,7 +155,7 @@ final class SECP256K1WalletTest: XCTestCase {
             }
 
             let imported = try Account(privateKey: raw.dropFirst(), accountType: .secp256k1)
-            XCTAssertEqual(try imported.publicKey.toSuiAddress(), testCase[2])
+            XCTAssertEqual(try imported.publicKey.toMySoAddress(), testCase[2])
 
             let exported = try imported.export()
             let exportedAccount = try account.export()
@@ -167,14 +167,14 @@ final class SECP256K1WalletTest: XCTestCase {
     func testThatSigningTransactionBlocksWillWorkForSecp256k1Keys() async throws {
         let account = try Account(accountType: .secp256k1)
         let txBlock = try TransactionBlock()
-        let provider = SuiProvider(connection: DevnetConnection())
+        let provider = MySoProvider(connection: DevnetConnection())
 
-        try txBlock.setSender(sender: try account.publicKey.toSuiAddress())
+        try txBlock.setSender(sender: try account.publicKey.toMySoAddress())
         txBlock.setGasPrice(price: 5)
         txBlock.setGasBudget(price: 100)
         let digest: [UInt8] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
         try txBlock.setGasPayment(payments: [
-            SuiObjectRef(
+            MySoObjectRef(
                 objectId: String(
                     format: "%.0f",
                     Double.random(in: 0..<100000)

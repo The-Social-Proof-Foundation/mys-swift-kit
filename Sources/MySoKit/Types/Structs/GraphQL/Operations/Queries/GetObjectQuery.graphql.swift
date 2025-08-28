@@ -7,11 +7,11 @@ public class GetObjectQuery: GraphQLQuery {
   public static let operationName: String = "getObject"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query getObject($id: SuiAddress!, $showBcs: Boolean = false, $showOwner: Boolean = false, $showPreviousTransaction: Boolean = false, $showContent: Boolean = false, $showDisplay: Boolean = false, $showType: Boolean = false, $showStorageRebate: Boolean = false) { object(address: $id) { __typename ...RPC_OBJECT_FIELDS } }"#,
+      #"query getObject($id: MysAddress!, $showBcs: Boolean = false, $showOwner: Boolean = false, $showPreviousTransaction: Boolean = false, $showContent: Boolean = false, $showDisplay: Boolean = false, $showType: Boolean = false, $showStorageRebate: Boolean = false) { object(address: $id) { __typename ...RPC_OBJECT_FIELDS } }"#,
       fragments: [RPC_OBJECT_FIELDS.self, RPC_OBJECT_OWNER_FIELDS.self]
     ))
 
-  public var id: SuiAddressApollo
+  public var id: MySoAddressApollo
   public var showBcs: GraphQLNullable<Bool>
   public var showOwner: GraphQLNullable<Bool>
   public var showPreviousTransaction: GraphQLNullable<Bool>
@@ -21,7 +21,7 @@ public class GetObjectQuery: GraphQLQuery {
   public var showStorageRebate: GraphQLNullable<Bool>
 
   public init(
-    id: SuiAddressApollo,
+    id: MySoAddressApollo,
     showBcs: GraphQLNullable<Bool> = false,
     showOwner: GraphQLNullable<Bool> = false,
     showPreviousTransaction: GraphQLNullable<Bool> = false,
@@ -77,7 +77,7 @@ public class GetObjectQuery: GraphQLQuery {
         .fragment(RPC_OBJECT_FIELDS.self)
       ] }
 
-      public var objectId: MySoKit.SuiAddressApollo { __data["objectId"] }
+      public var objectId: MySoKit.MySoAddressApollo { __data["objectId"] }
       public var version: MySoKit.UInt53Apollo { __data["version"] }
       /// Attempts to convert the object into a MoveObject
       public var asMoveObject: AsMoveObject? { __data["asMoveObject"] }
@@ -86,7 +86,7 @@ public class GetObjectQuery: GraphQLQuery {
       public var owner: Owner? { __data["owner"] }
       /// The transaction block that created this version of the object.
       public var previousTransactionBlock: PreviousTransactionBlock? { __data["previousTransactionBlock"] }
-      /// The amount of SUI we would rebate if this object gets deleted or mutated. This number is
+      /// The amount of MYS we would rebate if this object gets deleted or mutated. This number is
       /// recalculated based on the present storage gas price.
       public var storageRebate: MySoKit.BigIntApollo? { __data["storageRebate"] }
       /// 32-byte hash that identifies the object's current contents, encoded as a Base58 string.

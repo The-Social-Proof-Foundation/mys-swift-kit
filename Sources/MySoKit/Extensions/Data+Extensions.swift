@@ -37,7 +37,7 @@ extension Data {
     /// - Throws: Error if the operation would exceed the data's bounds
     public mutating func set(_ bytes: [UInt8], offset: Int = 0) throws {
         guard offset >= 0 && offset + bytes.count <= self.count else {
-            throw SuiError.customError(message: "Offset out of bounds")
+            throw MySoError.customError(message: "Offset out of bounds")
         }
 
         self.withUnsafeMutableBytes { ptr in

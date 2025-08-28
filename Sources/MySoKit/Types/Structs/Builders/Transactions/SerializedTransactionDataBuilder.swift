@@ -36,13 +36,13 @@ public struct SerializedTransactionDataBuilder: KeyProtocol {
     public var expiration: TransactionExpiration?
 
     /// Holds the configuration for gas in the transaction.
-    public var gasConfig: SuiGasData
+    public var gasConfig: MySoGasData
 
     /// An array of inputs for the transaction block.
     public var inputs: [TransactionBlockInput]
 
     /// An array of transactions.
-    public var transactions: [SuiTransaction]
+    public var transactions: [MySoTransaction]
 
     /// Defines the keys used for encoding and decoding.
     public enum CodingKeys: String, CodingKey {
@@ -59,7 +59,7 @@ public struct SerializedTransactionDataBuilder: KeyProtocol {
     ///   - version: Represents the version of the transaction. Defaults to 1.
     ///   - sender: The account address of the sender of the transaction. Defaults to nil.
     ///   - expiration: Represents the expiration of the transaction. Defaults to `TransactionExpiration.none`.
-    ///   - gasConfig: Holds the configuration for gas in the transaction. Defaults to a new instance of `SuiGasData`.
+    ///   - gasConfig: Holds the configuration for gas in the transaction. Defaults to a new instance of `MySoGasData`.
     ///   - inputs: An array of inputs for the transaction block. Defaults to an empty array.
     ///   - transactions: An array of transactions. Defaults to an empty array.
     /// - Throws: If initialization fails due to invalid parameters.
@@ -67,14 +67,14 @@ public struct SerializedTransactionDataBuilder: KeyProtocol {
         version: UInt8 = 1,
         sender: AccountAddress? = nil,
         expiration: TransactionExpiration? = TransactionExpiration.none,
-        gasConfig: SuiGasData? = nil,
+        gasConfig: MySoGasData? = nil,
         inputs: [TransactionBlockInput] = [],
-        transactions: [SuiTransaction] = []
+        transactions: [MySoTransaction] = []
     ) throws {
         self.version = version
         self.sender = sender
         self.expiration = expiration
-        self.gasConfig = gasConfig ?? SuiGasData()
+        self.gasConfig = gasConfig ?? MySoGasData()
         self.inputs = inputs
         self.transactions = transactions
     }

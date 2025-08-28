@@ -53,12 +53,12 @@ final class ObjectsTest: XCTestCase {
         let gasObjects = try await toolBox.getCoins()
         XCTAssertGreaterThan(gasObjects.data.count, 0)
         try await gasObjects.data.asyncForEach { gasCoin in
-            let details = gasCoin.toSuiObjectData()
+            let details = gasCoin.toMySoObjectData()
             let coinObject = try await toolBox.client.getObject(
                 objectId: details.objectId,
-                options: SuiObjectDataOptions(showType: true)
+                options: MySoObjectDataOptions(showType: true)
             )
-            XCTAssertEqual(coinObject?.data?.type, "0x2::coin::Coin<0x2::sui::SUI>")
+            XCTAssertEqual(coinObject?.data?.type, "0x2::coin::Coin<0x2::mys::MYS>")
         }
     }
 
@@ -69,19 +69,19 @@ final class ObjectsTest: XCTestCase {
         let gasObjectIds = gasObjects.data.map { $0.coinObjectId }
         let objectInfos = try await toolBox.client.getMultiObjects(
             ids: gasObjectIds,
-            options: SuiObjectDataOptions(showType: true)
+            options: MySoObjectDataOptions(showType: true)
         )
         XCTAssertEqual(gasObjects.data.count, objectInfos.count)
 
         objectInfos.forEach { object in
-            XCTAssertEqual(object.data?.type, "0x2::coin::Coin<0x2::sui::SUI>")
+            XCTAssertEqual(object.data?.type, "0x2::coin::Coin<0x2::mys::MYS>")
         }
     }
 
     func testThatHandlingNonExistingOldObjectsThrowsAnError() async throws {
         let toolBox = try self.fetchToolBox()
         let result = try await toolBox.client.tryGetPastObject(
-            id: Inputs.normalizeSuiAddress(value: "0x9999"),
+            id: Inputs.normalizeMySoAddress(value: "0x9999"),
             version: 0
         )
         XCTAssertEqual(result?.status(), "ObjectNotExists")
@@ -89,7 +89,7 @@ final class ObjectsTest: XCTestCase {
 
     func testThatHandlingLiveVersionsForOldObjectsWorksAsIntended() async throws {
         let toolBox = try self.fetchToolBox()
-        let data = (try await toolBox.client.getCoins(account: try toolBox.address(), coinType: "0x2::sui::SUI")).data
+        let data = (try await toolBox.client.getCoins(account: try toolBox.address(), coinType: "0x2::mys::MYS")).data
         let result = try await toolBox.client.tryGetPastObject(
             id: data[0].coinObjectId,
             version: Int(data[0].version) ?? 0
@@ -99,7 +99,7 @@ final class ObjectsTest: XCTestCase {
 
     func testThatHandlingLiveVersionsTooHighForOldObjectsWorksAsIntended() async throws {
         let toolBox = try self.fetchToolBox()
-        let data = (try await toolBox.client.getCoins(account: try toolBox.address(), coinType: "0x2::sui::SUI")).data
+        let data = (try await toolBox.client.getCoins(account: try toolBox.address(), coinType: "0x2::mys::MYS")).data
         let result = try await toolBox.client.tryGetPastObject(
             id: data[0].coinObjectId,
             version: (Int(data[0].version) ?? 0) + 1
@@ -109,7 +109,7 @@ final class ObjectsTest: XCTestCase {
 
     func testThatHandlingLiveVersionsThatDontExistForOldObjectsWorksAsIntended() async throws {
         let toolBox = try self.fetchToolBox()
-        let data = (try await toolBox.client.getCoins(account: try toolBox.address(), coinType: "0x2::sui::SUI")).data
+        let data = (try await toolBox.client.getCoins(account: try toolBox.address(), coinType: "0x2::mys::MYS")).data
         let result = try await toolBox.client.tryGetPastObject(
             id: data[0].coinObjectId,
             // NOTE: This works because we know that this is a fresh coin that hasn't been modified:
@@ -120,12 +120,12 @@ final class ObjectsTest: XCTestCase {
 
     func testThatFindingOldVersionsOfObjectsWorksAsIntended() async throws {
         let toolBox = try self.fetchToolBox()
-        let data = (try await toolBox.client.getCoins(account: try toolBox.address(), coinType: "0x2::sui::SUI")).data
+        let data = (try await toolBox.client.getCoins(account: try toolBox.address(), coinType: "0x2::mys::MYS")).data
         var tx = try TransactionBlock()
         // Transfer the entire gas object:
         _ = try tx.transferObject(
             objects: [tx.gas],
-            address: Inputs.normalizeSuiAddress(value: "0x2")
+            address: Inputs.normalizeMySoAddress(value: "0x2")
         )
         _ = try await toolBox.client.signAndExecuteTransactionBlock(transactionBlock: &tx, signer: toolBox.account)
         let result = try await toolBox.client.tryGetPastObject(

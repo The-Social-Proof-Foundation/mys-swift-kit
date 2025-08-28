@@ -53,12 +53,12 @@ extension String {
         return self.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? self
     }
 
-    public func toModule() throws -> SuiMoveNormalizedStructType {
+    public func toModule() throws -> MySoMoveNormalizedStructType {
         let callArguments = self.components(separatedBy: "::")
-        guard callArguments.count == 3 else { throw SuiError.customError(
+        guard callArguments.count == 3 else { throw MySoError.customError(
             message: "Invalid Module Name: \(self). Must be in the format `0xAddress::Module::Name"
         ) }
-        return SuiMoveNormalizedStructType(
+        return MySoMoveNormalizedStructType(
             address: try AccountAddress.fromHex(callArguments[0]),
             module: callArguments[1],
             name: callArguments[2],
@@ -69,7 +69,7 @@ extension String {
     public func stringToBytes(_ includeLength: Bool = true) throws -> [UInt8] {
         let length = self.count
         if length & 1 != 0 {
-            throw SuiError.customError(
+            throw MySoError.customError(
                 message: "No data provided: \(self). Must be a hex string"
             )
         }
@@ -81,7 +81,7 @@ extension String {
             if let b = UInt8(self[index..<nextIndex], radix: 16) {
                 bytes.append(b)
             } else {
-                throw SuiError.customError(
+                throw MySoError.customError(
                     message: "Unable to convert to bytes: \(self). Must be a hex string"
                 )
             }
@@ -107,7 +107,7 @@ extension String {
         return String(self[start..<end])
     }
 
-    public func isValidSuiAddress() -> Bool {
+    public func isValidMySoAddress() -> Bool {
         return (self.isHex()) && (self.getHexByteLength() == 32)
     }
 

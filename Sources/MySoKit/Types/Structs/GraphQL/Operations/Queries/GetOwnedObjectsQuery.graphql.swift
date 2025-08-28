@@ -7,11 +7,11 @@ public class GetOwnedObjectsQuery: GraphQLQuery {
   public static let operationName: String = "getOwnedObjects"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query getOwnedObjects($owner: SuiAddress!, $limit: Int, $cursor: String, $showBcs: Boolean = false, $showContent: Boolean = false, $showDisplay: Boolean = false, $showType: Boolean = false, $showOwner: Boolean = false, $showPreviousTransaction: Boolean = false, $showStorageRebate: Boolean = false, $filter: ObjectFilter) { address(address: $owner) { __typename objects(first: $limit, after: $cursor, filter: $filter) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename ...RPC_MOVE_OBJECT_FIELDS } } } }"#,
+      #"query getOwnedObjects($owner: MysAddress!, $limit: Int, $cursor: String, $showBcs: Boolean = false, $showContent: Boolean = false, $showDisplay: Boolean = false, $showType: Boolean = false, $showOwner: Boolean = false, $showPreviousTransaction: Boolean = false, $showStorageRebate: Boolean = false, $filter: ObjectFilter) { address(address: $owner) { __typename objects(first: $limit, after: $cursor, filter: $filter) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename ...RPC_MOVE_OBJECT_FIELDS } } } }"#,
       fragments: [RPC_MOVE_OBJECT_FIELDS.self, RPC_OBJECT_OWNER_FIELDS.self]
     ))
 
-  public var owner: SuiAddressApollo
+  public var owner: MySoAddressApollo
   public var limit: GraphQLNullable<Int>
   public var cursor: GraphQLNullable<String>
   public var showBcs: GraphQLNullable<Bool>
@@ -24,7 +24,7 @@ public class GetOwnedObjectsQuery: GraphQLQuery {
   public var filter: GraphQLNullable<ObjectFilter>
 
   public init(
-    owner: SuiAddressApollo,
+    owner: MySoAddressApollo,
     limit: GraphQLNullable<Int>,
     cursor: GraphQLNullable<String>,
     showBcs: GraphQLNullable<Bool> = false,
@@ -72,7 +72,7 @@ public class GetOwnedObjectsQuery: GraphQLQuery {
       .field("address", Address?.self, arguments: ["address": .variable("owner")])
     ] }
 
-    /// Look-up an Account by its SuiAddressApollo.
+    /// Look-up an Account by its MySoAddressApollo.
     public var address: Address? { __data["address"] }
 
     /// Address
@@ -147,7 +147,7 @@ public class GetOwnedObjectsQuery: GraphQLQuery {
             .fragment(RPC_MOVE_OBJECT_FIELDS.self)
           ] }
 
-          public var objectId: MySoKit.SuiAddressApollo { __data["objectId"] }
+          public var objectId: MySoKit.MySoAddressApollo { __data["objectId"] }
           /// The Base64-encoded BCS serialization of the object's content.
           public var bcs: MySoKit.Base64Apollo? { __data["bcs"] }
           /// Displays the contents of the Move object in a JSON string and through GraphQL types. Also
@@ -155,14 +155,14 @@ public class GetOwnedObjectsQuery: GraphQLQuery {
           /// data.
           public var contents: Contents? { __data["contents"] }
           /// Determines whether a transaction can transfer this object, using the TransferObjects
-          /// transaction command or `sui::transfer::public_transfer`, both of which require the object to
+          /// transaction command or `mys::transfer::public_transfer`, both of which require the object to
           /// have the `key` and `store` abilities.
           public var hasPublicTransfer: Bool? { __data["hasPublicTransfer"] }
           /// The owner type of this object: Immutable, Shared, Parent, Address
           public var owner: Owner? { __data["owner"] }
           /// The transaction block that created this version of the object.
           public var previousTransactionBlock: PreviousTransactionBlock? { __data["previousTransactionBlock"] }
-          /// The amount of SUI we would rebate if this object gets deleted or mutated. This number is
+          /// The amount of MYS we would rebate if this object gets deleted or mutated. This number is
           /// recalculated based on the present storage gas price.
           public var storageRebate: MySoKit.BigIntApollo? { __data["storageRebate"] }
           /// 32-byte hash that identifies the object's contents, encoded as a Base58 string.

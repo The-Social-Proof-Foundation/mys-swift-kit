@@ -39,14 +39,14 @@ public struct DevInspectResults {
     /// This will be `nil` if there is no error to report.
     public var error: String?
 
-    /// An array of `SuiEvent` representing the events that occurred during the inspection.
-    public var events: [SuiEvent]
+    /// An array of `MySoEvent` representing the events that occurred during the inspection.
+    public var events: [MySoEvent]
 
     public init?(input: JSON) {
         guard let effects = TransactionEffects(input: input["effects"]) else { return nil }
         self.effects = effects
         self.error = input["error"].string
-        self.events = input["events"].arrayValue.compactMap { SuiEvent(input: $0) }
+        self.events = input["events"].arrayValue.compactMap { MySoEvent(input: $0) }
         self.results = input["results"].arrayValue.compactMap { ExecutionResultType(input: $0) }
     }
 }

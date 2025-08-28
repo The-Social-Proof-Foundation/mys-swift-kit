@@ -43,7 +43,7 @@ public struct TransactionEffects {
     public var gasUsed: GasCostSummary
 
     /// An optional array representing shared objects associated with the transaction effect.
-    public var sharedObjects: [SuiObjectRef]?
+    public var sharedObjects: [MySoObjectRef]?
 
     /// Represents the digest of the transaction.
     public var transactionDigest: TransactionDigest
@@ -58,13 +58,13 @@ public struct TransactionEffects {
     public var unwrapped: [OwnedObjectRef]?
 
     /// An optional array representing objects deleted by the transaction.
-    public var deleted: [SuiObjectRef]?
+    public var deleted: [MySoObjectRef]?
 
     /// An optional array representing objects that were unwrapped then deleted by the transaction.
-    public var unwrappedThenDeleted: [SuiObjectRef]?
+    public var unwrappedThenDeleted: [MySoObjectRef]?
 
     /// An optional array representing objects wrapped by the transaction.
-    public var wrapped: [SuiObjectRef]?
+    public var wrapped: [MySoObjectRef]?
 
     /// Represents the gas object associated with the transaction effect.
     public var gasObject: OwnedObjectRef
@@ -87,14 +87,14 @@ public struct TransactionEffects {
             TransactionEffectsModifiedAtVersions(input: $0)
         }
         self.gasUsed = GasCostSummary(input: input["gasUsed"])
-        self.sharedObjects = input["sharedObjects"].arrayValue.compactMap { SuiObjectRef(input: $0) }
+        self.sharedObjects = input["sharedObjects"].arrayValue.compactMap { MySoObjectRef(input: $0) }
         self.transactionDigest = input["transactionDigest"].stringValue
         self.created = input["created"].arrayValue.compactMap { OwnedObjectRef(input: $0) }
         self.mutated = input["mutated"].arrayValue.compactMap { OwnedObjectRef(input: $0) }
         self.unwrapped = input["unwrapped"].arrayValue.compactMap { OwnedObjectRef(input: $0) }
-        self.deleted = input["deleted"].arrayValue.compactMap { SuiObjectRef(input: $0) }
-        self.unwrappedThenDeleted = input["unwrappedThenDeleted"].arrayValue.compactMap { SuiObjectRef(input: $0) }
-        self.wrapped = input["wrapped"].arrayValue.compactMap { SuiObjectRef(input: $0) }
+        self.deleted = input["deleted"].arrayValue.compactMap { MySoObjectRef(input: $0) }
+        self.unwrappedThenDeleted = input["unwrappedThenDeleted"].arrayValue.compactMap { MySoObjectRef(input: $0) }
+        self.wrapped = input["wrapped"].arrayValue.compactMap { MySoObjectRef(input: $0) }
         self.gasObject = gasObject
         self.eventsDigest = input["eventsDigest"].string
         self.dependencies = input["dependencies"].arrayValue.compactMap { $0.string }

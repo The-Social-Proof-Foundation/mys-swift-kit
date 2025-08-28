@@ -5,13 +5,13 @@
 
 public struct RPC_STAKE_FIELDS: MySoKit.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment RPC_STAKE_FIELDS on StakedSui { __typename principal activatedEpoch { __typename epochId referenceGasPrice } stakeStatus requestedEpoch { __typename epochId } activatedEpoch { __typename epochId } contents { __typename json } address estimatedReward }"#
+    #"fragment RPC_STAKE_FIELDS on StakedMys { __typename principal activatedEpoch { __typename epochId referenceGasPrice } stakeStatus requestedEpoch { __typename epochId } activatedEpoch { __typename epochId } contents { __typename json } address estimatedReward }"#
   }
 
   public let __data: DataDict
   public init(_dataDict: DataDict) { __data = _dataDict }
 
-  public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.StakedSui }
+  public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.StakedMySo }
   public static var __selections: [ApolloAPI.Selection] { [
     .field("__typename", String.self),
     .field("principal", MySoKit.BigIntApollo?.self),
@@ -19,11 +19,11 @@ public struct RPC_STAKE_FIELDS: MySoKit.SelectionSet, Fragment {
     .field("stakeStatus", GraphQLEnum<MySoKit.StakeStatusApollo>.self),
     .field("requestedEpoch", RequestedEpoch?.self),
     .field("contents", Contents?.self),
-    .field("address", MySoKit.SuiAddressApollo.self),
+    .field("address", MySoKit.MySoAddressApollo.self),
     .field("estimatedReward", MySoKit.BigIntApollo?.self)
   ] }
 
-  /// The SUI that was initially staked.
+  /// The MYS that was initially staked.
   public var principal: MySoKit.BigIntApollo? { __data["principal"] }
   /// The epoch at which this stake became active.
   public var activatedEpoch: ActivatedEpoch? { __data["activatedEpoch"] }
@@ -35,7 +35,7 @@ public struct RPC_STAKE_FIELDS: MySoKit.SelectionSet, Fragment {
   /// provides the flat representation of the type signature, and the BCS of the corresponding
   /// data.
   public var contents: Contents? { __data["contents"] }
-  public var address: MySoKit.SuiAddressApollo { __data["address"] }
+  public var address: MySoKit.MySoAddressApollo { __data["address"] }
   /// The estimated reward for this stake object, calculated as:
   ///
   /// principal * (initial_stake_rate / current_stake_rate - 1.0)

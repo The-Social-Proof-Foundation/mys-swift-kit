@@ -7,16 +7,16 @@ public class GetStakesByIdsQuery: GraphQLQuery {
   public static let operationName: String = "getStakesByIds"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query getStakesByIds($ids: [SuiAddress!]!, $limit: Int, $cursor: String) { objects(first: $limit, after: $cursor, filter: { objectIds: $ids }) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename asMoveObject { __typename asStakedSui { __typename ...RPC_STAKE_FIELDS } } } } }"#,
+      #"query getStakesByIds($ids: [MysAddress!]!, $limit: Int, $cursor: String) { objects(first: $limit, after: $cursor, filter: { objectIds: $ids }) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename asMoveObject { __typename asStakedMys { __typename ...RPC_STAKE_FIELDS } } } } }"#,
       fragments: [RPC_STAKE_FIELDS.self]
     ))
 
-  public var ids: [SuiAddressApollo]
+  public var ids: [MySoAddressApollo]
   public var limit: GraphQLNullable<Int>
   public var cursor: GraphQLNullable<String>
 
   public init(
-    ids: [SuiAddressApollo],
+    ids: [MySoAddressApollo],
     limit: GraphQLNullable<Int>,
     cursor: GraphQLNullable<String>
   ) {
@@ -112,26 +112,26 @@ public class GetStakesByIdsQuery: GraphQLQuery {
           public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.MoveObject }
           public static var __selections: [ApolloAPI.Selection] { [
             .field("__typename", String.self),
-            .field("asStakedSui", AsStakedSui?.self)
+            .field("asStakedMys", AsStakedMySo?.self)
           ] }
 
-          /// Attempts to convert the Move object into a `0x3::staking_pool::StakedSui`.
-          public var asStakedSui: AsStakedSui? { __data["asStakedSui"] }
+          /// Attempts to convert the Move object into a `0x3::staking_pool::StakedMys`.
+          public var asStakedMySo: AsStakedMySo? { __data["asStakedMySo"] }
 
-          /// Objects.Node.AsMoveObject.AsStakedSui
+          /// Objects.Node.AsMoveObject.AsStakedMySo
           ///
-          /// Parent Type: `StakedSui`
-          public struct AsStakedSui: MySoKit.SelectionSet {
+          /// Parent Type: `StakedMySo`
+          public struct AsStakedMySo: MySoKit.SelectionSet {
             public let __data: DataDict
             public init(_dataDict: DataDict) { __data = _dataDict }
 
-            public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.StakedSui }
+            public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.StakedMySo }
             public static var __selections: [ApolloAPI.Selection] { [
               .field("__typename", String.self),
               .fragment(RPC_STAKE_FIELDS.self)
             ] }
 
-            /// The SUI that was initially staked.
+            /// The MYS that was initially staked.
             public var principal: MySoKit.BigIntApollo? { __data["principal"] }
             /// The epoch at which this stake became active.
             public var activatedEpoch: ActivatedEpoch? { __data["activatedEpoch"] }
@@ -143,7 +143,7 @@ public class GetStakesByIdsQuery: GraphQLQuery {
             /// provides the flat representation of the type signature, and the BCS of the corresponding
             /// data.
             public var contents: Contents? { __data["contents"] }
-            public var address: MySoKit.SuiAddressApollo { __data["address"] }
+            public var address: MySoKit.MySoAddressApollo { __data["address"] }
             /// The estimated reward for this stake object, calculated as:
             ///
             /// principal * (initial_stake_rate / current_stake_rate - 1.0)

@@ -25,4 +25,4 @@
 
 import Foundation
 
-public typealias SuiMoveNormalizedModules = [String: SuiMoveNormalizedModule]
+public typealias MySoMoveNormalizedModules = [String: MySoMoveNormalizedModule]

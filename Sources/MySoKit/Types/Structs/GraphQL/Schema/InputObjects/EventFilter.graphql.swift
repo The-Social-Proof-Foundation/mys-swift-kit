@@ -11,7 +11,7 @@ public struct EventFilter: InputObject {
   }
 
   public init(
-    sender: GraphQLNullable<SuiAddressApollo> = nil,
+    sender: GraphQLNullable<MySoAddressApollo> = nil,
     transactionDigest: GraphQLNullable<String> = nil,
     emittingModule: GraphQLNullable<String> = nil,
     eventType: GraphQLNullable<String> = nil
@@ -25,9 +25,9 @@ public struct EventFilter: InputObject {
   }
 
     public init(
-        suiEventFilter: SuiEventFilter
+        mysoEventFilter: MySoEventFilter
     ) throws {
-        switch suiEventFilter {
+        switch mysoEventFilter {
         case .sender(let sender):
             __data = InputDict(["sender": sender])
         case .transaction(let transaction):
@@ -37,12 +37,12 @@ public struct EventFilter: InputObject {
         case .moveEventType(let moveEventType):
             __data = InputDict(["eventType": moveEventType])
         default:
-            throw SuiError.notImplemented
+            throw MySoError.notImplemented
         }
     }
 
   /// Filter down to events from transactions sent by this address.
-  public var sender: GraphQLNullable<SuiAddressApollo> {
+  public var sender: GraphQLNullable<MySoAddressApollo> {
     get { __data["sender"] }
     set { __data["sender"] = newValue }
   }
@@ -72,7 +72,7 @@ public struct EventFilter: InputObject {
   ///
   /// Generic types can be queried by either the generic type name, e.g.
   /// `0x2::coin::Coin`, or by the full type name, such as
-  /// `0x2::coin::Coin<0x2::sui::SUI>`.
+  /// `0x2::coin::Coin<0x2::mys::MYS>`.
   public var eventType: GraphQLNullable<String> {
     get { __data["eventType"] }
     set { __data["eventType"] = newValue }

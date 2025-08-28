@@ -7,16 +7,16 @@ public class GetNormalizedMoveStructQuery: GraphQLQuery {
   public static let operationName: String = "getNormalizedMoveStruct"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query getNormalizedMoveStruct($packageId: SuiAddress!, $module: String!, $struct: String!) { object(address: $packageId) { __typename asMovePackage { __typename address module(name: $module) { __typename fileFormatVersion struct(name: $struct) { __typename ...RPC_MOVE_STRUCT_FIELDS } } } } }"#,
+      #"query getNormalizedMoveStruct($packageId: MysAddress!, $module: String!, $struct: String!) { object(address: $packageId) { __typename asMovePackage { __typename address module(name: $module) { __typename fileFormatVersion struct(name: $struct) { __typename ...RPC_MOVE_STRUCT_FIELDS } } } } }"#,
       fragments: [RPC_MOVE_STRUCT_FIELDS.self]
     ))
 
-  public var packageId: SuiAddressApollo
+  public var packageId: MySoAddressApollo
   public var module: String
   public var `struct`: String
 
   public init(
-    packageId: SuiAddressApollo,
+    packageId: MySoAddressApollo,
     module: String,
     `struct`: String
   ) {
@@ -70,11 +70,11 @@ public class GetNormalizedMoveStructQuery: GraphQLQuery {
         public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.MovePackage }
         public static var __selections: [ApolloAPI.Selection] { [
           .field("__typename", String.self),
-          .field("address", MySoKit.SuiAddressApollo.self),
+          .field("address", MySoKit.MySoAddressApollo.self),
           .field("module", Module?.self, arguments: ["name": .variable("module")])
         ] }
 
-        public var address: MySoKit.SuiAddressApollo { __data["address"] }
+        public var address: MySoKit.MySoAddressApollo { __data["address"] }
         /// A representation of the module called `name` in this package, including the
         /// structs and functions it defines.
         public var module: Module? { __data["module"] }

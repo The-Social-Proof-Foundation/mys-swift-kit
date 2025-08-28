@@ -108,10 +108,10 @@ public class TransactionBlock {
     }
 
     /// Sets the gas payment of the transaction.
-    /// - Parameter payments: An array of `SuiObjectRef` representing the gas payments.
-    public func setGasPayment(payments: [SuiObjectRef]) throws {
+    /// - Parameter payments: An array of `MySoObjectRef` representing the gas payments.
+    public func setGasPayment(payments: [MySoObjectRef]) throws {
         guard payments.count < TransactionConstants.MAX_GAS_OBJECTS else {
-            throw SuiError.customError(message: "Gas payment too high")
+            throw MySoError.customError(message: "Gas payment too high")
         }
         self.blockData.builder.gasConfig.payment = payments
     }
@@ -122,12 +122,12 @@ public class TransactionBlock {
     ///
     /// - Parameters:
     ///   - type: A `ValueType` representing the type of the input.
-    ///   - value: An optional `SuiJsonValue` representing the value of the input.
+    ///   - value: An optional `MySoJsonValue` representing the value of the input.
     /// - Throws: Can throw an error if creating a `TransactionBlockInput` fails.
     /// - Returns: A `TransactionBlockInput` object.
     internal func input(
         type: ValueType,
-        value: SuiJsonValue?
+        value: MySoJsonValue?
     ) throws -> TransactionBlockInput {
         let index = self.blockData.builder.inputs.count
         let input = TransactionBlockInput(
@@ -145,7 +145,7 @@ public class TransactionBlock {
         }
         let id = try Inputs.getIdFromCallArg(value: value)
         let insertedArr = try self.blockData.builder.inputs.filter { input in
-            guard let suiJsonValue = input.value, case .string(let str) = suiJsonValue else { return false }
+            guard let mysoJsonValue = input.value, case .string(let str) = mysoJsonValue else { return false }
             let rhs = try Inputs.getIdFromCallArg(arg: str)
             return id == rhs
         }
@@ -203,10 +203,10 @@ public class TransactionBlock {
 
     /// Creates and returns a `TransactionBlockInput` object with a pure value.
     ///
-    /// - Parameter value: A `SuiJsonValue` representing the pure value.
+    /// - Parameter value: A `MySoJsonValue` representing the pure value.
     /// - Throws: Can throw an error if creating a `TransactionBlockInput` fails.
     /// - Returns: A `TransactionBlockInput` object.
-    public func pure(value: SuiJsonValue) throws -> TransactionBlockInput {
+    public func pure(value: MySoJsonValue) throws -> TransactionBlockInput {
         return try self.input(type: .pure, value: .callArg(Input.init(type: .pure(PureCallArg(value: try value.toData())))))
     }
 
@@ -214,14 +214,14 @@ public class TransactionBlock {
         return try self.input(type: .pure, value: .callArg(Input.init(type: .pure(PureCallArg(value: data)))))
     }
 
-    /// Appends a `SuiTransaction` object to the `blockData.builder.transactions` array and
+    /// Appends a `MySoTransaction` object to the `blockData.builder.transactions` array and
     /// returns a `TransactionArgument` object representing the result.
     /// 
-    /// - Parameter transaction: A `SuiTransaction` object to be added.
+    /// - Parameter transaction: A `MySoTransaction` object to be added.
     /// - Parameter returnValueCount: If using a `MoveCall` transaction, this is the amount of return values (if greater than 1) that will be returned by the move call.
     /// - Throws: Can throw an error if the operation fails, for example if result is invalid.
     /// - Returns: A `TransactionArgument` object representing the result of the addition.
-    public func add(transaction: SuiTransaction, returnValueCount: UInt16? = nil) throws -> [TransactionArgument] {
+    public func add(transaction: MySoTransaction, returnValueCount: UInt16? = nil) throws -> [TransactionArgument] {
         // Append the transaction to the transactions array
         self.blockData.builder.transactions.append(transaction)
 
@@ -466,7 +466,7 @@ public class TransactionBlock {
     /// - Parameters:
     ///   - key: A `LimitsKey` representing the key for which the configuration value needs to be retrieved.
     ///   - buildOptions: A `BuildOptions` object containing the build options including limits and protocolConfig.
-    /// - Throws: `SuiError` if the key is not found in limits, protocolConfig is missing, or the attribute is not found.
+    /// - Throws: `MySoError` if the key is not found in limits, protocolConfig is missing, or the attribute is not found.
     /// - Returns: An `Int` representing the configuration value for the specified key.
     public func getConfig(
         key: LimitsKey,
@@ -474,21 +474,21 @@ public class TransactionBlock {
     ) throws -> Int {
         // If limits contains the key, return its value.
         if let keyNumber = buildOptions.limits?[key.rawValue] {
-            guard let keyNumber else { throw SuiError.customError(message: "Cannot find key number") }
+            guard let keyNumber else { throw MySoError.customError(message: "Cannot find key number") }
             return keyNumber
         }
 
         // Handle the case where protocolConfig is nil.
         if buildOptions.protocolConfig == nil {
             guard let defaultValue = Self.defaultOfflineLimits[key.rawValue] else {
-                throw SuiError.customError(message: "Cannot find protocol config")
+                throw MySoError.customError(message: "Cannot find protocol config")
             }
             return Int(defaultValue)
         }
 
         // Unwrap protocolConfig's attributes for the given key.
         guard let attribute = buildOptions.protocolConfig?.attributes[key.rawValue] else {
-            throw SuiError.customError(message: "Cannot find protocol config")
+            throw MySoError.customError(message: "Cannot find protocol config")
         }
 
         switch attribute {
@@ -496,27 +496,27 @@ public class TransactionBlock {
         case .u32(let u32): return Int(u32)!
         case .u64(let u64): return Int(u64)!
         default:
-            throw SuiError.customError(message: "Cannot find attribute")
+            throw MySoError.customError(message: "Cannot find attribute")
         }
     }
 
     /// Builds a block with the specified provider and optional transaction kind.
     /// - Parameters:
-    ///   - provider: A `SuiProvider` representing the provider to build the block with.
+    ///   - provider: A `MySoProvider` representing the provider to build the block with.
     ///   - onlyTransactionKind: An optional `Bool` representing whether only transaction kind should be considered while building.
     /// - Throws: Can throw an error if preparation or block building fails.
     /// - Returns: A `Data` object representing the built block.
-    public func build(_ provider: SuiProvider, _ onlyTransactionKind: Bool? = nil) async throws -> Data {
+    public func build(_ provider: MySoProvider, _ onlyTransactionKind: Bool? = nil) async throws -> Data {
         try await self.prepare(BuildOptions(provider: provider, onlyTransactionKind: onlyTransactionKind))
         return try self.blockData.build(onlyTransactionKind: onlyTransactionKind)
     }
 
     /// Computes the digest of the block with the specified provider.
     /// - Parameters:
-    ///   - provider: A `SuiProvider` representing the provider to compute the digest with.
+    ///   - provider: A `MySoProvider` representing the provider to compute the digest with.
     /// - Throws: Can throw an error if preparation or digest computation fails.
     /// - Returns: A `String` representing the digest of the block.
-    public func getDigest(_ provider: SuiProvider) async throws -> String {
+    public func getDigest(_ provider: MySoProvider) async throws -> String {
         try await self.prepare(BuildOptions(provider: provider))
         return try self.blockData.getDigest()
     }
@@ -534,16 +534,16 @@ public class TransactionBlock {
 
     /// Prepares gas payment for transactions.
     /// - Parameters:
-    ///   - provider: A `SuiProvider` instance used to obtain necessary information to prepare gas payment.
+    ///   - provider: A `MySoProvider` instance used to obtain necessary information to prepare gas payment.
     ///   - onlyTransactionKind: An optional `Bool`. If true, it prepares gas payment only for a specific kind of transaction.
-    /// - Throws: Can throw `SuiError.senderIsMissing` if the sender is missing, `SuiError.gasOwnerCannotBeFound` if the gas owner cannot be found, and `SuiError.ownerDoesNotHavePaymentCoins` if the owner does not have payment coins.
+    /// - Throws: Can throw `MySoError.senderIsMissing` if the sender is missing, `MySoError.gasOwnerCannotBeFound` if the gas owner cannot be found, and `MySoError.ownerDoesNotHavePaymentCoins` if the owner does not have payment coins.
     /// - Note: This method is asynchronous and can be awaited.
     private func prepareGasPayment(
-        provider: SuiProvider,
+        provider: MySoProvider,
         onlyTransactionKind: Bool? = nil
     ) async throws {
         if isMissingSender(onlyTransactionKind) {
-            throw SuiError.customError(message: "Sender is missing")
+            throw MySoError.customError(message: "Sender is missing")
         }
 
         if onlyTransactionKind == true || self.blockData.builder.gasConfig.payment != nil {
@@ -551,12 +551,12 @@ public class TransactionBlock {
         }
 
         guard let gasOwner = self.blockData.builder.gasConfig.owner?.hex() ?? self.blockData.builder.sender?.hex() else {
-            throw SuiError.customError(message: "Gas owner cannot be found")
+            throw MySoError.customError(message: "Gas owner cannot be found")
         }
 
         let coins = try await provider.getCoins(
             account: gasOwner,
-            coinType: "0x2::sui::SUI"
+            coinType: "0x2::mys::MYS"
         )
 
         let filteredCoins = coins.data.filter { coin in
@@ -572,7 +572,7 @@ public class TransactionBlock {
 
         let range = 0..<min(Int(TransactionConstants.MAX_GAS_OBJECTS), filteredCoins.count)
         let paymentCoins = filteredCoins[range].map { coin in
-            SuiObjectRef(
+            MySoObjectRef(
                 objectId: coin.coinObjectId,
                 version: coin.version,
                 digest: coin.digest
@@ -580,7 +580,7 @@ public class TransactionBlock {
         }
 
         guard !paymentCoins.isEmpty else {
-            throw SuiError.customError(message: "Owner does not have payment coins")
+            throw MySoError.customError(message: "Owner does not have payment coins")
         }
 
         try self.setGasPayment(payments: paymentCoins)
@@ -588,16 +588,16 @@ public class TransactionBlock {
 
     /// Prepares gas price for transactions.
     /// - Parameters:
-    ///   - provider: A `SuiProvider` instance used to obtain necessary information to prepare gas price.
+    ///   - provider: A `MySoProvider` instance used to obtain necessary information to prepare gas price.
     ///   - onlyTransactionKind: An optional `Bool`. If true, it prepares gas price only for a specific kind of transaction.
-    /// - Throws: Can throw `SuiError.senderIsMissing` if the sender is missing.
+    /// - Throws: Can throw `MySoError.senderIsMissing` if the sender is missing.
     /// - Note: This method is asynchronous and can be awaited.
     private func prepareGasPrice(
-        provider: SuiProvider,
+        provider: MySoProvider,
         onlyTransactionKind: Bool? = nil
     ) async throws {
         if self.isMissingSender(onlyTransactionKind) {
-            throw SuiError.customError(message: "Sender is missing")
+            throw MySoError.customError(message: "Sender is missing")
         }
         self.setGasPrice(
             price: BigInt(
@@ -607,11 +607,11 @@ public class TransactionBlock {
     }
 
     /// Prepares transactions by resolving move modules and objects, and updating the block data builder with the resolved information.
-    /// - Parameter provider: A `SuiProvider` instance used to obtain necessary information to prepare transactions.
-    /// - Throws: Various `SuiError` errors can be thrown based on different failure scenarios, such as `SuiError.moveCallSizeDoesNotMatch` 
-    /// when move call size does not match, `SuiError.unknownCallArgType` when the call argument type is unknown, and `SuiError.inputValueIsNotObjectId`
-    /// when the input value is not object ID, and `SuiError.objectIsInvalid` when an object is invalid.
-    private func prepareTransactions(provider: SuiProvider) async throws {
+    /// - Parameter provider: A `MySoProvider` instance used to obtain necessary information to prepare transactions.
+    /// - Throws: Various `MySoError` errors can be thrown based on different failure scenarios, such as `MySoError.moveCallSizeDoesNotMatch` 
+    /// when move call size does not match, `MySoError.unknownCallArgType` when the call argument type is unknown, and `MySoError.inputValueIsNotObjectId`
+    /// when the input value is not object ID, and `MySoError.objectIsInvalid` when an object is invalid.
+    private func prepareTransactions(provider: MySoProvider) async throws {
         // Retrieve the blockData from the builder property of the object
         let blockData = self.blockData.builder
 
@@ -622,7 +622,7 @@ public class TransactionBlock {
 
         for input in blockData.inputs {
             if case .string(let str) = input.value {
-                objectsToResolve.append(ObjectsToResolve(id: try Inputs.normalizeSuiAddress(value: str), input: input, normalizedType: nil))
+                objectsToResolve.append(ObjectsToResolve(id: try Inputs.normalizeMySoAddress(value: str), input: input, normalizedType: nil))
             }
         }
 
@@ -667,7 +667,7 @@ public class TransactionBlock {
 
                 // Get the normalized Move function from the provider
                 guard let normalized = try await provider.getNormalizedMoveFunction(
-                    package: Inputs.normalizeSuiAddress(value: packageId.hex()),
+                    package: Inputs.normalizeMySoAddress(value: packageId.hex()),
                     moduleName: moduleName,
                     functionName: functionName
                 ) else { return }
@@ -677,7 +677,7 @@ public class TransactionBlock {
 
                 // Obtain parameters of the normalized function, dropping the last one if it has a transaction context
                 let params = hasTxContext ? normalized.parameters.dropLast() : normalized.parameters
-                guard params.count == moveCallTx.arguments.count else { throw SuiError.customError(message: "Move call size does not match parameter size: \(moveCallTx.arguments.count) != \(params.count)") }
+                guard params.count == moveCallTx.arguments.count else { throw MySoError.customError(message: "Move call size does not match parameter size: \(moveCallTx.arguments.count) != \(params.count)") }
 
                 // Validate and process the arguments of the moveCall transaction
                 try params.enumerated().forEach { (idx, param) in
@@ -697,7 +697,7 @@ public class TransactionBlock {
                             return
                         }
                         // Handle errors and edge cases related to input value and parameter types
-                        guard param.extractStructTag() != nil || param.kind == "TypeParameter" else { throw SuiError.customError(message: "Unknown call arg type \(String(describing: type(of: inputValue)))") }
+                        guard param.extractStructTag() != nil || param.kind == "TypeParameter" else { throw MySoError.customError(message: "Unknown call arg type \(String(describing: type(of: inputValue)))") }
 
                         // Append the object to resolve to the objectsToResolve array
                         if case .string(let string) = inputValue {
@@ -712,7 +712,7 @@ public class TransactionBlock {
                         }
 
                         // Otherwise, the value is not a valid Object ID
-                        throw SuiError.customError(message: "Input value is not object ID: \(String(describing: type(of: inputValue))), \(String(describing: inputValue))")
+                        throw MySoError.customError(message: "Input value is not object ID: \(String(describing: type(of: inputValue))), \(String(describing: inputValue))")
                     }
                 }
             }
@@ -723,26 +723,26 @@ public class TransactionBlock {
             // Chunk the object IDs to fetch and initialize an array to store the fetched objects
             let dedupedIds = objectsToResolve.map { $0.id }
             let objectChunks = dedupedIds.chunked(into: Int(TransactionConstants.MAX_OBJECTS_PER_FETCH))
-            var objects: [SuiObjectResponse] = []
+            var objects: [MySoObjectResponse] = []
 
             // Fetch objects in chunks asynchronously and append them to the objects array
             try await objectChunks.asyncForEach {
                 let result = try await provider.getMultiObjects(
                     ids: $0,
-                    options: SuiObjectDataOptions(showOwner: true)
+                    options: MySoObjectDataOptions(showOwner: true)
                 )
                 objects.append(contentsOf: result)
             }
 
             // Resolve the fetched objects and manage the object IDs and references
-            var objectsById: [String: SuiObjectResponse] = [:]
+            var objectsById: [String: MySoObjectResponse] = [:]
             zip(dedupedIds, objects).forEach { (id, object) in
                 objectsById[id] = object
             }
 
             // Handle invalid objects and throw an error if any are found
             let invalidObjects = objectsById.filter { _, obj in obj.error != nil }.map { key, _ in key }
-            guard invalidObjects.isEmpty else { throw SuiError.customError(message: "Object is invalid: \(invalidObjects)") }
+            guard invalidObjects.isEmpty else { throw MySoError.customError(message: "Object is invalid: \(invalidObjects)") }
 
             // Process each object to resolve and update the blockData and related structures accordingly
             for i in 0..<objectsToResolve.count {
@@ -818,7 +818,7 @@ public class TransactionBlock {
 
     /// Prepares the transaction block with the provided build options.
     /// - Parameter optionsPassed: An instance of `BuildOptions` that contains the options passed for preparing the transaction block.
-    /// - Throws: `SuiError.providerNotFound` if the provider is not found in the options, `SuiError.failedDryRun` if the dry run of the transaction block fails, and other errors depending on the failure scenarios in the internal methods called.
+    /// - Throws: `MySoError.providerNotFound` if the provider is not found in the options, `MySoError.failedDryRun` if the dry run of the transaction block fails, and other errors depending on the failure scenarios in the internal methods called.
     /// - Note: This method is asynchronous and can be awaited.
     /// The method will return immediately if the transaction block is already prepared (`self.isPreparred` is true).
     /// If `protocolConfig` and `limits` are not provided in the options, they are fetched asynchronously from the provider.
@@ -829,7 +829,7 @@ public class TransactionBlock {
         var options: BuildOptions = optionsPassed
 
         guard let provider = options.provider else {
-            throw SuiError.customError(message: "Provider not found")
+            throw MySoError.customError(message: "Provider not found")
         }
 
         if options.protocolConfig == nil && options.limits == nil {
@@ -861,7 +861,7 @@ public class TransactionBlock {
                 )
 
                 guard dryRunResult.effects?.status.status != .failure else {
-                    throw SuiError.customError(message: "Failed dry run transaction block with error: \(dryRunResult.effects?.status.error ?? "UNKNOWN_ERROR")")
+                    throw MySoError.customError(message: "Failed dry run transaction block with error: \(dryRunResult.effects?.status.error ?? "UNKNOWN_ERROR")")
                 }
 
                 let safeOverhead = Int(TransactionConstants.GAS_SAFE_OVERHEAD) * (

@@ -4,7 +4,7 @@
 import ApolloAPI
 
 public extension Objects {
-  /// SUI set aside to account for objects stored on-chain.
+  /// MYS set aside to account for objects stored on-chain.
   static let StorageFund = ApolloAPI.Object(
     typename: "StorageFund",
     implementedInterfaces: []

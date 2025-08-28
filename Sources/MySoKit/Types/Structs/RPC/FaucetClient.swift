@@ -55,17 +55,17 @@ public extension FaucetClient {
     /// - Parameter address: The account address to request coin info for.
     /// - Returns: A `FaucetCoinInfo` object containing details about the transferred coins.
     /// - Throws:
-    ///     - `SuiError.faucetUrlRequired` if the faucet URL is not available in the connection.
-    ///     - `SuiError.invalidUrl` if the faucet URL is invalid.
-    ///     - `SuiError.faucetRateLimitError` if the request is rate limited.
-    ///     - `SuiError.invalidJsonData` if the received JSON data is invalid.
+    ///     - `MySoError.faucetUrlRequired` if the faucet URL is not available in the connection.
+    ///     - `MySoError.invalidUrl` if the faucet URL is invalid.
+    ///     - `MySoError.faucetRateLimitError` if the request is rate limited.
+    ///     - `MySoError.invalidJsonData` if the received JSON data is invalid.
     func funcAccount(_ address: String) async throws -> FaucetCoins {
         guard let baseUrl = connection.faucet else {
-            throw SuiError.customError(message: "Faucet URL required")
+            throw MySoError.customError(message: "Faucet URL required")
         }
 
         guard let url = URL(string: baseUrl) else {
-            throw SuiError.customError(message: "Invalid URL: \(baseUrl)")
+            throw MySoError.customError(message: "Invalid URL: \(baseUrl)")
         }
 
         let data: [String: Any] = [
@@ -87,7 +87,7 @@ public extension FaucetClient {
 
             return coins
         } catch {
-            throw SuiError.customError(message: "\(error.localizedDescription)")
+            throw MySoError.customError(message: "\(error.localizedDescription)")
         }
     }
 }

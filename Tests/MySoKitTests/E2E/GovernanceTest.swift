@@ -35,7 +35,7 @@ final class GovernanceTest: XCTestCase {
 
     override func setUp() async throws {
         self.toolBox = try await TestToolbox(true)
-        self.stateObjectId = try Inputs.normalizeSuiAddress(value: "0x5")
+        self.stateObjectId = try Inputs.normalizeMySoAddress(value: "0x5")
     }
 
     private func fetchToolBox() throws -> TestToolbox {
@@ -46,14 +46,14 @@ final class GovernanceTest: XCTestCase {
         return toolBox
     }
 
-    private func addStake(_ client: SuiProvider, _ account: Account) async throws -> SuiTransactionBlockResponse {
-        let coins = try await client.getCoins(account: try account.publicKey.toSuiAddress(), coinType: "0x2::sui::SUI")
+    private func addStake(_ client: MySoProvider, _ account: Account) async throws -> MySoTransactionBlockResponse {
+        let coins = try await client.getCoins(account: try account.publicKey.toMySoAddress(), coinType: "0x2::mys::MYS")
         let system = try await client.info()
-        let activeValidator = system["activeValidators"].arrayValue[0]["suiAddress"].stringValue
+        let activeValidator = system["activeValidators"].arrayValue[0]["mysAddress"].stringValue
         var tx = try TransactionBlock()
         let coinsTx = try tx.splitCoin(coin: tx.gas, amounts: [tx.pure(value: .number(UInt64(defaultStakeAmount)))])
         _ = try tx.moveCall(
-            target: "0x3::sui_system::request_add_stake",
+            target: "0x3::mys_system::request_add_stake",
             arguments: [
                 tx.object(id: stateObjectId).toTransactionArgument(),
                 coinsTx,
@@ -62,13 +62,13 @@ final class GovernanceTest: XCTestCase {
         )
         let coinObjects = try await client.getMultiObjects(
             ids: coins.data.map { $0.coinObjectId },
-            options: SuiObjectDataOptions(showOwner: true)
+            options: MySoObjectDataOptions(showOwner: true)
         )
         try tx.setGasPayment(payments: coinObjects.map { $0.getObjectReference()! })
         return try await client.signAndExecuteTransactionBlock(
             transactionBlock: &tx,
             signer: account,
-            options: SuiTransactionBlockResponseOptions(showEffects: true)
+            options: MySoTransactionBlockResponseOptions(showEffects: true)
         )
     }
 
@@ -88,7 +88,7 @@ final class GovernanceTest: XCTestCase {
         _ = try await self.addStake(toolBox.client, toolBox.account)
         let stakes = try await toolBox.client.getStakes(owner: try toolBox.address())
         let stakesById = try await toolBox.client.getStakesByIds(
-            stakes: [stakes[0].stakes[0].getStakeObject().stakeSuiId]
+            stakes: [stakes[0].stakes[0].getStakeObject().stakeMySoId]
         )
         XCTAssertGreaterThan(stakes.count, 0)
         XCTAssertEqual(stakesById[0].stakes[0], stakes[0].stakes[0])
@@ -100,7 +100,7 @@ final class GovernanceTest: XCTestCase {
         XCTAssertGreaterThan(committeeInfo.validators.count, 0)
     }
 
-    func testThatGettingLatestSuiSystemStateWorksAsIntended() async throws {
+    func testThatGettingLatestMySoSystemStateWorksAsIntended() async throws {
         let toolBox = try self.fetchToolBox()
         _ = try await toolBox.client.info()
     }

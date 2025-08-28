@@ -102,23 +102,23 @@ public class RemoteZkProofService: ZkProofService {
         // Check for successful response
         guard let httpResponse = response as? HTTPURLResponse,
               httpResponse.statusCode == 200 else {
-            throw SuiError.customError(message: "Proof service error")
+            throw MySoError.customError(message: "Proof service error")
         }
 
         // Parse the response
         guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
-            throw SuiError.customError(message: "Invalid proof service response format")
+            throw MySoError.customError(message: "Invalid proof service response format")
         }
 
         // Extract proof points
         guard let proofPointsJson = json["proofPoints"] as? [String: Any] else {
-            throw SuiError.customError(message: "Missing proof points in response")
+            throw MySoError.customError(message: "Missing proof points in response")
         }
 
         // Extract the three arrays of points
         guard let aPoints = proofPointsJson["a"] as? [String],
               aPoints.count == 3 else {
-            throw SuiError.customError(message: "Invalid 'a' points in proof")
+            throw MySoError.customError(message: "Invalid 'a' points in proof")
         }
 
         // Extract b-points (array of arrays)
@@ -127,13 +127,13 @@ public class RemoteZkProofService: ZkProofService {
               bPointsArray[0].count == 2,
               bPointsArray[1].count == 2,
               bPointsArray[2].count == 2 else {
-            throw SuiError.customError(message: "Invalid 'b' points in proof")
+            throw MySoError.customError(message: "Invalid 'b' points in proof")
         }
 
         // Extract c-points
         guard let cPoints = proofPointsJson["c"] as? [String],
               cPoints.count == 3 else {
-            throw SuiError.customError(message: "Invalid 'c' points in proof")
+            throw MySoError.customError(message: "Invalid 'c' points in proof")
         }
 
         let proofPoints = zkLoginSignatureInputsProofPoints(
@@ -144,14 +144,14 @@ public class RemoteZkProofService: ZkProofService {
 
         // Extract header Base64
         guard let headerBase64 = json["headerBase64"] as? String else {
-            throw SuiError.customError(message: "Missing headerBase64 in proof response")
+            throw MySoError.customError(message: "Missing headerBase64 in proof response")
         }
 
         // Extract issuerPoints
         guard let issBase64DetailsJson = json["issBase64Details"] as? [String: Any],
               let value = issBase64DetailsJson["value"] as? String,
               let indexMod4 = issBase64DetailsJson["indexMod4"] as? Int else {
-            throw SuiError.customError(message: "Invalid issBase64Details in proof response")
+            throw MySoError.customError(message: "Invalid issBase64Details in proof response")
         }
 
         let issBase64Details = zkLoginSignatureInputsClaim(value: value, indexMod4: UInt8(indexMod4))

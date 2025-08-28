@@ -177,7 +177,7 @@ public struct PAGINATE_TRANSACTION_LISTS: MySoKit.SelectionSet, Fragment {
           .field("amount", MySoKit.BigIntApollo?.self)
         ] }
 
-        /// The inner type of the coin whose balance has changed (e.g. `0x2::sui::SUI`).
+        /// The inner type of the coin whose balance has changed (e.g. `0x2::mys::MYS`).
         public var coinType: CoinType? { __data["coinType"] }
         /// The address or object whose balance has changed.
         public var owner: Owner? { __data["owner"] }
@@ -228,10 +228,10 @@ public struct PAGINATE_TRANSACTION_LISTS: MySoKit.SelectionSet, Fragment {
             public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.Object }
             public static var __selections: [ApolloAPI.Selection] { [
               .field("__typename", String.self),
-              .field("address", MySoKit.SuiAddressApollo.self)
+              .field("address", MySoKit.MySoAddressApollo.self)
             ] }
 
-            public var address: MySoKit.SuiAddressApollo { __data["address"] }
+            public var address: MySoKit.MySoAddressApollo { __data["address"] }
           }
 
           /// Effects.BalanceChanges.Node.Owner.AsAddress
@@ -244,10 +244,10 @@ public struct PAGINATE_TRANSACTION_LISTS: MySoKit.SelectionSet, Fragment {
             public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.Address }
             public static var __selections: [ApolloAPI.Selection] { [
               .field("__typename", String.self),
-              .field("address", MySoKit.SuiAddressApollo.self)
+              .field("address", MySoKit.MySoAddressApollo.self)
             ] }
 
-            public var address: MySoKit.SuiAddressApollo { __data["address"] }
+            public var address: MySoKit.MySoAddressApollo { __data["address"] }
           }
         }
       }
@@ -302,13 +302,13 @@ public struct PAGINATE_TRANSACTION_LISTS: MySoKit.SelectionSet, Fragment {
         public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.ObjectChange }
         public static var __selections: [ApolloAPI.Selection] { [
           .field("__typename", String.self),
-          .field("address", MySoKit.SuiAddressApollo.self),
+          .field("address", MySoKit.MySoAddressApollo.self),
           .field("inputState", InputState?.self),
           .field("outputState", OutputState?.self)
         ] }
 
         /// The address of the object that has changed.
-        public var address: MySoKit.SuiAddressApollo { __data["address"] }
+        public var address: MySoKit.MySoAddressApollo { __data["address"] }
         /// The contents of the object immediately before the transaction.
         public var inputState: InputState? { __data["inputState"] }
         /// The contents of the object immediately after the transaction.

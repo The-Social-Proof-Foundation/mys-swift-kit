@@ -42,7 +42,7 @@ public struct StakeObject: Equatable {
     /// sequence of epochs.
     public var stakeRequestEpoch: String
 
-    /// A string representing the unique identifier associated with this stake in the Sui
+    /// A string representing the unique identifier associated with this stake in the Su        i
     /// Blockchain, enabling reference and lookup of this specific stake instance.
-    public var stakeSuiId: String
+    public var stakeMySoId: String
 }

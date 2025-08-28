@@ -56,15 +56,15 @@ final class ObjectDisplayStandardTest: XCTestCase {
         let toolBox = try self.fetchToolBox()
         let resp = try await toolBox.client.getOwnedObjects(
             owner: try toolBox.address(),
-            filter: SuiObjectDataFilter.structType("\(try self.fetchPackageId())::boars::Boar"),
-            options: SuiObjectDataOptions(showDisplay: true, showType: true)
+            filter: MySoObjectDataFilter.structType("\(try self.fetchPackageId())::boars::Boar"),
+            options: MySoObjectDataOptions(showDisplay: true, showType: true)
         ).data
         guard let data = resp[0].data else {
             XCTFail("Failed to get data from Response")
             return
         }
         let boarId = data.objectId
-        let displayFull = (try await toolBox.client.getObject(objectId: boarId, options: SuiObjectDataOptions(showDisplay: true)))!.data!.display!
+        let displayFull = (try await toolBox.client.getObject(objectId: boarId, options: MySoObjectDataOptions(showDisplay: true)))!.data!.display!
         let display = displayFull.data!
 
         XCTAssertEqual("10", display["age"])
@@ -87,7 +87,7 @@ final class ObjectDisplayStandardTest: XCTestCase {
         let toolBox = try self.fetchToolBox()
         let coin = try await toolBox.getCoins().data[0]
         let coinId = coin.coinObjectId
-        let display = (try await toolBox.client.getObject(objectId: coinId, options: SuiObjectDataOptions(showDisplay: true)))
+        let display = (try await toolBox.client.getObject(objectId: coinId, options: MySoObjectDataOptions(showDisplay: true)))
         XCTAssertEqual(display?.data?.display?.data, [:])
     }
 }

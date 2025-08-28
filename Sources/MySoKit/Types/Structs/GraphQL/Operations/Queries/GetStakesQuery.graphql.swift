@@ -7,16 +7,16 @@ public class GetStakesQuery: GraphQLQuery {
   public static let operationName: String = "getStakes"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query getStakes($owner: SuiAddress!, $limit: Int, $cursor: String) { address(address: $owner) { __typename stakedSuis(first: $limit, after: $cursor) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename ...RPC_STAKE_FIELDS } } } }"#,
+      #"query getStakes($owner: MysAddress!, $limit: Int, $cursor: String) { address(address: $owner) { __typename stakedMyss(first: $limit, after: $cursor) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename ...RPC_STAKE_FIELDS } } } }"#,
       fragments: [RPC_STAKE_FIELDS.self]
     ))
 
-  public var owner: SuiAddressApollo
+  public var owner: MySoAddressApollo
   public var limit: GraphQLNullable<Int>
   public var cursor: GraphQLNullable<String>
 
   public init(
-    owner: SuiAddressApollo,
+    owner: MySoAddressApollo,
     limit: GraphQLNullable<Int>,
     cursor: GraphQLNullable<String>
   ) {
@@ -40,7 +40,7 @@ public class GetStakesQuery: GraphQLQuery {
       .field("address", Address?.self, arguments: ["address": .variable("owner")])
     ] }
 
-    /// Look-up an Account by its SuiAddressApollo.
+    /// Look-up an Account by its MySoAddressApollo.
     public var address: Address? { __data["address"] }
 
     /// Address
@@ -53,23 +53,23 @@ public class GetStakesQuery: GraphQLQuery {
       public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.Address }
       public static var __selections: [ApolloAPI.Selection] { [
         .field("__typename", String.self),
-        .field("stakedSuis", StakedSuis.self, arguments: [
+        .field("stakedMyss", StakedMySos.self, arguments: [
           "first": .variable("limit"),
           "after": .variable("cursor")
         ])
       ] }
 
-      /// The `0x3::staking_pool::StakedSui` objects owned by this address.
-      public var stakedSuis: StakedSuis { __data["stakedSuis"] }
+      /// The `0x3::staking_pool::StakedMys` objects owned by this address.
+      public var stakedMySos: StakedMySos { __data["stakedMyss"] }
 
-      /// Address.StakedSuis
+      /// Address.StakedMySos
       ///
-      /// Parent Type: `StakedSuiConnection`
-      public struct StakedSuis: MySoKit.SelectionSet {
+      /// Parent Type: `StakedMySoConnection`
+      public struct StakedMySos: MySoKit.SelectionSet {
         public let __data: DataDict
         public init(_dataDict: DataDict) { __data = _dataDict }
 
-        public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.StakedSuiConnection }
+        public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.StakedMySoConnection }
         public static var __selections: [ApolloAPI.Selection] { [
           .field("__typename", String.self),
           .field("pageInfo", PageInfo.self),
@@ -81,7 +81,7 @@ public class GetStakesQuery: GraphQLQuery {
         /// A list of nodes.
         public var nodes: [Node] { __data["nodes"] }
 
-        /// Address.StakedSuis.PageInfo
+        /// Address.StakedMySos.PageInfo
         ///
         /// Parent Type: `PageInfo`
         public struct PageInfo: MySoKit.SelectionSet {
@@ -101,20 +101,20 @@ public class GetStakesQuery: GraphQLQuery {
           public var endCursor: String? { __data["endCursor"] }
         }
 
-        /// Address.StakedSuis.Node
+        /// Address.StakedMySos.Node
         ///
-        /// Parent Type: `StakedSui`
+        /// Parent Type: `StakedMySo`
         public struct Node: MySoKit.SelectionSet {
           public let __data: DataDict
           public init(_dataDict: DataDict) { __data = _dataDict }
 
-          public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.StakedSui }
+          public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.StakedMySo }
           public static var __selections: [ApolloAPI.Selection] { [
             .field("__typename", String.self),
             .fragment(RPC_STAKE_FIELDS.self)
           ] }
 
-          /// The SUI that was initially staked.
+          /// The MYS that was initially staked.
           public var principal: MySoKit.BigIntApollo? { __data["principal"] }
           /// The epoch at which this stake became active.
           public var activatedEpoch: ActivatedEpoch? { __data["activatedEpoch"] }
@@ -126,7 +126,7 @@ public class GetStakesQuery: GraphQLQuery {
           /// provides the flat representation of the type signature, and the BCS of the corresponding
           /// data.
           public var contents: Contents? { __data["contents"] }
-          public var address: MySoKit.SuiAddressApollo { __data["address"] }
+          public var address: MySoKit.MySoAddressApollo { __data["address"] }
           /// The estimated reward for this stake object, calculated as:
           ///
           /// principal * (initial_stake_rate / current_stake_rate - 1.0)

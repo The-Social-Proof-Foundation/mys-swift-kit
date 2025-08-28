@@ -14,7 +14,7 @@ public struct RPC_OBJECT_FIELDS: MySoKit.SelectionSet, Fragment {
   public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.Object }
   public static var __selections: [ApolloAPI.Selection] { [
     .field("__typename", String.self),
-    .field("address", alias: "objectId", MySoKit.SuiAddressApollo.self),
+    .field("address", alias: "objectId", MySoKit.MySoAddressApollo.self),
     .field("version", MySoKit.UInt53Apollo.self),
     .field("digest", String?.self),
     .include(if: "showType" || "showContent" || "showBcs", .field("asMoveObject", AsMoveObject?.self)),
@@ -24,7 +24,7 @@ public struct RPC_OBJECT_FIELDS: MySoKit.SelectionSet, Fragment {
     .include(if: "showDisplay", .field("display", [Display]?.self))
   ] }
 
-  public var objectId: MySoKit.SuiAddressApollo { __data["objectId"] }
+  public var objectId: MySoKit.MySoAddressApollo { __data["objectId"] }
   public var version: MySoKit.UInt53Apollo { __data["version"] }
   /// Attempts to convert the object into a MoveObject
   public var asMoveObject: AsMoveObject? { __data["asMoveObject"] }
@@ -33,7 +33,7 @@ public struct RPC_OBJECT_FIELDS: MySoKit.SelectionSet, Fragment {
   public var owner: Owner? { __data["owner"] }
   /// The transaction block that created this version of the object.
   public var previousTransactionBlock: PreviousTransactionBlock? { __data["previousTransactionBlock"] }
-  /// The amount of SUI we would rebate if this object gets deleted or mutated. This number is
+  /// The amount of MYS we would rebate if this object gets deleted or mutated. This number is
   /// recalculated based on the present storage gas price.
   public var storageRebate: MySoKit.BigIntApollo? { __data["storageRebate"] }
   /// 32-byte hash that identifies the object's current contents, encoded as a Base58 string.
@@ -139,7 +139,7 @@ public struct RPC_OBJECT_FIELDS: MySoKit.SelectionSet, Fragment {
       ] }
 
       /// Determines whether a transaction can transfer this object, using the TransferObjects
-      /// transaction command or `sui::transfer::public_transfer`, both of which require the object to
+      /// transaction command or `mys::transfer::public_transfer`, both of which require the object to
       /// have the `key` and `store` abilities.
       public var hasPublicTransfer: Bool { __data["hasPublicTransfer"] }
       /// Displays the contents of the Move object in a JSON string and through GraphQL types. Also
@@ -209,7 +209,7 @@ public struct RPC_OBJECT_FIELDS: MySoKit.SelectionSet, Fragment {
       ] }
 
       /// Determines whether a transaction can transfer this object, using the TransferObjects
-      /// transaction command or `sui::transfer::public_transfer`, both of which require the object to
+      /// transaction command or `mys::transfer::public_transfer`, both of which require the object to
       /// have the `key` and `store` abilities.
       public var hasPublicTransfer: Bool { __data["hasPublicTransfer"] }
       /// Displays the contents of the Move object in a JSON string and through GraphQL types. Also

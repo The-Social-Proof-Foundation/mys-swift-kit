@@ -35,7 +35,7 @@ class ZkLoginExample {
     private let networkUrl: URL
 
     // Services
-    private let provider: SuiProvider
+    private let provider: MySoProvider
     private let zkLoginAuthenticator: ZkLoginAuthenticator
     private let proofService: RemoteZkProofService
 
@@ -66,7 +66,7 @@ class ZkLoginExample {
         }
 
         // Initialize services
-        self.provider = SuiProvider(url: networkUrl)
+        self.provider = MySoProvider(url: networkUrl)
         self.zkLoginAuthenticator = ZkLoginAuthenticator(provider: provider)
         self.proofService = RemoteZkProofService(url: proofServiceUrl!)
     }
@@ -113,7 +113,7 @@ class ZkLoginExample {
         }
 
         guard let url = URL(string: urlString) else {
-            throw SuiError.error(code: .invalidURL)
+            throw MySoError.error(code: .invalidURL)
         }
 
         return (url, ephemeralKeypair, randomness, maxEpoch)
@@ -128,7 +128,7 @@ class ZkLoginExample {
 
         // Create a unique user identifier for storing the salt
         guard let sub = jwtClaims.sub, let iss = jwtClaims.iss else {
-            throw SuiError.error(code: .missingJWTClaim)
+            throw MySoError.error(code: .missingJWTClaim)
         }
 
         // Check if we already have a stored salt for this user
@@ -150,12 +150,12 @@ class ZkLoginExample {
         // Send request and parse response
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-            throw SuiError.error(code: .saltServiceError)
+            throw MySoError.error(code: .saltServiceError)
         }
 
         guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
               let salt = json["salt"] as? String else {
-            throw SuiError.error(code: .invalidSaltServiceResponse)
+            throw MySoError.error(code: .invalidSaltServiceResponse)
         }
 
         // Store the salt for future use
@@ -275,7 +275,7 @@ class ZkLoginExample {
             ephemeralKeypair: ephemeralKeypair,
             zkLoginSignature: zkLoginSignature,
             recipientAddress: recipientAddress,
-            amount: 100_000_000 // 0.1 SUI
+            amount: 100_000_000 // 0.1 MySo
         )
 
         print("Step 4: Sent transaction")

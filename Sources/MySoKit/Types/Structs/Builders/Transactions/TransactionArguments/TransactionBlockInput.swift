@@ -29,8 +29,8 @@ public struct TransactionBlockInput: KeyProtocol {
     /// Represents the position of the `TransactionBlockInput` in a collection.
     public var index: UInt16
 
-    /// The value associated with the `TransactionBlockInput`, encapsulated in a `SuiJsonValue`.
-    public var value: SuiJsonValue?
+    /// The value associated with the `TransactionBlockInput`, encapsulated in a `MySoJsonValue`.
+    public var value: MySoJsonValue?
 
     /// The type of the value associated with the `TransactionBlockInput`.
     public var type: ValueType?
@@ -43,7 +43,7 @@ public struct TransactionBlockInput: KeyProtocol {
     ///   - type: The type of the value to be associated with the `TransactionBlockInput`. Defaults to `nil`.
     public init(
         index: UInt16,
-        value: SuiJsonValue? = nil,
+        value: MySoJsonValue? = nil,
         type: ValueType? = nil
     ) {
         self.index = index

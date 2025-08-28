@@ -1,5 +1,5 @@
 //
-//  AccountError.swift
+//  RIPEMD160_SO.swift
 //  MySoKit
 //
 //  Copyright (c) 2025 The Social Proof Foundation, LLC.
@@ -21,12 +21,6 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-//
-
-//
-//  RIPEMD160_SO.swift
-//
-//  Created by Alexander Vlasov on 10.01.2018.
 //
 
 // From https://stackoverflow.com/questions/43091858/swift-hash-a-string-using-hash-hmac-with-ripemd160/43191938
@@ -348,7 +342,7 @@ public struct RIPEMD160 {
                             let pointer = bodyAddress.assumingMemoryBound(to: Void.self)
                             _ = memcpy(&X, pointer, 64)
                         } else {
-                            throw SuiError.customError(message: "Data error")
+                            throw MySoError.customError(message: "Data error")
                         }
                     }
                     compress(X)
@@ -365,7 +359,7 @@ public struct RIPEMD160 {
                 // Save remaining unprocessed bytes:
                 buffer = Data(bytes: ptr, count: length)
             } else {
-                throw SuiError.customError(message: "Data error")
+                throw MySoError.customError(message: "Data error")
             }
         }
         count += Int64(data.count)
@@ -380,7 +374,7 @@ public struct RIPEMD160 {
                 let pointer = bodyAddress.assumingMemoryBound(to: Void.self)
                 _ = memcpy(&X, pointer, buffer.count)
             } else {
-                throw SuiError.customError(message: "Data error")
+                throw MySoError.customError(message: "Data error")
             }
         }
 
@@ -407,7 +401,7 @@ public struct RIPEMD160 {
                 pointer[3] = MDbuf.3
                 pointer[4] = MDbuf.4
             } else {
-                throw SuiError.customError(message: "Data error")
+                throw MySoError.customError(message: "Data error")
             }
         }
 

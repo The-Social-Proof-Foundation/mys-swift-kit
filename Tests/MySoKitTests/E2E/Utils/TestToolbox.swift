@@ -33,13 +33,13 @@ internal class TestToolbox {
     let defaultRecipient = "0x0c567ffdf8162cb6d51af74be0199443b92e823d4ba6ced24de5c6c463797d46"
 
     let account: Account
-    let client: SuiProvider
-    let graphQLProvider: GraphQLSuiProvider
+    let client: MySoProvider
+    let graphQLProvider: GraphQLMySoProvider
 
     init(
         account: Account,
-        client: SuiProvider = SuiProvider(connection: LocalnetConnection()),
-        graphQLClient: GraphQLSuiProvider = GraphQLSuiProvider(connection: LocalnetConnection()),
+        client: MySoProvider = MySoProvider(connection: LocalnetConnection()),
+        graphQLClient: GraphQLMySoProvider = GraphQLMySoProvider(connection: LocalnetConnection()),
         _ needsFunds: Bool = true
     ) async throws {
         self.account = account
@@ -51,13 +51,13 @@ internal class TestToolbox {
 
     init(_ needsFunds: Bool = true) async throws {
         self.account = try Account()
-        self.client = SuiProvider(connection: LocalnetConnection())
-        self.graphQLProvider = GraphQLSuiProvider(connection: LocalnetConnection())
+        self.client = MySoProvider(connection: LocalnetConnection())
+        self.graphQLProvider = GraphQLMySoProvider(connection: LocalnetConnection())
         if needsFunds { try await self.setup() }
     }
 
     func address() throws -> String {
-        return try self.account.publicKey.toSuiAddress()
+        return try self.account.publicKey.toMySoAddress()
     }
 
     func getAllCoins() async throws -> PaginatedCoins {
@@ -66,13 +66,13 @@ internal class TestToolbox {
 
     func getCoins() async throws -> PaginatedCoins {
         return try await self.client.getCoins(
-            account: try self.account.publicKey.toSuiAddress(),
-            coinType: "0x2::sui::SUI"
+            account: try self.account.publicKey.toMySoAddress(),
+            coinType: "0x2::mys::MYS"
         )
     }
 
     func getActiveValidators() async throws -> [JSON] {
-        return try await self.client.info()["SuiValidatorSummary"].arrayValue
+        return try await self.client.info()["MysValidatorSummary"].arrayValue
     }
 
     func publishPackage(_ name: String) async throws -> PublishedPackage {
@@ -85,7 +85,7 @@ internal class TestToolbox {
         )
 
         _ = try txBlock.transferObject(objects: [cap], address: try self.address())
-        let options = SuiTransactionBlockResponseOptions(
+        let options = MySoTransactionBlockResponseOptions(
             showEffects: true,
             showObjectChanges: true
         )
@@ -100,7 +100,7 @@ internal class TestToolbox {
             publishTxBlock.effects?.status.status == .success,
             let objectChanges = publishTxBlock.objectChanges
         else {
-            throw SuiError.notImplemented
+            throw MySoError.notImplemented
         }
 
         let packageId = objectChanges.compactMap {
@@ -118,30 +118,30 @@ internal class TestToolbox {
     }
 
     func getRandomAddresses(_ n: Int) throws -> [String] {
-        return try (0..<n).map { _ in try Account().publicKey.toSuiAddress() }
+        return try (0..<n).map { _ in try Account().publicKey.toMySoAddress() }
     }
 
-    func paySui(
+    func payMySo(
         _ numRecipients: Int = 1,
         _ recipients: [String]? = nil,
         _ amounts: [Int]? = nil,
         _ coinId: String? = nil
-    ) async throws -> SuiTransactionBlockResponse {
+    ) async throws -> MySoTransactionBlockResponse {
         var txBlock = try TransactionBlock()
 
         let recipientsTx = try recipients ?? self.getRandomAddresses(numRecipients)
         let amountsTx = amounts ?? (0..<numRecipients).map { _ in self.defaultSendAmount }
 
-        guard recipientsTx.count == amountsTx.count else { throw SuiError.notImplemented }
+        guard recipientsTx.count == amountsTx.count else { throw MySoError.notImplemented }
 
         var coinIdTx = coinId
         if coinIdTx == nil {
             coinIdTx = try await self.client.getCoins(
-                account: try self.account.publicKey.toSuiAddress(),
-                coinType: "0x2::sui::SUI"
+                account: try self.account.publicKey.toMySoAddress(),
+                coinType: "0x2::mys::MYS"
             ).data[0].coinObjectId
         }
-        guard let coinIdTx = coinIdTx else { throw SuiError.notImplemented }
+        guard let coinIdTx = coinIdTx else { throw MySoError.notImplemented }
 
         try recipientsTx.enumerated().forEach { (idx, recipient) in
             let coin = try txBlock.splitCoin(
@@ -160,51 +160,51 @@ internal class TestToolbox {
         let publishTxBlock = try await self.client.signAndExecuteTransactionBlock(
             transactionBlock: &txBlock,
             signer: self.account,
-            options: SuiTransactionBlockResponseOptions(
+            options: MySoTransactionBlockResponseOptions(
                 showEffects: true,
                 showObjectChanges: true
             )
         )
 
         guard publishTxBlock.effects?.status.status == .success else {
-            throw SuiError.notImplemented
+            throw MySoError.notImplemented
         }
 
         return publishTxBlock
     }
 
-    func executePaySuiNTimes(
+    func executepayMySoNTimes(
         _ nTimes: Int,
         _ numRecipientsPerTxn: Int = 1,
         _ recipients: [String]? = nil,
         _ amounts: [Int]? = nil
-    ) async throws -> [SuiTransactionBlockResponse] {
-        let options = SuiTransactionBlockResponseOptions(showEffects: true, showObjectChanges: true)
-        var txns: [SuiTransactionBlockResponse] = []
+    ) async throws -> [MySoTransactionBlockResponse] {
+        let options = MySoTransactionBlockResponseOptions(showEffects: true, showObjectChanges: true)
+        var txns: [MySoTransactionBlockResponse] = []
         for _ in (0..<nTimes) {
-            var txResponse = try await self.paySui(numRecipientsPerTxn, recipients, amounts)
+            var txResponse = try await self.payMySo(numRecipientsPerTxn, recipients, amounts)
             txResponse = try await self.client.waitForTransaction(tx: txResponse.digest, options: options)
             txns.append(txResponse)
         }
         return txns
     }
 
-    func executeTransactionBlock(txb: inout TransactionBlock) async throws -> SuiTransactionBlockResponse {
-        let resp = try await self.client.signAndExecuteTransactionBlock(transactionBlock: &txb, signer: self.account, options: SuiTransactionBlockResponseOptions(showEffects: true, showEvents: true, showObjectChanges: true))
-        guard resp.effects?.status.status == .success else { throw SuiError.notImplemented }
+    func executeTransactionBlock(txb: inout TransactionBlock) async throws -> MySoTransactionBlockResponse {
+        let resp = try await self.client.signAndExecuteTransactionBlock(transactionBlock: &txb, signer: self.account, options: MySoTransactionBlockResponseOptions(showEffects: true, showEvents: true, showObjectChanges: true))
+        guard resp.effects?.status.status == .success else { throw MySoError.notImplemented }
         return resp
     }
 
-    func getCreatedObjectIdByType(res: SuiTransactionBlockResponse, type: String) throws -> String {
-        guard let objectChanges = res.objectChanges else { throw SuiError.notImplemented }
-        let results: [SuiObjectChangeCreated] = objectChanges.compactMap({ change in
+    func getCreatedObjectIdByType(res: MySoTransactionBlockResponse, type: String) throws -> String {
+        guard let objectChanges = res.objectChanges else { throw MySoError.notImplemented }
+        let results: [MySoObjectChangeCreated] = objectChanges.compactMap({ change in
             guard
                 case .created(let created) = change,
                 created.objectType.hasSuffix(type)
             else { return nil }
             return created
         })
-        if results.isEmpty { throw SuiError.customError(message: "Empty message") }
+        if results.isEmpty { throw MySoError.customError(message: "Empty message") }
         return results[0].objectId
     }
 
@@ -219,12 +219,12 @@ internal class TestToolbox {
         while isInitializing {
             do {
                 let faucet = FaucetClient(connection: self.client.connection)
-                _ = try await faucet.funcAccount(try self.account.publicKey.toSuiAddress())
+                _ = try await faucet.funcAccount(try self.account.publicKey.toMySoAddress())
                 isInitializing = false
             } catch {
                 if error.localizedDescription.contains("limit") {
                     isInitializing = false
-                    throw SuiError.customError(message: "Faucet rate limit error. Please try again later.")
+                    throw MySoError.customError(message: "Faucet rate limit error. Please try again later.")
                 }
                 print("Retrying requesting from faucet...")
                 try await Task.sleep(nanoseconds: 60_000_000_000)
@@ -232,12 +232,12 @@ internal class TestToolbox {
         }
     }
 
-    func faucetAccount(to suiAddress: String, andIsWaitingForFaucet waitForFaucet: Bool = false) async throws {
+    func faucetAccount(to mysoAddress: String, andIsWaitingForFaucet waitForFaucet: Bool = false) async throws {
         let faucet = FaucetClient(connection: self.client.connection)
-        let txFaucet = try await faucet.funcAccount(suiAddress)
+        let txFaucet = try await faucet.funcAccount(mysoAddress)
         if waitForFaucet {
             guard let coinsSent = txFaucet.coinsSent, !coinsSent.isEmpty else {
-                throw SuiError.customError(message: "No coins were sent")
+                throw MySoError.customError(message: "No coins were sent")
             }
             _ = try await self.client.waitForTransaction(tx: coinsSent[0].transferTxDigest)
         }
@@ -258,7 +258,7 @@ internal class TestToolbox {
             }
             return JSON(fileCompiledData)
         } else {
-            throw SuiError.notImplemented
+            throw MySoError.notImplemented
         }
     }
 }

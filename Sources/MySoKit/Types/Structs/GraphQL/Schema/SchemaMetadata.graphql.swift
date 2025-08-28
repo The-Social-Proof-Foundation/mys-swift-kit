@@ -96,11 +96,11 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "SafeMode": return MySoKit.Objects.SafeMode
     case "Shared": return MySoKit.Objects.Shared
     case "StakeSubsidy": return MySoKit.Objects.StakeSubsidy
-    case "StakedSui": return MySoKit.Objects.StakedSui
-    case "StakedSuiConnection": return MySoKit.Objects.StakedSuiConnection
+    case "StakedMys": return MySoKit.Objects.StakedMySo
+    case "StakedMysConnection": return MySoKit.Objects.StakedMySoConnection
     case "StorageFund": return MySoKit.Objects.StorageFund
-    case "SuinsRegistration": return MySoKit.Objects.SuinsRegistration
-    case "SuinsRegistrationConnection": return MySoKit.Objects.SuinsRegistrationConnection
+    case "MysnsRegistration": return MySoKit.Objects.MySonsRegistration
+    case "MysnsRegistrationConnection": return MySoKit.Objects.MySonsRegistrationConnection
     case "SystemParameters": return MySoKit.Objects.SystemParameters
     case "TransactionBlock": return MySoKit.Objects.TransactionBlock
     case "TransactionBlockConnection": return MySoKit.Objects.TransactionBlockConnection

@@ -35,13 +35,13 @@ final class TXBuilderTest: XCTestCase {
     var publishTxn: JSON?
     var sharedObjectId: String?
 
-    var suiClockObjectId: String = ""
+    var mysoClockObjectId: String = ""
 
     override func setUp() async throws {
         self.toolBox = try await TestToolbox(true)
         let packageResult = try await self.fetchToolBox().publishPackage("serializer")
         self.packageId = packageResult.packageId
-        guard let createdObjects = packageResult.publishedTx.effects?.created else { throw SuiError.notImplemented }
+        guard let createdObjects = packageResult.publishedTx.effects?.created else { throw MySoError.notImplemented }
         let sharedObject = createdObjects.filter { object in
             switch object.owner {
             case .shared:
@@ -51,7 +51,7 @@ final class TXBuilderTest: XCTestCase {
             }
         }
         self.sharedObjectId = sharedObject[0].reference.objectId
-        self.suiClockObjectId = try Inputs.normalizeSuiAddress(value: "0x6")
+        self.mysoClockObjectId = try Inputs.normalizeMySoAddress(value: "0x6")
     }
 
     private func fetchToolBox() throws -> TestToolbox {
@@ -86,10 +86,10 @@ final class TXBuilderTest: XCTestCase {
         return sharedObjectId
     }
 
-    private func validateTransaction(client: SuiProvider, account: Account, tx: inout TransactionBlock) async throws {
-        try tx.setSenderIfNotSet(sender: try account.publicKey.toSuiAddress())
+    private func validateTransaction(client: MySoProvider, account: Account, tx: inout TransactionBlock) async throws {
+        try tx.setSenderIfNotSet(sender: try account.publicKey.toMySoAddress())
         let localDigest = try await tx.getDigest(client)
-        let options = SuiTransactionBlockResponseOptions(showEffects: true)
+        let options = MySoTransactionBlockResponseOptions(showEffects: true)
         var result = try await client.signAndExecuteTransactionBlock(
             transactionBlock: &tx,
             signer: account,
@@ -155,7 +155,7 @@ final class TXBuilderTest: XCTestCase {
                 tx.object(id: coin0.coinObjectId).toTransactionArgument(),
                 .input(tx.pure(value: .number(UInt64(toolBox.defaultGasBudget * 2))))
             ],
-            typeArguments: ["0x2::sui::SUI"]
+            typeArguments: ["0x2::mys::MYS"]
         )
 
         try await self.validateTransaction(
@@ -235,7 +235,7 @@ final class TXBuilderTest: XCTestCase {
         var tx = try TransactionBlock()
         _ = try tx.moveCall(
             target: "\(try self.fetchPackageId())::serializer_tests::use_clock",
-            arguments: [tx.object(id: suiClockObjectId).toTransactionArgument()]
+            arguments: [tx.object(id: mysoClockObjectId).toTransactionArgument()]
         )
         try await self.validateTransaction(
             client: toolBox.client,

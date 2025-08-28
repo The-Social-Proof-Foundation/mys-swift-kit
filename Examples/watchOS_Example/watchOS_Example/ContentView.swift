@@ -62,7 +62,7 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            Image("suiLogo")
+            Image("mysoLogo")
                 .resizable()
                 .scaledToFit()
                 .frame(width: UIScreen.main.bounds.width - 200)
@@ -126,7 +126,7 @@ struct ContentView: View {
                 .padding(.top, 40)
                 .padding(.horizontal)
 
-                Text("Current Wallet Balance: \(self.currentWalletBalance) SUI")
+                Text("Current Wallet Balance: \(self.currentWalletBalance) MySo")
                     .padding(.top)
             } else {
                 Text("Generate or Import a wallet")
@@ -234,8 +234,8 @@ public class HomeViewModel: ObservableObject {
     @Published var walletAddress: String = ""
     @Published var collectionId: String = ""
 
-    public let restClient = SuiProvider(connection: DevnetConnection())
-    public let faucetClient = FaucetClient(connection: DevnetConnection())
+    public let restClient = MySoProvider(connection: TestnetConnection())
+    public let faucetClient = FaucetClient(connection: TestnetConnection())
 
     public init(_ mnemos: [[String]]? = nil) throws {
         if let mnemos {

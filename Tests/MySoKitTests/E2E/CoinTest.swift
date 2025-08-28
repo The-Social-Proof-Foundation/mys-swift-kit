@@ -37,13 +37,13 @@ final class CoinTest: XCTestCase {
 
     func testThatGetCoinStructTagWorksAsIntended() async throws {
         let toolbox = try await TestToolbox(true)
-        let suiStructTag = SuiMoveNormalizedStructType(
-            address: try AccountAddress.fromHex(try Inputs.normalizeSuiAddress(value: "0x2")),
-            module: "sui",
-            name: "SUI",
+        let mysoStructTag = MySoMoveNormalizedStructType(
+            address: try AccountAddress.fromHex(try Inputs.normalizeMySoAddress(value: "0x2")),
+            module: "mys",
+            name: "MYS",
             typeArguments: []
         )
         let coins = try await toolbox.getCoins()
-        XCTAssertEqual(try Coin.getCoinStructTag(coinTypeArg: coins.data[0].coinType.toString()), suiStructTag)
+        XCTAssertEqual(try Coin.getCoinStructTag(coinTypeArg: coins.data[0].coinType.toString()), mysoStructTag)
     }
 }

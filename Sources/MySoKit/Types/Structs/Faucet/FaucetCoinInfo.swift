@@ -26,7 +26,7 @@
 import Foundation
 
 #if swift(>=6.0)
-/// Represents information about a coin from a faucet in the Sui ecosystem.
+/// Represents information about a coin from a faucet in the MySo ecosystem.
 public struct FaucetCoinInfo: Codable, Sendable {
     /// Represents the amount of coins.
     public let amount: Int
@@ -38,7 +38,7 @@ public struct FaucetCoinInfo: Codable, Sendable {
     public let transferTxDigest: TransactionDigest
 }
 #elseif swift(<6.0)
-/// Represents information about a coin from a faucet in the Sui ecosystem.
+/// Represents information about a coin from a faucet in the MySo ecosystem.
 public struct FaucetCoinInfo: Codable {
     /// Represents the amount of coins.
     public let amount: Int
@@ -52,7 +52,7 @@ public struct FaucetCoinInfo: Codable {
 #endif
 
 public struct FaucetCoins: Codable {
-    /// Represents the coins (0x2::sui::SUI) that were fauceted to the account. Can be null if faucet failed
+    /// Represents the coins (0x2::mys::MYS) that were fauceted to the account. Can be null if faucet failed
     public let coinsSent: [FaucetCoinInfo]?
 
     /// Represents either "success" if the faucet succeeded, or a "Failure" object with `status` string containing a `JSON` object.

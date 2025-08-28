@@ -123,7 +123,7 @@ final class SECP256R1WalletTest: XCTestCase {
         for testCase in testCases {
             // Keypair derived from mnemonic
             let account = try Account(testCase[0], accountType: .secp256r1)
-            XCTAssertEqual(try account.publicKey.toSuiAddress(), testCase[2])
+            XCTAssertEqual(try account.publicKey.toMySoAddress(), testCase[2])
 
             // Keypair derived from 32-byte secret key
             guard let raw = Data.fromBase64(testCase[1]) else { XCTFail("Failed to decode message"); return; }
@@ -134,7 +134,7 @@ final class SECP256R1WalletTest: XCTestCase {
             guard raw[0] == 2 && raw.count == (self.privateKeySize + 1) else { XCTFail("Raw data not decoded correctly"); return; }
 
             let imported = try Account(privateKey: raw.dropFirst(), accountType: .secp256r1)
-            XCTAssertEqual(try imported.publicKey.toSuiAddress(), testCase[2])
+            XCTAssertEqual(try imported.publicKey.toMySoAddress(), testCase[2])
 
             // Exported secret key matches the 32-byte secret key.
             let exported = try imported.export()
@@ -144,7 +144,7 @@ final class SECP256R1WalletTest: XCTestCase {
 
     func testThatIncorrectPurposeNodeForSecp256r1PrivateKeyWillThrow() throws {
         func invalidKeyThrow() throws {
-            _ = try SECP256R1PrivateKey(self.testMnemonic, "m/54'/784'/0'/0'/0'")
+            _ = try SECP256R1PrivateKey(self.testMnemonic, "m/54'/6976'/0'/0'/0'")
         }
 
         XCTAssertThrowsError(
@@ -154,7 +154,7 @@ final class SECP256R1WalletTest: XCTestCase {
 
     func testThatIncorrectHardendedNodeForSecp256r1PrivateKeyWillThrow() throws {
         func invalidKeyThrow() throws {
-            _ = try SECP256R1PrivateKey(self.testMnemonic, "m/44'/784'/0'/0'/0'")
+            _ = try SECP256R1PrivateKey(self.testMnemonic, "m/44'/6976'/0'/0'/0'")
         }
 
         XCTAssertThrowsError(
@@ -166,17 +166,17 @@ final class SECP256R1WalletTest: XCTestCase {
         let account = try Account(accountType: .secp256r1)
         let txb = try TransactionBlock()
 
-        try txb.setSender(sender: try account.publicKey.toSuiAddress())
+        try txb.setSender(sender: try account.publicKey.toMySoAddress())
         txb.setGasPrice(price: BigInt("5"))
         txb.setGasBudget(price: BigInt("100"))
         try txb.setGasPayment(payments: [
-            SuiObjectRef(
+            MySoObjectRef(
                 objectId: try self.randomAccountAddress(),
                 version: self.randomVersion(),
                 digest: [UInt8]([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]).base58EncodedString
             )
         ])
-        let result = try await txb.build(SuiProvider(connection: LocalnetConnection()))
+        let result = try await txb.build(MySoProvider(connection: LocalnetConnection()))
 
         let serializedSignature = try account.signTransactionBlock([UInt8](result))
 

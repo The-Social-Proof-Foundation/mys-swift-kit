@@ -16,10 +16,10 @@ public struct TransactionBlockFilter: InputObject {
     afterCheckpoint: GraphQLNullable<UInt53Apollo> = nil,
     atCheckpoint: GraphQLNullable<UInt53Apollo> = nil,
     beforeCheckpoint: GraphQLNullable<UInt53Apollo> = nil,
-    affectedAddress: GraphQLNullable<SuiAddressApollo> = nil,
-    sentAddress: GraphQLNullable<SuiAddressApollo> = nil,
-    inputObject: GraphQLNullable<SuiAddressApollo> = nil,
-    changedObject: GraphQLNullable<SuiAddressApollo> = nil,
+    affectedAddress: GraphQLNullable<MySoAddressApollo> = nil,
+    sentAddress: GraphQLNullable<MySoAddressApollo> = nil,
+    inputObject: GraphQLNullable<MySoAddressApollo> = nil,
+    changedObject: GraphQLNullable<MySoAddressApollo> = nil,
     transactionIds: GraphQLNullable<[String]> = nil
   ) {
     __data = InputDict([
@@ -69,13 +69,13 @@ public struct TransactionBlockFilter: InputObject {
 
   /// Limit to transactions that interacted with the given address. The address could be a
   /// sender, sponsor, or recipient of the transaction.
-  public var affectedAddress: GraphQLNullable<SuiAddressApollo> {
+  public var affectedAddress: GraphQLNullable<MySoAddressApollo> {
     get { __data["affectedAddress"] }
     set { __data["affectedAddress"] = newValue }
   }
 
   /// Limit to transactions that were sent by the given address.
-  public var sentAddress: GraphQLNullable<SuiAddressApollo> {
+  public var sentAddress: GraphQLNullable<MySoAddressApollo> {
     get { __data["sentAddress"] }
     set { __data["sentAddress"] = newValue }
   }
@@ -85,7 +85,7 @@ public struct TransactionBlockFilter: InputObject {
   ///
   /// This filter will be removed with 1.36.0 (2024-10-14), or at least one release after
   /// `affectedObject` is introduced, whichever is later.
-  public var inputObject: GraphQLNullable<SuiAddressApollo> {
+  public var inputObject: GraphQLNullable<MySoAddressApollo> {
     get { __data["inputObject"] }
     set { __data["inputObject"] = newValue }
   }
@@ -95,7 +95,7 @@ public struct TransactionBlockFilter: InputObject {
   ///
   /// This filter will be removed with 1.36.0 (2024-10-14), or at least one release after
   /// `affectedObject` is introduced, whichever is later.
-  public var changedObject: GraphQLNullable<SuiAddressApollo> {
+  public var changedObject: GraphQLNullable<MySoAddressApollo> {
     get { __data["changedObject"] }
     set { __data["changedObject"] = newValue }
   }

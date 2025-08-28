@@ -7,16 +7,16 @@ public class GetNormalizedMoveFunctionQuery: GraphQLQuery {
   public static let operationName: String = "getNormalizedMoveFunction"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query getNormalizedMoveFunction($packageId: SuiAddress!, $module: String!, $function: String!) { object(address: $packageId) { __typename address asMovePackage { __typename module(name: $module) { __typename fileFormatVersion function(name: $function) { __typename ...RPC_MOVE_FUNCTION_FIELDS } } } } }"#,
+      #"query getNormalizedMoveFunction($packageId: MysAddress!, $module: String!, $function: String!) { object(address: $packageId) { __typename address asMovePackage { __typename module(name: $module) { __typename fileFormatVersion function(name: $function) { __typename ...RPC_MOVE_FUNCTION_FIELDS } } } } }"#,
       fragments: [RPC_MOVE_FUNCTION_FIELDS.self]
     ))
 
-  public var packageId: SuiAddressApollo
+  public var packageId: MySoAddressApollo
   public var module: String
   public var function: String
 
   public init(
-    packageId: SuiAddressApollo,
+    packageId: MySoAddressApollo,
     module: String,
     function: String
   ) {
@@ -54,11 +54,11 @@ public class GetNormalizedMoveFunctionQuery: GraphQLQuery {
       public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.Object }
       public static var __selections: [ApolloAPI.Selection] { [
         .field("__typename", String.self),
-        .field("address", MySoKit.SuiAddressApollo.self),
+        .field("address", MySoKit.MySoAddressApollo.self),
         .field("asMovePackage", AsMovePackage?.self)
       ] }
 
-      public var address: MySoKit.SuiAddressApollo { __data["address"] }
+      public var address: MySoKit.MySoAddressApollo { __data["address"] }
       /// Attempts to convert the object into a MovePackage
       public var asMovePackage: AsMovePackage? { __data["asMovePackage"] }
 

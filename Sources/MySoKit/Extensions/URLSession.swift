@@ -120,7 +120,7 @@ extension URLSession {
         try await withCheckedThrowingContinuation { (con: CheckedContinuation<Data, Error>) in
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
                 if let response = response as? HTTPURLResponse, response.statusCode == 429 {
-                    con.resume(throwing: SuiError.customError(
+                    con.resume(throwing: MySoError.customError(
                         message: "No data provided: \(self). Must be a hex string"
                     ))
                 } else if let error = error {

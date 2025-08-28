@@ -11,7 +11,7 @@ public struct ObjectKey: InputObject {
   }
 
   public init(
-    objectId: SuiAddressApollo,
+    objectId: MySoAddressApollo,
     version: UInt53Apollo
   ) {
     __data = InputDict([
@@ -20,7 +20,7 @@ public struct ObjectKey: InputObject {
     ])
   }
 
-  public var objectId: SuiAddressApollo {
+  public var objectId: MySoAddressApollo {
     get { __data["objectId"] }
     set { __data["objectId"] = newValue }
   }

@@ -43,14 +43,14 @@ public struct ExecutionResultType {
         self.returnValues = []
         self.mutableReferenceOutputs = []
 
-        var argument: SuiMoveNormalizedStructType?
+        var argument: MySoMoveNormalizedStructType?
         var valueArray: [UInt8]?
         var name: String?
         let mutable = input["mutableReferenceOutputs"].arrayValue
         for mutableValue in mutable {
             mutableValue.arrayValue.forEach { value in
                 if let type = value.string {
-                    if let argumentUnwrapped = try? SuiMoveNormalizedStructType(input: type) {
+                    if let argumentUnwrapped = try? MySoMoveNormalizedStructType(input: type) {
                         argument = argumentUnwrapped
                     } else {
                         name = type
@@ -71,11 +71,11 @@ public struct ExecutionResultType {
         let returnValues = input["returnValues"].arrayValue
         for returnIteration in returnValues {
             var returnUInt8Array: [UInt8]?
-            var returnName: SuiMoveNormalizedStructType?
+            var returnName: MySoMoveNormalizedStructType?
             returnIteration.arrayValue.forEach { returnValue in
                 if let uInt8ArrayValue = returnValue.array {
                     returnUInt8Array = uInt8ArrayValue.map { $0.uInt8Value }
-                } else if let returnArgumentUnwrapped = try? SuiMoveNormalizedStructType(input: returnValue.stringValue) {
+                } else if let returnArgumentUnwrapped = try? MySoMoveNormalizedStructType(input: returnValue.stringValue) {
                     returnName = returnArgumentUnwrapped
                 }
             }

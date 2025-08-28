@@ -28,5 +28,5 @@ import MySoKit
 
 internal struct PublishedPackage {
     internal let packageId: String
-    internal let publishedTx: SuiTransactionBlockResponse
+    internal let publishedTx: MySoTransactionBlockResponse
 }

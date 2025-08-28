@@ -44,7 +44,7 @@ struct TransferView: View {
 
     var body: some View {
         VStack {
-            Image("suiLogo")
+            Image("mysoLogo")
                 .resizable()
                 .scaledToFit()
                 .frame(width: UIScreen.main.bounds.width - 200)
@@ -74,7 +74,7 @@ struct TransferView: View {
                     .padding(.horizontal)
                     .focused($isFocused)
 
-                TextField("Token Amount (SUI)", text: $tokenAmount)
+                TextField("Token Amount (MySo)", text: $tokenAmount)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding(10)
                     .focused($isFocused)

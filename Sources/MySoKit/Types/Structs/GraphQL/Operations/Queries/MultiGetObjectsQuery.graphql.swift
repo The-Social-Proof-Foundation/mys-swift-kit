@@ -7,11 +7,11 @@ public class MultiGetObjectsQuery: GraphQLQuery {
   public static let operationName: String = "multiGetObjects"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query multiGetObjects($ids: [SuiAddress!]!, $limit: Int, $cursor: String, $showBcs: Boolean = false, $showContent: Boolean = false, $showDisplay: Boolean = false, $showType: Boolean = false, $showOwner: Boolean = false, $showPreviousTransaction: Boolean = false, $showStorageRebate: Boolean = false) { objects(first: $limit, after: $cursor, filter: { objectIds: $ids }) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename ...RPC_OBJECT_FIELDS } } }"#,
+      #"query multiGetObjects($ids: [MysAddress!]!, $limit: Int, $cursor: String, $showBcs: Boolean = false, $showContent: Boolean = false, $showDisplay: Boolean = false, $showType: Boolean = false, $showOwner: Boolean = false, $showPreviousTransaction: Boolean = false, $showStorageRebate: Boolean = false) { objects(first: $limit, after: $cursor, filter: { objectIds: $ids }) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename ...RPC_OBJECT_FIELDS } } }"#,
       fragments: [RPC_OBJECT_FIELDS.self, RPC_OBJECT_OWNER_FIELDS.self]
     ))
 
-  public var ids: [SuiAddressApollo]
+  public var ids: [MySoAddressApollo]
   public var limit: GraphQLNullable<Int>
   public var cursor: GraphQLNullable<String>
   public var showBcs: GraphQLNullable<Bool>
@@ -23,7 +23,7 @@ public class MultiGetObjectsQuery: GraphQLQuery {
   public var showStorageRebate: GraphQLNullable<Bool>
 
   public init(
-    ids: [SuiAddressApollo],
+    ids: [MySoAddressApollo],
     limit: GraphQLNullable<Int>,
     cursor: GraphQLNullable<String>,
     showBcs: GraphQLNullable<Bool> = false,
@@ -127,7 +127,7 @@ public class MultiGetObjectsQuery: GraphQLQuery {
           .fragment(RPC_OBJECT_FIELDS.self)
         ] }
 
-        public var objectId: MySoKit.SuiAddressApollo { __data["objectId"] }
+        public var objectId: MySoKit.MySoAddressApollo { __data["objectId"] }
         public var version: MySoKit.UInt53Apollo { __data["version"] }
         /// Attempts to convert the object into a MoveObject
         public var asMoveObject: AsMoveObject? { __data["asMoveObject"] }
@@ -136,7 +136,7 @@ public class MultiGetObjectsQuery: GraphQLQuery {
         public var owner: Owner? { __data["owner"] }
         /// The transaction block that created this version of the object.
         public var previousTransactionBlock: PreviousTransactionBlock? { __data["previousTransactionBlock"] }
-        /// The amount of SUI we would rebate if this object gets deleted or mutated. This number is
+        /// The amount of MYS we would rebate if this object gets deleted or mutated. This number is
         /// recalculated based on the present storage gas price.
         public var storageRebate: MySoKit.BigIntApollo? { __data["storageRebate"] }
         /// 32-byte hash that identifies the object's current contents, encoded as a Base58 string.

@@ -72,19 +72,19 @@ public struct JsonRpcClient {
         self.session = session ?? Self.sharedSession
     }
 
-    /// Process a JSON-RPC request and returns a `SuiResponse`.
+    /// Process a JSON-RPC request and returns a `MySoResponse`.
     /// - Parameters:
     ///   - url: The URL of the JSON-RPC server.
-    ///   - request: The `SuiRequest` to be sent.
-    /// - Returns: A `SuiResponse` object.
+    ///   - request: The `MySoRequest` to be sent.
+    /// - Returns: A `MySoResponse` object.
     /// - Throws: Decoding errors if the response cannot be decoded.
-    public static func processSuiJsonRpc(_ url: URL, _ request: SuiRequest) async throws -> SuiResponse {
-        let data = try await Self.sendSuiJsonRpc(url, request)
+    public static func processMySoJsonRpc(_ url: URL, _ request: MySoRequest) async throws -> MySoResponse {
+        let data = try await Self.sendMySoJsonRpc(url, request)
 
         do {
-            return try JSONDecoder().decode(SuiResponse.self, from: data)
+            return try JSONDecoder().decode(MySoResponse.self, from: data)
         } catch {
-            let error = try JSONDecoder().decode(SuiClientError.self, from: data)
+            let error = try JSONDecoder().decode(MySoClientError.self, from: data)
             throw error
         }
     }
@@ -92,10 +92,10 @@ public struct JsonRpcClient {
     /// Sends a JSON-RPC request and returns the received data.
     /// - Parameters:
     ///   - url: The URL of the JSON-RPC server.
-    ///   - request: The `SuiRequest` to be sent.
+    ///   - request: The `MySoRequest` to be sent.
     /// - Returns: The received `Data`.
     /// - Throws: Encoding errors if the request cannot be encoded.
-    public static func sendSuiJsonRpc(_ url: URL, _ request: SuiRequest) async throws -> Data {
+    public static func sendMySoJsonRpc(_ url: URL, _ request: MySoRequest) async throws -> Data {
         var requestUrl = URLRequest(url: url)
         requestUrl.allHTTPHeaderFields = ["Content-Type": "application/json"]
         requestUrl.httpMethod = "POST"
@@ -106,7 +106,7 @@ public struct JsonRpcClient {
             let (data, _) = try await URLSession.shared.data(for: requestUrl)
             return data
         } catch {
-            throw SuiError.customError(message: "Encoding error")
+            throw MySoError.customError(message: "Encoding error")
         }
     }
 

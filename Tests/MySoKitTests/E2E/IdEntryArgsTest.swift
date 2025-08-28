@@ -68,7 +68,7 @@ final class IdEntryArgsTest: XCTestCase {
         let result = try await toolBox.client.signAndExecuteTransactionBlock(
             transactionBlock: &tx,
             signer: toolBox.account,
-            options: SuiTransactionBlockResponseOptions(showEffects: true)
+            options: MySoTransactionBlockResponseOptions(showEffects: true)
         )
         guard result.effects?.status.status == .success else {
             XCTFail("Transaction Failed")
@@ -90,7 +90,7 @@ final class IdEntryArgsTest: XCTestCase {
         let result = try await toolBox.client.signAndExecuteTransactionBlock(
             transactionBlock: &tx,
             signer: toolBox.account,
-            options: SuiTransactionBlockResponseOptions(showEffects: true)
+            options: MySoTransactionBlockResponseOptions(showEffects: true)
         )
         guard result.effects?.status.status == .success else {
             XCTFail("Transaction Failed")

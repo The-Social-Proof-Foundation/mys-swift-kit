@@ -30,10 +30,10 @@ public struct CoinStruct: Equatable {
     /// of the previous transaction associated with this coin object.
     public let previousTransaction: TransactionDigest
 
-    /// Converts the `CoinStruct` instance to a `SuiObjectData` instance.
-    /// - Returns: A `SuiObjectData` instance containing relevant data from `CoinStruct`.
-    public func toSuiObjectData() -> SuiObjectData {
-        return SuiObjectData(
+    /// Converts the `CoinStruct` instance to a `MySoObjectData` instance.
+    /// - Returns: A `MySoObjectData` instance containing relevant data from `CoinStruct`.
+    public func toMySoObjectData() -> MySoObjectData {
+        return MySoObjectData(
             bcs: nil,
             content: nil,
             digest: self.digest,
@@ -47,10 +47,10 @@ public struct CoinStruct: Equatable {
         )
     }
 
-    /// Converts the `CoinStruct` instance to a `SuiObjectRef` instance.
-    /// - Returns: A `SuiObjectRef` instance containing relevant references from `CoinStruct`.
-    public func toSuiObjectRef() -> SuiObjectRef {
-        return SuiObjectRef(
+    /// Converts the `CoinStruct` instance to a `MySoObjectRef` instance.
+    /// - Returns: A `MySoObjectRef` instance containing relevant references from `CoinStruct`.
+    public func toMySoObjectRef() -> MySoObjectRef {
+        return MySoObjectRef(
             objectId: self.coinObjectId,
             version: self.version,
             digest: self.digest

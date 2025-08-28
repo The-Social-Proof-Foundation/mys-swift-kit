@@ -25,7 +25,7 @@
 
 import Foundation
 
-/// Names for each of the Sui framework transaction kinds.
+/// Names for each of the MySo framework transaction kinds.
 public enum TransactionKindName: String {
     /// A block for a programmable transaction.
     case programmableTransaction = "ProgrammableTransaction"

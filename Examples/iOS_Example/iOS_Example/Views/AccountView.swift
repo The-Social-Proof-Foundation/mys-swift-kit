@@ -41,7 +41,7 @@ struct AccountView: View {
 
     var body: some View {
         VStack {
-            Image("suiLogo")
+            Image("mysoLogo")
                 .resizable()
                 .scaledToFit()
                 .frame(width: UIScreen.main.bounds.width - 200)
@@ -49,7 +49,7 @@ struct AccountView: View {
                 .padding(.top, 25)
 
             if isAirdropping {
-                Text("Airdropping 10 SUI...")
+                Text("Airdropping 10 MySo...")
                     .font(.title)
                     .padding(.top)
             } else {
@@ -96,7 +96,7 @@ struct AccountView: View {
                         self.isAirdropping = true
                         try await self.viewModel.airdropToCurrentWallet()
                         self.isShowingAlert = true
-                    } catch let error as SuiError {
+                    } catch let error as MySoError {
                         self.isAirdropping = false
                         self.errorMessage = "\(error)"
                         self.isShowingError = true
@@ -112,7 +112,7 @@ struct AccountView: View {
                         .clipShape(Capsule())
                         .padding(.top, 8)
                 } else {
-                    Text("Airdrop 10 SUI")
+                    Text("Airdrop 10 MySo")
                         .font(.headline)
                         .foregroundColor(.white)
                         .frame(width: 270, height: 50)
@@ -125,7 +125,7 @@ struct AccountView: View {
 
             Spacer()
         }
-        .alert("Successfully Airdropped 10 SUI", isPresented: $isShowingAlert) {
+        .alert("Successfully Airdropped 10 MySo", isPresented: $isShowingAlert) {
             Button("OK", role: .cancel) {
                 self.isAirdropping = false
                 self.isShowingAlert = false

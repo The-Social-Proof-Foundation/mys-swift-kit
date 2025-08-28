@@ -3,7 +3,7 @@
 
 import ApolloAPI
 
-/// Abilities are keywords in Sui Move that define how types behave at the compiler level.
+/// Abilities are keywords in MySo Move that define how types behave at the compiler level.
 public enum MoveAbility: String, EnumType {
   /// Enables values to be copied.
   case copy = "COPY"

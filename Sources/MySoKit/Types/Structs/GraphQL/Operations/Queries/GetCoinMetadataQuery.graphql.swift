@@ -46,7 +46,7 @@ public class GetCoinMetadataQuery: GraphQLQuery {
         .field("symbol", String?.self),
         .field("description", String?.self),
         .field("iconUrl", String?.self),
-        .field("address", MySoKit.SuiAddressApollo.self)
+        .field("address", MySoKit.MySoAddressApollo.self)
       ] }
 
       /// The number of decimal places used to represent the token.
@@ -58,7 +58,7 @@ public class GetCoinMetadataQuery: GraphQLQuery {
       /// Optional description of the token, provided by the creator of the token.
       public var description: String? { __data["description"] }
       public var iconUrl: String? { __data["iconUrl"] }
-      public var address: MySoKit.SuiAddressApollo { __data["address"] }
+      public var address: MySoKit.MySoAddressApollo { __data["address"] }
     }
   }
 }

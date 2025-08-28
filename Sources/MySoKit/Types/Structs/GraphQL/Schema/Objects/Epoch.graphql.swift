@@ -4,7 +4,7 @@
 import ApolloAPI
 
 public extension Objects {
-  /// Operation of the Sui network is temporally partitioned into non-overlapping epochs,
+  /// Operation of the MySo network is temporally partitioned into non-overlapping epochs,
   /// and the network aims to keep epochs roughly the same duration as each other.
   /// During a particular epoch the following data is fixed:
   ///

@@ -26,16 +26,16 @@
 import Foundation
 import SwiftyJSON
 
-/// `ObjectRead` describes the result of attempting to read an object in the Sui blockchain ecosystem.
+/// `ObjectRead` describes the result of attempting to read an object in the MySo blockchain ecosystem.
 public enum ObjectRead {
-    /// Indicates that the object's version was successfully found. The associated value is the found `SuiObjectData`.
-    case versionFound(SuiObjectData)
+    /// Indicates that the object's version was successfully found. The associated value is the found `MySoObjectData`.
+    case versionFound(MySoObjectData)
 
     /// Indicates that the object does not exist. The associated value is a `String` containing the object's identifier.
     case objectNotExists(String)
 
-    /// Indicates that the object has been deleted. The associated value is a `SuiObjectRef` reference to the deleted object.
-    case objectDeleted(SuiObjectRef)
+    /// Indicates that the object has been deleted. The associated value is a `MySoObjectRef` reference to the deleted object.
+    case objectDeleted(MySoObjectRef)
 
     /// Indicates that the requested version of the object was not found. The associated values are `String`s containing the object ID and the requested version.
     case versionNotFound(String, String)
@@ -53,12 +53,12 @@ public enum ObjectRead {
     public static func parseJSON(_ data: JSON) -> ObjectRead? {
         switch data["status"].stringValue {
         case "VersionFound":
-            guard let versionFound = SuiObjectData(data: data["details"]) else { return nil }
+            guard let versionFound = MySoObjectData(data: data["details"]) else { return nil }
             return .versionFound(versionFound)
         case "ObjectNotExists":
             return .objectNotExists(data["details"].stringValue)
         case "ObjectDeleted":
-            return .objectDeleted(SuiObjectRef(input: data["details"]))
+            return .objectDeleted(MySoObjectRef(input: data["details"]))
         case "VersionNotFound":
             return .versionNotFound(
                 data["details"].arrayValue[0].stringValue,

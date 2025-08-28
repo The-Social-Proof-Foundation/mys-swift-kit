@@ -69,7 +69,7 @@ final class ZkLoginSignerTests: XCTestCase {
     )
 
     var toolBox: TestToolbox?
-    var graphQLClient: SuiGraphQLClient!
+    var graphQLClient: MySoGraphQLClient!
 
     let graphQLUrl = "http://127.0.0.1:9125"
     let issInput = "https://accounts.google.com"
@@ -77,7 +77,7 @@ final class ZkLoginSignerTests: XCTestCase {
     override func setUp() async throws {
         self.toolBox = try await TestToolbox()
         // TODO: Implement toggle between localnet and deployed nets
-        self.graphQLClient = SuiGraphQLClient(url: URL(string: graphQLUrl)!)
+        self.graphQLClient = MySoGraphQLClient(url: URL(string: graphQLUrl)!)
     }
 
     private func fetchToolBox() throws -> TestToolbox {
@@ -315,7 +315,7 @@ final class ZkLoginSignerTests: XCTestCase {
             )
             XCTFail("Expected error when verifying without GraphQL client")
         } catch {
-            XCTAssertTrue(error is SuiError)
+            XCTAssertTrue(error is MySoError)
         }
 
         do {
@@ -325,7 +325,7 @@ final class ZkLoginSignerTests: XCTestCase {
             )
             XCTFail("Expected error when verifying without GraphQL client")
         } catch {
-            XCTAssertTrue(error is SuiError)
+            XCTAssertTrue(error is MySoError)
         }
     }
 }

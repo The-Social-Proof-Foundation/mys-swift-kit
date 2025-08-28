@@ -26,7 +26,7 @@
 import Foundation
 
 public struct MainnetConnection: ConnectionProtocol {
-    public var fullNode: String = "https://fullnode.mainnet.mysocial.network:443/"
+    public var fullNode: String = "https://fullnode.mainnet.mysocial.network/"
     public var graphql: String? = "https://mys-graphql-rpc-testnet.up.railway.app/"
 
     public init() { }

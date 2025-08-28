@@ -61,14 +61,14 @@ final class ObjectVectorTest: XCTestCase {
         let result = try await toolBox.client.signAndExecuteTransactionBlock(
             transactionBlock: &tx,
             signer: toolBox.account,
-            options: SuiTransactionBlockResponseOptions(showEffects: true)
+            options: MySoTransactionBlockResponseOptions(showEffects: true)
         )
         guard
             result.effects?.status.status == .success,
             let returnValue = result.effects?.created?[0].reference.objectId
         else {
             XCTFail("Transaction Failed")
-            throw SuiError.notImplemented
+            throw MySoError.notImplemented
         }
         return returnValue
     }
@@ -86,7 +86,7 @@ final class ObjectVectorTest: XCTestCase {
         let result = try await toolBox.client.signAndExecuteTransactionBlock(
             transactionBlock: &tx,
             signer: toolBox.account,
-            options: SuiTransactionBlockResponseOptions(showEffects: true)
+            options: MySoTransactionBlockResponseOptions(showEffects: true)
         )
         guard result.effects?.status.status == .success else {
             XCTFail("Transaction Failed")
@@ -139,13 +139,13 @@ final class ObjectVectorTest: XCTestCase {
                 tx.object(id: coinIds[0]).toTransactionArgument(),
                 vec
             ],
-            typeArguments: ["0x2::sui::SUI"]
+            typeArguments: ["0x2::mys::MYS"]
         )
-        try tx.setGasPayment(payments: [coin.toSuiObjectRef()])
+        try tx.setGasPayment(payments: [coin.toMySoObjectRef()])
         let result = try await toolBox.client.signAndExecuteTransactionBlock(
             transactionBlock: &tx,
             signer: toolBox.account,
-            options: SuiTransactionBlockResponseOptions(showEffects: true)
+            options: MySoTransactionBlockResponseOptions(showEffects: true)
         )
         guard result.effects?.status.status == .success else {
             XCTFail("Transaction Failed")

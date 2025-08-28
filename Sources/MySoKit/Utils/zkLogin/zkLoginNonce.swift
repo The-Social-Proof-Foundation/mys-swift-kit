@@ -41,13 +41,13 @@ public struct zkLoginNonce {
     }
 
     public static func generateNonce(publicKey: any PublicKeyProtocol, maxEpoch: Int, randomness: String) throws -> String {
-        let publicKeyBytes = try Self.toBigIntBE(bytes: Data(publicKey.toSuiBytes()))
+        let publicKeyBytes = try Self.toBigIntBE(bytes: Data(publicKey.toMySoBytes()))
         let ephPublicKey0 = publicKeyBytes / BigInt(2).power(128)
         let ephPublicKey1 = publicKeyBytes % BigInt(2).power(128)
         let bigNum = try PoseidonUtilities.poseidonHash(inputs: [ephPublicKey0, ephPublicKey1, BigInt(maxEpoch), BigInt(randomness, radix: 10)!])
         let z = zkLoginUtilities.toBigEndianBytes(num: bigNum, width: 20)
         let nonce = Data(z).base64urlEncodedString()
-        guard nonce.count == Self.nonceLength else { throw SuiError.customError(message: "Invalid nonce length") }
+        guard nonce.count == Self.nonceLength else { throw MySoError.customError(message: "Invalid nonce length") }
         return nonce
     }
 

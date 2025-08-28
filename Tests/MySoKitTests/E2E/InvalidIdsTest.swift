@@ -42,7 +42,7 @@ final class InvalidIdsTest: XCTestCase {
         return toolBox
     }
 
-    func testThatVerifiesGetOwnedObjectsThrowsWithAnInvalidSuiAddress() async throws {
+    func testThatVerifiesGetOwnedObjectsThrowsWithAnInvalidMySoAddress() async throws {
         do {
             let toolBox = try self.fetchToolBox()
             _ = try await toolBox.client.getOwnedObjects(owner: "")

@@ -62,10 +62,10 @@ public struct RPC_EVENTS_FIELDS: MySoKit.SelectionSet, Fragment {
       public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.MovePackage }
       public static var __selections: [ApolloAPI.Selection] { [
         .field("__typename", String.self),
-        .field("address", MySoKit.SuiAddressApollo.self)
+        .field("address", MySoKit.MySoAddressApollo.self)
       ] }
 
-      public var address: MySoKit.SuiAddressApollo { __data["address"] }
+      public var address: MySoKit.MySoAddressApollo { __data["address"] }
     }
   }
 
@@ -79,10 +79,10 @@ public struct RPC_EVENTS_FIELDS: MySoKit.SelectionSet, Fragment {
     public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.Address }
     public static var __selections: [ApolloAPI.Selection] { [
       .field("__typename", String.self),
-      .field("address", MySoKit.SuiAddressApollo.self)
+      .field("address", MySoKit.MySoAddressApollo.self)
     ] }
 
-    public var address: MySoKit.SuiAddressApollo { __data["address"] }
+    public var address: MySoKit.MySoAddressApollo { __data["address"] }
   }
 
   /// Contents

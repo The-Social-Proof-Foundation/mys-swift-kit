@@ -31,7 +31,7 @@ import SwiftyJSON
 final class TxSerializerTest: XCTestCase {
     var toolBox: TestToolbox?
     var packageId: String?
-    var publishTxn: SuiTransactionBlockResponse?
+    var publishTxn: MySoTransactionBlockResponse?
     var sharedObjectId: String?
 
     override func setUp() async throws {
@@ -39,7 +39,7 @@ final class TxSerializerTest: XCTestCase {
         let packageResult = try await self.fetchToolBox().publishPackage("serializer")
         self.packageId = packageResult.packageId
         self.publishTxn = packageResult.publishedTx
-        guard let createdObjects = packageResult.publishedTx.effects?.created else { throw SuiError.notImplemented }
+        guard let createdObjects = packageResult.publishedTx.effects?.created else { throw MySoError.notImplemented }
         let sharedObject = createdObjects.filter { object in
             switch object.owner {
             case .shared:
@@ -67,7 +67,7 @@ final class TxSerializerTest: XCTestCase {
         return packageId
     }
 
-    private func fetchPublishedTx() throws -> SuiTransactionBlockResponse {
+    private func fetchPublishedTx() throws -> MySoTransactionBlockResponse {
         guard let publishTxn = self.publishTxn else {
             XCTFail("Failed to get Published Txn")
             throw NSError(domain: "Failed to get Published Txn", code: -1)

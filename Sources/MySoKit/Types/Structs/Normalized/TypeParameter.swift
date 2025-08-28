@@ -25,9 +25,9 @@
 
 import Foundation
 
-/// Represents a normalized type parameter type in SuiMove, wrapping an integer to denote the type parameter.
+/// Represents a normalized type parameter type in MySoMove, wrapping an integer to denote the type parameter.
 public struct TypeParameter: Equatable, KeyProtocol {
-    /// An `Int` representing the type parameter in SuiMove.
+    /// An `Int` representing the type parameter in MySoMove.
     var typeParameter: UInt16
 
     public func serialize(_ serializer: Serializer) throws {

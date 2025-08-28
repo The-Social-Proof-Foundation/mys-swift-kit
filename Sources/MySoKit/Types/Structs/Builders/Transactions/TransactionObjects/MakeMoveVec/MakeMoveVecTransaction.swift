@@ -31,12 +31,12 @@ public struct MakeMoveVecTransaction: KeyProtocol, TransactionProtocol {
     public let objects: [TransactionArgument]
 
     /// Represents the type of Move Normalized Struct. It's optional and could be nil.
-    public let type: SuiMoveNormalizedStructType?
+    public let type: MySoMoveNormalizedStructType?
 
     /// Initializes a new instance of `MakeMoveVecTransaction`.
     /// - Parameters:
     ///   - objects: An array of `TransactionArgument` representing objects in the transaction.
-    ///   - type: A string representing the type of `SuiMoveNormalizedStructType`.
+    ///   - type: A string representing the type of `MySoMoveNormalizedStructType`.
     /// - Throws: If initialization fails due to type conversion.
     public init(objects: [TransactionArgument], type: String?) throws {
         self.objects = objects
@@ -50,8 +50,8 @@ public struct MakeMoveVecTransaction: KeyProtocol, TransactionProtocol {
     /// Initializes a new instance of `MakeMoveVecTransaction`.
     /// - Parameters:
     ///   - objects: An array of `TransactionArgument` representing objects in the transaction.
-    ///   - type: An optional instance of `SuiMoveNormalizedStructType`.
-    public init(objects: [TransactionArgument], type: SuiMoveNormalizedStructType?) {
+    ///   - type: An optional instance of `MySoMoveNormalizedStructType`.
+    public init(objects: [TransactionArgument], type: MySoMoveNormalizedStructType?) {
         self.objects = objects
         self.type = type
     }

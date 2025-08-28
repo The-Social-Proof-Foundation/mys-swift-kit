@@ -32,11 +32,11 @@ public struct PoseidonFunction {
     let nRoundsP: [Int] = [56, 57, 56, 60, 60, 63, 64, 63, 60, 66, 60, 65, 70, 60, 64, 68]
 
     public func poseidon(inputs: [BigInt], C: [BigInt], M: [[BigInt]]) throws -> BigInt {
-        guard !inputs.isEmpty, inputs.count <= self.nRoundsP.count else { throw SuiError.notImplemented }
+        guard !inputs.isEmpty, inputs.count <= self.nRoundsP.count else { throw MySoError.notImplemented }
         let t = inputs.count + 1
         let nRoundsF = self.nRoundsF
         let nRoundsP = self.nRoundsP[t - 2]
-        guard M.count == t else { throw SuiError.notImplemented }
+        guard M.count == t else { throw MySoError.notImplemented }
 
         var state: [BigInt] = [BigInt(0)]
         state.append(contentsOf: inputs)

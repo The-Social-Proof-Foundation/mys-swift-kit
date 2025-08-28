@@ -1,5 +1,5 @@
 //
-//  AccountError.swift
+//  Utilities.swift
 //  MySoKit
 //
 //  Copyright (c) 2025 The Social Proof Foundation, LLC.

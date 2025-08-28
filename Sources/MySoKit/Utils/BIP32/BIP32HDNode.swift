@@ -23,11 +23,6 @@
 //  THE SOFTWARE.
 //
 
-//
-//  Created by Alex Vlasov.
-//  Copyright © 2018 Alex Vlasov. All rights reserved.
-//
-
 import Foundation
 import BigInt
 import CryptoSwift

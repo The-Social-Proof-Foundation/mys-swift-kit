@@ -47,10 +47,10 @@ public struct ED25519PrivateKey: Equatable, PrivateKeyProtocol {
     public static let curve: String = "ed25519 seed"
 
     /// Default derivation path for the private key.
-    public static let defaultDerivationPath = "m/44'/784'/0'/0'/0'"
+    public static let defaultDerivationPath = "m/44'/6976'/0'/0'/0'"
 
     /// Regular expression used to validate hardened derivation path.
-    public static let hardenedPathRegex = "^m\\/44'\\/784'\\/[0-9]+'\\/[0-9]+'\\/[0-9]+'+$"
+    public static let hardenedPathRegex = "^m\\/44'\\/6976'\\/[0-9]+'\\/[0-9]+'\\/[0-9]+'+$"
 
     public var key: DataValue
 

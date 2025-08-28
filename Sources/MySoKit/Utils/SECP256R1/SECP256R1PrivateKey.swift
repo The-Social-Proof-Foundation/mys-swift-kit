@@ -37,7 +37,7 @@ import LocalAuthentication
 public struct SECP256R1PrivateKey: PrivateKeyProtocol {
     public static let LENGTH: Int = 32
 
-    public static let defaultDerivationPath: String = "m/74'/784'/0'/0/0"
+    public static let defaultDerivationPath: String = "m/74'/6976'/0'/0/0"
 
     public let key: SecureEnclave.P256.Signing.PrivateKey
 
@@ -101,9 +101,9 @@ public struct SECP256R1PrivateKey: PrivateKeyProtocol {
         var item: CFTypeRef?
         switch SecItemCopyMatching(query as CFDictionary, &item) {
         case errSecSuccess:
-            guard let data = item as? Data else { throw SuiError.notImplemented }
+            guard let data = item as? Data else { throw MySoError.notImplemented }
             self.key = try SecureEnclave.P256.Signing.PrivateKey(rawRepresentation: data)
-        case errSecItemNotFound: throw SuiError.notImplemented
+        case errSecItemNotFound: throw MySoError.notImplemented
         case let status: throw AccountError.keychainReadFail(message: "\(status)")
         }
     }
@@ -163,7 +163,7 @@ public struct SECP256R1PrivateKey: PrivateKeyProtocol {
         // Add the key data.
         let status = SecItemAdd(query as CFDictionary, nil)
         guard status == errSecSuccess else {
-            throw SuiError.notImplemented
+            throw MySoError.notImplemented
         }
     }
 
@@ -183,9 +183,9 @@ public struct SECP256R1PrivateKey: PrivateKeyProtocol {
     /// - Parameters:
     ///   - path: A string representing the BIP32 path.
     /// - Returns: A boolean value, `true` if the given path is valid, `false` otherwise.
-    /// - Note: The pattern for a valid BIP32 path for this function is "^m\\/(54|74)'\\/784'\\/[0-9]+'\\/[0-9]+\\/[0-9]+$".
+    /// - Note: The pattern for a valid BIP32 path for this function is "^m\\/(54|74)'\\/6976'\\/[0-9]+'\\/[0-9]+\\/[0-9]+$".
     private static func isValidBIP32Path(_ path: String) -> Bool {
-        let pattern = "^m\\/(54|74)'\\/784'\\/[0-9]+'\\/[0-9]+\\/[0-9]+$"
+        let pattern = "^m\\/(54|74)'\\/6976'\\/[0-9]+'\\/[0-9]+\\/[0-9]+$"
         let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive)
         let matches = regex?.matches(in: path, options: [], range: NSRange(location: 0, length: path.utf16.count))
 

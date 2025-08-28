@@ -7,15 +7,15 @@ public class GetBalanceQuery: GraphQLQuery {
   public static let operationName: String = "getBalance"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query getBalance($owner: SuiAddress!, $type: String = "0x2::sui::SUI") { address(address: $owner) { __typename balance(type: $type) { __typename coinType { __typename repr } coinObjectCount totalBalance } } }"#
+      #"query getBalance($owner: MysAddress!, $type: String = "0x2::mys::MYS") { address(address: $owner) { __typename balance(type: $type) { __typename coinType { __typename repr } coinObjectCount totalBalance } } }"#
     ))
 
-  public var owner: SuiAddressApollo
+  public var owner: MySoAddressApollo
   public var type: GraphQLNullable<String>
 
   public init(
-    owner: SuiAddressApollo,
-    type: GraphQLNullable<String> = "0x2::sui::SUI"
+    owner: MySoAddressApollo,
+    type: GraphQLNullable<String> = "0x2::mys::MYS"
   ) {
     self.owner = owner
     self.type = type
@@ -35,7 +35,7 @@ public class GetBalanceQuery: GraphQLQuery {
       .field("address", Address?.self, arguments: ["address": .variable("owner")])
     ] }
 
-    /// Look-up an Account by its SuiAddressApollo.
+    /// Look-up an Account by its MySoAddressApollo.
     public var address: Address? { __data["address"] }
 
     /// Address
@@ -52,7 +52,7 @@ public class GetBalanceQuery: GraphQLQuery {
       ] }
 
       /// Total balance of all coins with marker type owned by this address. If type is not supplied,
-      /// it defaults to `0x2::sui::SUI`.
+      /// it defaults to `0x2::mys::MYS`.
       public var balance: Balance? { __data["balance"] }
 
       /// Address.Balance
@@ -70,7 +70,7 @@ public class GetBalanceQuery: GraphQLQuery {
           .field("totalBalance", MySoKit.BigIntApollo?.self)
         ] }
 
-        /// Coin type for the balance, such as 0x2::sui::SUI
+        /// Coin type for the balance, such as 0x2::mys::MYS
         public var coinType: CoinType { __data["coinType"] }
         /// How many coins of this type constitute the balance
         public var coinObjectCount: MySoKit.UInt53Apollo? { __data["coinObjectCount"] }

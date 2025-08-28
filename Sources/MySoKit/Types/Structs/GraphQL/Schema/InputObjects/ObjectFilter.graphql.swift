@@ -18,8 +18,8 @@ public struct ObjectFilter: InputObject {
 
   public init(
     type: GraphQLNullable<String> = nil,
-    owner: GraphQLNullable<SuiAddressApollo> = nil,
-    objectIds: GraphQLNullable<[SuiAddressApollo]> = nil,
+    owner: GraphQLNullable<MySoAddressApollo> = nil,
+    objectIds: GraphQLNullable<[MySoAddressApollo]> = nil,
     objectKeys: GraphQLNullable<[ObjectKey]> = nil
   ) {
     __data = InputDict([
@@ -30,7 +30,7 @@ public struct ObjectFilter: InputObject {
     ])
   }
 
-    public init(filter: SuiObjectDataFilter) throws {
+    public init(filter: MySoObjectDataFilter) throws {
         __data = InputDict([:])
         switch filter {
         case .structType(let structType):
@@ -44,7 +44,7 @@ public struct ObjectFilter: InputObject {
         case .objectIds(let objectIds):
             __data["objectIds"] = objectIds
         default:
-            throw SuiError.notImplemented
+            throw MySoError.notImplemented
         }
     }
 
@@ -52,20 +52,20 @@ public struct ObjectFilter: InputObject {
   /// name.
   ///
   /// Generic types can be queried by either the generic type name, e.g. `0x2::coin::Coin`, or by
-  /// the full type name, such as `0x2::coin::Coin<0x2::sui::SUI>`.
+  /// the full type name, such as `0x2::coin::Coin<0x2::mys::MYS>`.
   public var type: GraphQLNullable<String> {
     get { __data["type"] }
     set { __data["type"] = newValue }
   }
 
   /// Filter for live objects by their current owners.
-  public var owner: GraphQLNullable<SuiAddressApollo> {
+  public var owner: GraphQLNullable<MySoAddressApollo> {
     get { __data["owner"] }
     set { __data["owner"] = newValue }
   }
 
   /// Filter for live objects by their IDs.
-  public var objectIds: GraphQLNullable<[SuiAddressApollo]> {
+  public var objectIds: GraphQLNullable<[MySoAddressApollo]> {
     get { __data["objectIds"] }
     set { __data["objectIds"] = newValue }
   }

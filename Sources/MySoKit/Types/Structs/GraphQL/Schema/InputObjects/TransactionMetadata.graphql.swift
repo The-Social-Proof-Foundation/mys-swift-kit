@@ -16,11 +16,11 @@ public struct TransactionMetadata: InputObject {
   }
 
   public init(
-    sender: GraphQLNullable<SuiAddressApollo> = nil,
+    sender: GraphQLNullable<MySoAddressApollo> = nil,
     gasPrice: GraphQLNullable<UInt53Apollo> = nil,
     gasObjects: GraphQLNullable<[ObjectRef]> = nil,
     gasBudget: GraphQLNullable<UInt53Apollo> = nil,
-    gasSponsor: GraphQLNullable<SuiAddressApollo> = nil
+    gasSponsor: GraphQLNullable<MySoAddressApollo> = nil
   ) {
     __data = InputDict([
       "sender": sender,
@@ -31,7 +31,7 @@ public struct TransactionMetadata: InputObject {
     ])
   }
 
-  public var sender: GraphQLNullable<SuiAddressApollo> {
+  public var sender: GraphQLNullable<MySoAddressApollo> {
     get { __data["sender"] }
     set { __data["sender"] = newValue }
   }
@@ -51,7 +51,7 @@ public struct TransactionMetadata: InputObject {
     set { __data["gasBudget"] = newValue }
   }
 
-  public var gasSponsor: GraphQLNullable<SuiAddressApollo> {
+  public var gasSponsor: GraphQLNullable<MySoAddressApollo> {
     get { __data["gasSponsor"] }
     set { __data["gasSponsor"] = newValue }
   }

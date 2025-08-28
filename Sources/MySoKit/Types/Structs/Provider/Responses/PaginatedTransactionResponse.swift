@@ -25,13 +25,13 @@
 
 import Foundation
 
-/// Represents a paginated response containing a list of `SuiTransactionBlockResponse` instances,
-/// which may represent transaction blocks retrieved from the Sui blockchain, along with
+/// Represents a paginated response containing a list of `MySoTransactionBlockResponse` instances,
+/// which may represent transaction blocks retrieved from the MySocial blockchain, along with
 /// pagination information.
 public struct PaginatedTransactionResponse {
-    /// An array of `SuiTransactionBlockResponse` instances, each representing the response
+    /// An array of `MySoTransactionBlockResponse` instances, each representing the response
     /// for a specific transaction block, possibly containing transaction data.
-    public let data: [SuiTransactionBlockResponse]
+    public let data: [MySoTransactionBlockResponse]
 
     /// A Boolean value indicating whether there are more pages of transaction blocks available to be retrieved.
     /// `true` if there are more pages available, otherwise `false`.

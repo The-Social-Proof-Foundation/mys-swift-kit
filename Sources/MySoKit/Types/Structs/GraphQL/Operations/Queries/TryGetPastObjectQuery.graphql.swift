@@ -7,11 +7,11 @@ public class TryGetPastObjectQuery: GraphQLQuery {
   public static let operationName: String = "tryGetPastObject"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query tryGetPastObject($id: SuiAddress!, $version: UInt53, $showBcs: Boolean = false, $showOwner: Boolean = false, $showPreviousTransaction: Boolean = false, $showContent: Boolean = false, $showDisplay: Boolean = false, $showType: Boolean = false, $showStorageRebate: Boolean = false) { current: object(address: $id) { __typename address version } object(address: $id, version: $version) { __typename ...RPC_OBJECT_FIELDS } }"#,
+      #"query tryGetPastObject($id: MysAddress!, $version: UInt53, $showBcs: Boolean = false, $showOwner: Boolean = false, $showPreviousTransaction: Boolean = false, $showContent: Boolean = false, $showDisplay: Boolean = false, $showType: Boolean = false, $showStorageRebate: Boolean = false) { current: object(address: $id) { __typename address version } object(address: $id, version: $version) { __typename ...RPC_OBJECT_FIELDS } }"#,
       fragments: [RPC_OBJECT_FIELDS.self, RPC_OBJECT_OWNER_FIELDS.self]
     ))
 
-  public var id: SuiAddressApollo
+  public var id: MySoAddressApollo
   public var version: GraphQLNullable<UInt53Apollo>
   public var showBcs: GraphQLNullable<Bool>
   public var showOwner: GraphQLNullable<Bool>
@@ -22,7 +22,7 @@ public class TryGetPastObjectQuery: GraphQLQuery {
   public var showStorageRebate: GraphQLNullable<Bool>
 
   public init(
-    id: SuiAddressApollo,
+    id: MySoAddressApollo,
     version: GraphQLNullable<UInt53Apollo>,
     showBcs: GraphQLNullable<Bool> = false,
     showOwner: GraphQLNullable<Bool> = false,
@@ -85,11 +85,11 @@ public class TryGetPastObjectQuery: GraphQLQuery {
       public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.Object }
       public static var __selections: [ApolloAPI.Selection] { [
         .field("__typename", String.self),
-        .field("address", MySoKit.SuiAddressApollo.self),
+        .field("address", MySoKit.MySoAddressApollo.self),
         .field("version", MySoKit.UInt53Apollo.self)
       ] }
 
-      public var address: MySoKit.SuiAddressApollo { __data["address"] }
+      public var address: MySoKit.MySoAddressApollo { __data["address"] }
       public var version: MySoKit.UInt53Apollo { __data["version"] }
     }
 
@@ -106,7 +106,7 @@ public class TryGetPastObjectQuery: GraphQLQuery {
         .fragment(RPC_OBJECT_FIELDS.self)
       ] }
 
-      public var objectId: MySoKit.SuiAddressApollo { __data["objectId"] }
+      public var objectId: MySoKit.MySoAddressApollo { __data["objectId"] }
       public var version: MySoKit.UInt53Apollo { __data["version"] }
       /// Attempts to convert the object into a MoveObject
       public var asMoveObject: AsMoveObject? { __data["asMoveObject"] }
@@ -115,7 +115,7 @@ public class TryGetPastObjectQuery: GraphQLQuery {
       public var owner: Owner? { __data["owner"] }
       /// The transaction block that created this version of the object.
       public var previousTransactionBlock: PreviousTransactionBlock? { __data["previousTransactionBlock"] }
-      /// The amount of SUI we would rebate if this object gets deleted or mutated. This number is
+      /// The amount of MYS we would rebate if this object gets deleted or mutated. This number is
       /// recalculated based on the present storage gas price.
       public var storageRebate: MySoKit.BigIntApollo? { __data["storageRebate"] }
       /// 32-byte hash that identifies the object's current contents, encoded as a Base58 string.

@@ -115,7 +115,7 @@ public struct TransactionBlockDataBuilder: KeyProtocol {
 
         if let onlyTransactionKind, onlyTransactionKind {
             let ser = Serializer()
-            try SuiTransactionBlockKind.programmableTransaction(kind).serialize(ser)
+            try MySoTransactionBlockKind.programmableTransaction(kind).serialize(ser)
             return ser.output()
         }
 
@@ -129,15 +129,15 @@ public struct TransactionBlockDataBuilder: KeyProtocol {
             let payment = gasConfig.payment,
             let price = gasConfig.price
         else {
-            throw SuiError.customError(message: "Missing gas value")
+            throw MySoError.customError(message: "Missing gas value")
         }
 
         let transactionData = TransactionData.V1(TransactionDataV1(
-            kind: SuiTransactionBlockKind.programmableTransaction(kind),
+            kind: MySoTransactionBlockKind.programmableTransaction(kind),
             sender: sender,
-            gasData: try SuiGasData(
+            gasData: try MySoGasData(
                 payment: payment,
-                owner: prepareSuiAddress(
+                owner: prepareMySoAddress(
                     address: self.builder.gasConfig.owner?.hex() ?? sender.hex()
                 ),
                 price: price,
@@ -186,12 +186,12 @@ public struct TransactionBlockDataBuilder: KeyProtocol {
         return TransactionBlockDataBuilder(builder: try Deserializer._struct(deserializer))
     }
 
-    /// Prepares and returns a normalized SUI address from the provided address string.
+    /// Prepares and returns a normalized MySo address from the provided address string.
     ///
-    /// - Parameter address: A `String` representing the SUI address.
+    /// - Parameter address: A `String` representing the MySo address.
     /// - Throws: If address normalization fails.
-    /// - Returns: A `String` representing the normalized SUI address.
-    public func prepareSuiAddress(address: String) throws -> String {
-        return try Inputs.normalizeSuiAddress(value: address).replacingOccurrences(of: "0x", with: "")
+    /// - Returns: A `String` representing the normalized MySo address.
+    public func prepareMySoAddress(address: String) throws -> String {
+        return try Inputs.normalizeMySoAddress(value: address).replacingOccurrences(of: "0x", with: "")
     }
 }

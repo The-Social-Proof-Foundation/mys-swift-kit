@@ -115,7 +115,7 @@ struct WalletDetailView: View {
                         }
                     }
                 }) {
-                    Text("Airdrop 10 SUI")
+                    Text("Airdrop 10 MySo")
                         .font(.body)
                         .padding()
                         .frame(maxWidth: .infinity)
@@ -152,7 +152,7 @@ struct WalletDetailView: View {
                     ProgressView()
                         .scaleEffect(3)
 
-                    Text("Airdropping 10 SUI...")
+                    Text("Airdropping 10 MySo...")
                         .padding(.top)
                 }
             }

@@ -4,7 +4,7 @@
 import ApolloAPI
 
 public extension Objects {
-  /// Mutations are used to write to the Sui network.
+  /// Mutations are used to write to the MySo network.
   static let Mutation = ApolloAPI.Object(
     typename: "Mutation",
     implementedInterfaces: []

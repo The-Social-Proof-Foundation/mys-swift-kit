@@ -25,7 +25,7 @@
 
 import Foundation
 
-/// Sui Blockchain Type Tag
+/// MySocial Blockchain Type Tag
 public struct TypeTag: KeyProtocol, Equatable {
     /// Boolean Type Tag
     public static let bool: UInt8 = 0
@@ -73,7 +73,7 @@ public struct TypeTag: KeyProtocol, Equatable {
         } else if value is AccountAddressTag {
             self.type = Self.accountAddress
         } else {
-            throw SuiError.notImplemented
+            throw MySoError.notImplemented
         }
     }
 
@@ -106,7 +106,7 @@ public struct TypeTag: KeyProtocol, Equatable {
             self.type = Self.u256
             self.value = nil
         } else {
-            throw SuiError.notImplemented
+            throw MySoError.notImplemented
         }
     }
 
@@ -159,7 +159,7 @@ public struct TypeTag: KeyProtocol, Equatable {
         } else if self.type == TypeTag.u256 {
             return "u256"
         } else {
-            throw SuiError.notImplemented
+            throw MySoError.notImplemented
         }
     }
 
@@ -185,7 +185,7 @@ public struct TypeTag: KeyProtocol, Equatable {
         } else if variant == TypeTag._struct {
             return try TypeTag(value: try StructTag.deserialize(from: deserializer))
         } else {
-            throw SuiError.notImplemented
+            throw MySoError.notImplemented
         }
     }
 

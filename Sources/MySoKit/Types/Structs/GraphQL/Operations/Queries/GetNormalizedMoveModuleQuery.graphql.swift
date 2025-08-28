@@ -7,15 +7,15 @@ public class GetNormalizedMoveModuleQuery: GraphQLQuery {
   public static let operationName: String = "getNormalizedMoveModule"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query getNormalizedMoveModule($packageId: SuiAddress!, $module: String!) { object(address: $packageId) { __typename asMovePackage { __typename module(name: $module) { __typename ...RPC_MOVE_MODULE_FIELDS } } } }"#,
+      #"query getNormalizedMoveModule($packageId: MysAddress!, $module: String!) { object(address: $packageId) { __typename asMovePackage { __typename module(name: $module) { __typename ...RPC_MOVE_MODULE_FIELDS } } } }"#,
       fragments: [RPC_MOVE_ENUM_FIELDS.self, RPC_MOVE_FUNCTION_FIELDS.self, RPC_MOVE_MODULE_FIELDS.self, RPC_MOVE_STRUCT_FIELDS.self]
     ))
 
-  public var packageId: SuiAddressApollo
+  public var packageId: MySoAddressApollo
   public var module: String
 
   public init(
-    packageId: SuiAddressApollo,
+    packageId: MySoAddressApollo,
     module: String
   ) {
     self.packageId = packageId

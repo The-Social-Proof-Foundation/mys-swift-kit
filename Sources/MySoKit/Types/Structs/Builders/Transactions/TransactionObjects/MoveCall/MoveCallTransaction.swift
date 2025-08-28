@@ -28,7 +28,7 @@ import SwiftyJSON
 
 public struct MoveCallTransaction: KeyProtocol, TransactionProtocol {
     /// The target normalized struct type for the move call.
-    public let target: SuiMoveNormalizedStructType
+    public let target: MySoMoveNormalizedStructType
 
     /// An array of type tags used as type arguments for the move call.
     public let typeArguments: [TypeTag]
@@ -42,7 +42,7 @@ public struct MoveCallTransaction: KeyProtocol, TransactionProtocol {
     ///   - typeArguments: An array of type tags used as type arguments.
     ///   - arguments: An array of transaction arguments.
     public init(
-        target: SuiMoveNormalizedStructType,
+        target: MySoMoveNormalizedStructType,
         typeArguments: [StructTag],
         arguments: [TransactionArgument]
     ) throws {
@@ -71,7 +71,7 @@ public struct MoveCallTransaction: KeyProtocol, TransactionProtocol {
     /// - Parameter input: The JSON object used for initialization.
     /// - Returns: An optional instance of `MoveCallTransaction`.
     public init?(input: JSON) {
-        guard let target = SuiMoveNormalizedStructType(input: input) else {
+        guard let target = MySoMoveNormalizedStructType(input: input) else {
             return nil
         }
         self.target = target

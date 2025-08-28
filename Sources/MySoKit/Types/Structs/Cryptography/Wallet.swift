@@ -28,7 +28,7 @@ import ed25519swift
 import CryptoSwift
 import Bip39
 
-/// Represents a Sui wallet, capable of managing multiple accounts.
+/// Represents a MySo wallet, capable of managing multiple accounts.
 public class Wallet: Hashable {
     /// The mnemonic associated with the wallet, represented by a `Mnemonic` instance.
     public var mnemonic: Mnemonic

@@ -29,7 +29,7 @@ import XCTest
 
 final class ReadTransactionTest: XCTestCase {
     var toolBox: TestToolbox?
-    var transactions: [SuiTransactionBlockResponse] = []
+    var transactions: [MySoTransactionBlockResponse] = []
 
     let numTransactions = 10
 
@@ -45,11 +45,11 @@ final class ReadTransactionTest: XCTestCase {
         return toolBox
     }
 
-    private func initializePaySui() async throws {
-        self.transactions = try await self.fetchToolBox().executePaySuiNTimes(self.numTransactions)
+    private func initializePayMySo() async throws {
+        self.transactions = try await self.fetchToolBox().executePayMySoNTimes(self.numTransactions)
     }
 
-    private func setupTransaction(_ toolBox: TestToolbox) async throws -> SuiTransactionBlockResponse {
+    private func setupTransaction(_ toolBox: TestToolbox) async throws -> MySoTransactionBlockResponse {
         var tx = try TransactionBlock()
         let coin = try tx.splitCoin(coin: tx.gas, amounts: [tx.pure(value: .number(1))])
         _ = try tx.transferObject(objects: [coin], address: try toolBox.address())
@@ -78,7 +78,7 @@ final class ReadTransactionTest: XCTestCase {
 
     func testThatGettingTransactionsWorksAsIntended() async throws {
         let toolBox = try self.fetchToolBox()
-        try await self.initializePaySui()
+        try await self.initializePayMySo()
         let digest = self.transactions[0].digest
         let tx = try await toolBox.client.getTransactionBlock(digest: digest)
         XCTAssertEqual(tx.digest, digest)
@@ -86,11 +86,11 @@ final class ReadTransactionTest: XCTestCase {
 
     func testThatMultiGetPayTransactionWorksAsIntended() async throws {
         let toolBox = try self.fetchToolBox()
-        try await self.initializePaySui()
+        try await self.initializePayMySo()
         let digests = self.transactions.map { $0.digest }
         let txns = try await toolBox.client.multiGetTransactionBlocks(
             digests: digests,
-            options: SuiTransactionBlockResponseOptions(showBalanceChanges: true)
+            options: MySoTransactionBlockResponseOptions(showBalanceChanges: true)
         )
         txns.enumerated().forEach { (idx, tx) in
             XCTAssertEqual(tx.digest, digests[idx])
@@ -100,8 +100,8 @@ final class ReadTransactionTest: XCTestCase {
 
     func testThatQueryTransactionsWithOptionsWorksAsIntended() async throws {
         let toolBox = try self.fetchToolBox()
-        try await self.initializePaySui()
-        let options = SuiTransactionBlockResponseOptions(
+        try await self.initializePayMySo()
+        let options = MySoTransactionBlockResponseOptions(
             showInput: true,
             showEffects: true,
             showEvents: true,
@@ -122,18 +122,18 @@ final class ReadTransactionTest: XCTestCase {
 
     func testThatFetchingAllOfTheTransactionsWorksAsIntended() async throws {
         let toolBox = try self.fetchToolBox()
-        try await self.initializePaySui()
+        try await self.initializePayMySo()
         let allTransactions = try await toolBox.client.queryTransactionBlocks(limit: 10)
         XCTAssertGreaterThan(allTransactions.data.count, 0)
     }
 
     func testThatGenesisForTransactionsExists() async throws {
         let toolBox = try self.fetchToolBox()
-        try await self.initializePaySui()
+        try await self.initializePayMySo()
         let allTransactions = try await toolBox.client.queryTransactionBlocks(limit: 1, order: .ascending)
         let resp = try await toolBox.client.getTransactionBlock(
             digest: allTransactions.data[0].digest,
-            options: SuiTransactionBlockResponseOptions(showInput: true)
+            options: MySoTransactionBlockResponseOptions(showInput: true)
         )
         let txKind = resp.transaction?.data.transaction
         XCTAssertTrue(txKind?.kind() == .genesis)

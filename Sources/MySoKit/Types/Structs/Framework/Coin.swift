@@ -25,13 +25,13 @@
 
 import Foundation
 
-/// Represents the properties and functionalities of a coin in the Sui ecosystem.
+/// Represents the properties and functionalities of a coin in the MySocial ecosystem.
 public struct Coin {
-    /// Represents the Sui system address.
-    public static let suiSystemAddress = "0x3"
+    /// Represents the MySocial system address.
+    public static let mysoSystemAddress = "0x3"
 
-    /// Represents the Sui framework address.
-    public static let suiFrameworkAddress = "0x2"
+    /// Represents the MySocial framework address.
+    public static let mysoFrameworkAddress = "0x2"
 
     /// Represents the address for the move standard library.
     public static let moveStandardLibraryAddress = "0x1"
@@ -45,14 +45,14 @@ public struct Coin {
     /// Struct name for ID.
     public static let idStructName = "ID"
 
-    /// Type argument for SUI.
-    public static let suiTypeArg = "0x2::sui::SUI"
+    /// Type argument for MYS.
+    public static let mysoTypeArg = "0x2::mys::MYS"
 
     /// Query for validators event.
     public static let validatorsEventQuery = "0x3::validator_set::ValidatorEpochInfoEventV2"
 
-    /// Object ID for the SUI clock.
-    public static let suiClockObjectId: String = "0x6"
+    /// Object ID for the MYS clock.
+    public static let mysoClockObjectId: String = "0x6"
 
     /// Module name for payments.
     public static let payModuleName = "pay"
@@ -66,10 +66,10 @@ public struct Coin {
     /// Regex to match a coin type argument.
     public static let coinTypeArgRegex = "/^0x2::coin::Coin<(.+)>$/"
 
-    /// Determines if a given `SuiObjectResponse` is a coin.
-    /// - Parameter data: The `SuiObjectResponse` to check.
+    /// Determines if a given `MySoObjectResponse` is a coin.
+    /// - Parameter data: The `MySoObjectResponse` to check.
     /// - Returns: `true` if the given data is a coin, otherwise `false`.
-    public static func isCoin(data: SuiObjectResponse) -> Bool {
+    public static func isCoin(data: MySoObjectResponse) -> Bool {
         guard let type = data.data?.type else { return false }
 
         let regex = try! NSRegularExpression(pattern: Coin.coinTypeArgRegex)
@@ -79,12 +79,12 @@ public struct Coin {
         return match != nil
     }
 
-    /// Determines if a given `SuiObjectResponse` is an SUI coin.
-    /// - Parameter data: The `SuiObjectResponse` to check.
-    /// - Returns: `true` if the given data is an SUI coin, otherwise `false`.
-    public static func isSUI(data: SuiObjectResponse) -> Bool {
+    /// Determines if a given `MySoObjectResponse` is an MYS coin.
+    /// - Parameter data: The `MySoObjectResponse` to check.
+    /// - Returns: `true` if the given data is an MYS coin, otherwise `false`.
+    public static func isMYS(data: MySoObjectResponse) -> Bool {
         guard let type = data.data?.type else { return false }
-        return Coin.getCoinSymbol(coinTypeArg: type) == "SUI"
+        return Coin.getCoinSymbol(coinTypeArg: type) == "MYS"
     }
 
     /// Retrieves the symbol of the coin from a coin type argument.
@@ -100,10 +100,10 @@ public struct Coin {
     /// Retrieves the struct tag of a coin from a coin type argument.
     /// - Parameter coinTypeArg: The coin type argument string.
     /// - Throws: If the coin struct tag cannot be determined.
-    /// - Returns: The `SuiMoveNormalizedStructType` representing the struct tag of the coin.
-    public static func getCoinStructTag(coinTypeArg: String) throws -> SuiMoveNormalizedStructType {
-        return SuiMoveNormalizedStructType(
-            address: try AccountAddress.fromHex(try Inputs.normalizeSuiAddress(
+    /// - Returns: The `MySoMoveNormalizedStructType` representing the struct tag of the coin.
+    public static func getCoinStructTag(coinTypeArg: String) throws -> MySoMoveNormalizedStructType {
+        return MySoMoveNormalizedStructType(
+            address: try AccountAddress.fromHex(try Inputs.normalizeMySoAddress(
                 value: coinTypeArg.components(separatedBy: "::").first ?? "")
             ),
             module: coinTypeArg.components(separatedBy: "::").dropFirst().first ?? "",

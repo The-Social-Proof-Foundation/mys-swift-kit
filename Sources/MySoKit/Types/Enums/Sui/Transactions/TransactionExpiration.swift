@@ -54,7 +54,7 @@ public enum TransactionExpiration: KeyProtocol {
                 try Deserializer.u64(deserializer)
             )
         default:
-            throw SuiError.customError(message: "Unable to Deserialize")
+            throw MySoError.customError(message: "Unable to Deserialize")
         }
     }
 }

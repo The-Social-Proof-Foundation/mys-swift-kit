@@ -27,13 +27,13 @@ import Foundation
 
 public struct TransactionDataV1: KeyProtocol {
     /// A value indicating the kind/type of the transaction block.
-    public let kind: SuiTransactionBlockKind
+    public let kind: MySoTransactionBlockKind
 
     /// A value representing the account address of the sender of the transaction.
     public let sender: AccountAddress
 
     /// A value containing information regarding the gas used by the transaction.
-    public let gasData: SuiGasData
+    public let gasData: MySoGasData
 
     /// A value representing the expiration details of the transaction.
     public let expiration: TransactionExpiration

@@ -86,34 +86,34 @@ public struct ED25519PublicKey: Equatable, PublicKeyProtocol {
         )
     }
 
-    public func toSuiAddress() throws -> String {
+    public func toMySoAddress() throws -> String {
         var tmp = Data(count: ED25519PublicKey.LENGTH + 1)
         try tmp.set([SignatureSchemeFlags.SIGNATURE_SCHEME_TO_FLAG["ED25519"]!])
         try tmp.set([UInt8](self.key), offset: 1)
-        let result = try Inputs.normalizeSuiAddress(
+        let result = try Inputs.normalizeMySoAddress(
             value: try Blake2b.hash(size: 32, data: tmp).hexEncodedString()[0..<ED25519PublicKey.LENGTH * 2]
         )
         return result
     }
 
-    /// Converts the public key to a Sui address.
+    /// Converts the public key to a MySo address.
     /// - Throws: If any error occurs during conversion.
-    /// - Returns: A string representing the Sui address.
-    public func toSuiPublicKey() throws -> String {
-        let bytes = try self.toSuiBytes()
+    /// - Returns: A string representing the MySo address.
+    public func toMySoPublicKey() throws -> String {
+        let bytes = try self.toMySoBytes()
         return bytes.toBase64()
     }
 
-    /// Converts the public key to Sui bytes.
+    /// Converts the public key to MySo bytes.
     /// - Throws: If any error occurs during conversion.
-    /// - Returns: An array of bytes representing the Sui public key.
-    public func toSuiBytes() throws -> [UInt8] {
+    /// - Returns: An array of bytes representing the MySo public key.
+    public func toMySoBytes() throws -> [UInt8] {
         let rawBytes = self.key
-        var suiBytes = Data(count: rawBytes.count + 1)
-        try suiBytes.set([SignatureSchemeFlags.SIGNATURE_SCHEME_TO_FLAG["ED25519"]!])
-        try suiBytes.set([UInt8](rawBytes), offset: 1)
+        var mysoBytes = Data(count: rawBytes.count + 1)
+        try mysoBytes.set([SignatureSchemeFlags.SIGNATURE_SCHEME_TO_FLAG["ED25519"]!])
+        try mysoBytes.set([UInt8](rawBytes), offset: 1)
 
-        return [UInt8](suiBytes)
+        return [UInt8](mysoBytes)
     }
 
     public func toSerializedSignature(signature: Signature) throws -> String {

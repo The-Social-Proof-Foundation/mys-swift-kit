@@ -42,11 +42,11 @@ final class GraphQLProviderTest: XCTestCase {
 
         let ownedObjects = try await self.fetchToolBox()
             .client.getOwnedObjects(
-                owner: try self.fetchToolBox().account.publicKey.toSuiAddress(),
-                filter: SuiObjectDataFilter.structType(
+                owner: try self.fetchToolBox().account.publicKey.toMySoAddress(),
+                filter: MySoObjectDataFilter.structType(
                     "\(try self.fetchPackageId())::dynamic_fields_test::Test"
                 ),
-                options: SuiObjectDataOptions(showType: true)
+                options: MySoObjectDataOptions(showType: true)
             )
         self.parentObjectId = ownedObjects.data[0].data!.objectId
     }
@@ -60,7 +60,7 @@ final class GraphQLProviderTest: XCTestCase {
             amounts: [tx.pure(value: .number(1))]
         )
         _ = try tx.transferObject(objects: [coin], address: toolBox.defaultRecipient)
-        try tx.setSenderIfNotSet(sender: try toolBox.account.publicKey.toSuiAddress())
+        try tx.setSenderIfNotSet(sender: try toolBox.account.publicKey.toMySoAddress())
 
         let result = try await toolBox.client.signAndExecuteTransactionBlock(
             transactionBlock: &tx,
@@ -68,7 +68,7 @@ final class GraphQLProviderTest: XCTestCase {
         )
         _ = try await self.fetchToolBox().client.waitForTransaction(tx: result.digest)
         // TODO: Remove once the GraphQL endpoint becomes default with the example validator.
-        try await Task.sleep(nanoseconds: 10_000_000_000)  // Buffer for waiting on the Sui Indexer to catch up with the RPC Node
+        try await Task.sleep(nanoseconds: 10_000_000_000)  // Buffer for waiting on the MySo Indexer to catch up with the RPC Node
     }
 
     private func fetchToolBox() throws -> TestToolbox {
@@ -121,15 +121,15 @@ final class GraphQLProviderTest: XCTestCase {
 
     func testThatGettingCoinMetadataWorksAsIntendedFromGraphQL() async throws {
         let toolBox = try self.fetchToolBox()
-        let rpcMetadata = try await toolBox.client.getCoinMetadata(coinType: "0x2::sui::SUI")
-        let graphQLMetadata = try await toolBox.graphQLProvider.getCoinMetadata(coinType: "0x2::sui::SUI")
+        let rpcMetadata = try await toolBox.client.getCoinMetadata(coinType: "0x2::mys::MYS")
+        let graphQLMetadata = try await toolBox.graphQLProvider.getCoinMetadata(coinType: "0x2::mys::MYS")
         XCTAssertEqual(rpcMetadata, graphQLMetadata)
     }
 
     func testThatGettingTotalSupplyWorksAsIntendedFromGraphQL() async throws {
         let toolBox = try self.fetchToolBox()
-        let rpcSupply = try await toolBox.client.totalSupply("0x2::sui::SUI")
-        let graphQLSupply = try await toolBox.graphQLProvider.totalSupply("0x2::sui::SUI")
+        let rpcSupply = try await toolBox.client.totalSupply("0x2::mys::MYS")
+        let graphQLSupply = try await toolBox.graphQLProvider.totalSupply("0x2::mys::MYS")
         XCTAssertEqual(rpcSupply, graphQLSupply)
     }
 
@@ -197,7 +197,7 @@ final class GraphQLProviderTest: XCTestCase {
     func testThatGettingOwnedObjectsWorksAsIntendedFromGraphql() async throws {
         try await self.setUpWithTransaction()
         let toolBox = try self.fetchToolBox()
-        let objectOptions = SuiObjectDataOptions(
+        let objectOptions = MySoObjectDataOptions(
             showBcs: true,
             showContent: true,
             showDisplay: true,
@@ -218,7 +218,7 @@ final class GraphQLProviderTest: XCTestCase {
         try await self.setUpWithTransaction()
         let toolBox = try self.fetchToolBox()
         let gasCoin = try await toolBox.getCoins()
-        let objectOptions = SuiObjectDataOptions(
+        let objectOptions = MySoObjectDataOptions(
             showBcs: true,
             showContent: true,
             showDisplay: true,
@@ -297,7 +297,7 @@ final class GraphQLProviderTest: XCTestCase {
         try await self.setUpWithTransaction()
         let toolBox = try self.fetchToolBox()
         let gasCoin = try await toolBox.getCoins()
-        let objectOptions = SuiObjectDataOptions(
+        let objectOptions = MySoObjectDataOptions(
             showBcs: true,
             showContent: true,
             showDisplay: true,
@@ -320,7 +320,7 @@ final class GraphQLProviderTest: XCTestCase {
 //        try await self.setUpWithTransaction()
 //        let toolBox = try self.fetchToolBox()
 //        let gasCoin = try await toolBox.getCoins()
-//        let objectOptions = SuiObjectDataOptions(
+//        let objectOptions = MySoObjectDataOptions(
 //            showBcs: true,
 //            showContent: true,
 //            showDisplay: true,

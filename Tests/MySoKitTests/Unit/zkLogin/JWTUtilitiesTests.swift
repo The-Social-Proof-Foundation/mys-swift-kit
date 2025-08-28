@@ -99,7 +99,7 @@ final class JWTUtilitiesTests: XCTestCase {
 
     // Test decoding base64URL strings
     func testDecodeBase64URL() throws {
-        // Test case from the Sui zkLogin spec
+        // Test case from the MySo zkLogin spec
         let result = try JWTUtilities.decodeBase64URL(s: "eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20ifQ", i: 0)
         XCTAssertEqual(result, "{\"iss\":\"https://accounts.google.com\"}")
 

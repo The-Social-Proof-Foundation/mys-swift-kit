@@ -7,15 +7,15 @@ public class GetDynamicFieldsQuery: GraphQLQuery {
   public static let operationName: String = "getDynamicFields"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query getDynamicFields($parentId: SuiAddress!, $first: Int, $cursor: String) { owner(address: $parentId) { __typename dynamicFields(first: $first, after: $cursor) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename name { __typename bcs json type { __typename layout repr } } value { __typename ... on MoveValue { json type { __typename repr } } ... on MoveObject { contents { __typename type { __typename repr } json } address digest version } } } } } }"#
+      #"query getDynamicFields($parentId: MysAddress!, $first: Int, $cursor: String) { owner(address: $parentId) { __typename dynamicFields(first: $first, after: $cursor) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename name { __typename bcs json type { __typename layout repr } } value { __typename ... on MoveValue { json type { __typename repr } } ... on MoveObject { contents { __typename type { __typename repr } json } address digest version } } } } } }"#
     ))
 
-  public var parentId: SuiAddressApollo
+  public var parentId: MySoAddressApollo
   public var first: GraphQLNullable<Int>
   public var cursor: GraphQLNullable<String>
 
   public init(
-    parentId: SuiAddressApollo,
+    parentId: MySoAddressApollo,
     first: GraphQLNullable<Int>,
     cursor: GraphQLNullable<String>
   ) {
@@ -39,7 +39,7 @@ public class GetDynamicFieldsQuery: GraphQLQuery {
       .field("owner", Owner?.self, arguments: ["address": .variable("parentId")])
     ] }
 
-    /// Look up an Owner by its SuiAddressApollo.
+    /// Look up an Owner by its MySoAddressApollo.
     ///
     /// `rootVersion` represents the version of the root object in some nested chain of dynamic
     /// fields. It allows consistent historical queries for the case of wrapped objects, which don't
@@ -51,7 +51,7 @@ public class GetDynamicFieldsQuery: GraphQLQuery {
     /// from above when querying `Owner.asObject`. This can be used, for example, to get the
     /// contents of a dynamic object field when its parent was at `rootVersion`.
     ///
-    /// If `rootVersion` is omitted, dynamic fields will be from a consistent snapshot of the Sui
+    /// If `rootVersion` is omitted, dynamic fields will be from a consistent snapshot of the MySo
     /// state at the latest checkpoint known to the GraphQL RPC. Similarly, `Owner.asObject` will
     /// return the object's version at the latest checkpoint.
     public var owner: Owner? { __data["owner"] }
@@ -270,7 +270,7 @@ public class GetDynamicFieldsQuery: GraphQLQuery {
               public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.MoveObject }
               public static var __selections: [ApolloAPI.Selection] { [
                 .field("contents", Contents?.self),
-                .field("address", MySoKit.SuiAddressApollo.self),
+                .field("address", MySoKit.MySoAddressApollo.self),
                 .field("digest", String?.self),
                 .field("version", MySoKit.UInt53Apollo.self)
               ] }
@@ -279,7 +279,7 @@ public class GetDynamicFieldsQuery: GraphQLQuery {
               /// provides the flat representation of the type signature, and the BCS of the corresponding
               /// data.
               public var contents: Contents? { __data["contents"] }
-              public var address: MySoKit.SuiAddressApollo { __data["address"] }
+              public var address: MySoKit.MySoAddressApollo { __data["address"] }
               /// 32-byte hash that identifies the object's contents, encoded as a Base58 string.
               public var digest: String? { __data["digest"] }
               public var version: MySoKit.UInt53Apollo { __data["version"] }

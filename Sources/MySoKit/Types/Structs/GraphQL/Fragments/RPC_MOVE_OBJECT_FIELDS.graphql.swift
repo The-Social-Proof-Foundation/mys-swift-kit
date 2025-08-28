@@ -14,7 +14,7 @@ public struct RPC_MOVE_OBJECT_FIELDS: MySoKit.SelectionSet, Fragment {
   public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.MoveObject }
   public static var __selections: [ApolloAPI.Selection] { [
     .field("__typename", String.self),
-    .field("address", alias: "objectId", MySoKit.SuiAddressApollo.self),
+    .field("address", alias: "objectId", MySoKit.MySoAddressApollo.self),
     .field("digest", String?.self),
     .field("version", MySoKit.UInt53Apollo.self),
     .include(if: "showBcs", .field("bcs", MySoKit.Base64Apollo?.self)),
@@ -26,7 +26,7 @@ public struct RPC_MOVE_OBJECT_FIELDS: MySoKit.SelectionSet, Fragment {
     .include(if: "showDisplay", .field("display", [Display]?.self))
   ] }
 
-  public var objectId: MySoKit.SuiAddressApollo { __data["objectId"] }
+  public var objectId: MySoKit.MySoAddressApollo { __data["objectId"] }
   /// The Base64-encoded BCS serialization of the object's content.
   public var bcs: MySoKit.Base64Apollo? { __data["bcs"] }
   /// Displays the contents of the Move object in a JSON string and through GraphQL types. Also
@@ -34,14 +34,14 @@ public struct RPC_MOVE_OBJECT_FIELDS: MySoKit.SelectionSet, Fragment {
   /// data.
   public var contents: Contents? { __data["contents"] }
   /// Determines whether a transaction can transfer this object, using the TransferObjects
-  /// transaction command or `sui::transfer::public_transfer`, both of which require the object to
+  /// transaction command or `mys::transfer::public_transfer`, both of which require the object to
   /// have the `key` and `store` abilities.
   public var hasPublicTransfer: Bool? { __data["hasPublicTransfer"] }
   /// The owner type of this object: Immutable, Shared, Parent, Address
   public var owner: Owner? { __data["owner"] }
   /// The transaction block that created this version of the object.
   public var previousTransactionBlock: PreviousTransactionBlock? { __data["previousTransactionBlock"] }
-  /// The amount of SUI we would rebate if this object gets deleted or mutated. This number is
+  /// The amount of MYS we would rebate if this object gets deleted or mutated. This number is
   /// recalculated based on the present storage gas price.
   public var storageRebate: MySoKit.BigIntApollo? { __data["storageRebate"] }
   /// 32-byte hash that identifies the object's contents, encoded as a Base58 string.

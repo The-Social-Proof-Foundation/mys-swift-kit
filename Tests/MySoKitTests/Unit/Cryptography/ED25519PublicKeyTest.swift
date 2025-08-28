@@ -30,25 +30,25 @@ import XCTest
 final class ED25519PublicKeyTest: XCTestCase {
     struct PublicKeyTestStructure {
         let rawPublicKey: String
-        let suiPublicKey: String
-        let suiAddress: String
+        let mysoPublicKey: String
+        let mysoAddress: String
     }
 
     let testCases: [PublicKeyTestStructure] = [
         PublicKeyTestStructure(
             rawPublicKey: "UdGRWooy48vGTs0HBokIis5NK+DUjiWc9ENUlcfCCBE=",
-            suiPublicKey: "AFHRkVqKMuPLxk7NBwaJCIrOTSvg1I4lnPRDVJXHwggR",
-            suiAddress: "0xd77a6cd55073e98d4029b1b0b8bd8d88f45f343dad2732fc9a7965094e635c55"
+            mysoPublicKey: "AFHRkVqKMuPLxk7NBwaJCIrOTSvg1I4lnPRDVJXHwggR",
+            mysoAddress: "0xd77a6cd55073e98d4029b1b0b8bd8d88f45f343dad2732fc9a7965094e635c55"
         ),
         PublicKeyTestStructure(
             rawPublicKey: "0PTAfQmNiabgbak9U/stWZzKc5nsRqokda2qnV2DTfg=",
-            suiPublicKey: "AND0wH0JjYmm4G2pPVP7LVmcynOZ7EaqJHWtqp1dg034",
-            suiAddress: "0x7e8fd489c3d3cd9cc7cbcc577dc5d6de831e654edd9997d95c412d013e6eea23"
+            mysoPublicKey: "AND0wH0JjYmm4G2pPVP7LVmcynOZ7EaqJHWtqp1dg034",
+            mysoAddress: "0x7e8fd489c3d3cd9cc7cbcc577dc5d6de831e654edd9997d95c412d013e6eea23"
         ),
         PublicKeyTestStructure(
             rawPublicKey: "6L/l0uhGt//9cf6nLQ0+24Uv2qanX/R6tn7lWUJX1Xk=",
-            suiPublicKey: "AOi/5dLoRrf//XH+py0NPtuFL9qmp1/0erZ+5VlCV9V5",
-            suiAddress: "0x3a1b4410ebe9c3386a429c349ba7929aafab739c277f97f32622b971972a14a2"
+            mysoPublicKey: "AOi/5dLoRrf//XH+py0NPtuFL9qmp1/0erZ+5VlCV9V5",
+            mysoAddress: "0x3a1b4410ebe9c3386a429c349ba7929aafab739c277f97f32622b971972a14a2"
         )
     ]
 
@@ -96,13 +96,13 @@ final class ED25519PublicKeyTest: XCTestCase {
         XCTAssertEqual(try ED25519PublicKey(data: key.key), key)
     }
 
-    func testThatSuiPublicKeysAndAddressesCanBeDerivedFromPublicKey() throws {
+    func testThatmysoPublicKeysAndAddressesCanBeDerivedFromPublicKey() throws {
         for testCase in self.testCases {
-            let keySuiAddress = try ED25519PublicKey(value: testCase.rawPublicKey)
-            XCTAssertEqual(try keySuiAddress.toSuiAddress(), testCase.suiAddress)
+            let keyMysoAddress = try ED25519PublicKey(value: testCase.rawPublicKey)
+            XCTAssertEqual(try keyMysoAddress.toMySoAddress(), testCase.mysoAddress)
 
-            let keySuiPublicKey = try ED25519PublicKey(value: testCase.rawPublicKey)
-            XCTAssertEqual(try keySuiPublicKey.toSuiPublicKey(), testCase.suiPublicKey)
+            let keymysoPublicKey = try ED25519PublicKey(value: testCase.rawPublicKey)
+            XCTAssertEqual(try keymysoPublicKey.toMySoPublicKey(), testCase.mysoPublicKey)
         }
     }
 }

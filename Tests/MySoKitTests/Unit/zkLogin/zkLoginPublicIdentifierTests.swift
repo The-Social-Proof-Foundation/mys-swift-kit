@@ -43,7 +43,7 @@ final class zkLoginPublicIdentifierTests: XCTestCase {
         )
 
         // The actual address we compute 
-        let computedAddress = try pubId.toSuiAddress()
+        let computedAddress = try pubId.toMySoAddress()
 
         // Verify that we consistently compute the same address
         XCTAssertEqual(computedAddress, "0x3f8f50fc9440351a8d16a6b473493099dc988758e9edef64a93abfe7d435d527")
@@ -63,7 +63,7 @@ final class zkLoginPublicIdentifierTests: XCTestCase {
             iss: "accounts.google.com"
         )
 
-        XCTAssertEqual(try pubId1.toSuiAddress(), try pubId2.toSuiAddress())
+        XCTAssertEqual(try pubId1.toMySoAddress(), try pubId2.toMySoAddress())
     }
 
     // Test parsing a zkLogin signature and extracting its public identifier
@@ -81,7 +81,7 @@ final class zkLoginPublicIdentifierTests: XCTestCase {
         )
 
         // Verify the address matches
-        XCTAssertEqual(try publicKey.toSuiAddress(), expectedAddress)
+        XCTAssertEqual(try publicKey.toMySoAddress(), expectedAddress)
     }
 
     // Test that the zkLoginPublicIdentifier computes the correct base58 representation
@@ -100,6 +100,6 @@ final class zkLoginPublicIdentifierTests: XCTestCase {
 
         // Verify we can recreate the same public key from the base58
         let recreatedPubId = try zkLoginPublicIdentifier.fromBase58(base58)
-        XCTAssertEqual(try recreatedPubId.toSuiAddress(), try pubId.toSuiAddress())
+        XCTAssertEqual(try recreatedPubId.toMySoAddress(), try pubId.toMySoAddress())
     }
 }

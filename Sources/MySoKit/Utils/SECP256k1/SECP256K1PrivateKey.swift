@@ -46,7 +46,7 @@ public struct SECP256K1PrivateKey: Equatable, PrivateKeyProtocol {
     public typealias PublicKeyType = SECP256K1PublicKey
 
     /// Default derivation path for the private key.
-    public static let defaultDerivationPath: String = "m/54'/784'/0'/0/0"
+    public static let defaultDerivationPath: String = "m/54'/6976'/0'/0/0"
 
     nonisolated(unsafe) static let context = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_SIGN|SECP256K1_CONTEXT_VERIFY))
 
@@ -299,9 +299,9 @@ public struct SECP256K1PrivateKey: Equatable, PrivateKeyProtocol {
     /// - Parameters:
     ///   - path: A string representing the BIP32 path.
     /// - Returns: A boolean value, `true` if the given path is valid, `false` otherwise.
-    /// - Note: The pattern for a valid BIP32 path for this function is "^m\\/(54|74)'\\/784'\\/[0-9]+'\\/[0-9]+\\/[0-9]+$".
+    /// - Note: The pattern for a valid BIP32 path for this function is "^m\\/(54|74)'\\/6976'\\/[0-9]+'\\/[0-9]+\\/[0-9]+$".
     private static func isValidBIP32Path(_ path: String) -> Bool {
-        let pattern = "^m\\/(54|74)'\\/784'\\/[0-9]+'\\/[0-9]+\\/[0-9]+$"
+        let pattern = "^m\\/(54|74)'\\/6976'\\/[0-9]+'\\/[0-9]+\\/[0-9]+$"
         let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive)
         let matches = regex?.matches(in: path, options: [], range: NSRange(location: 0, length: path.utf16.count))
 

@@ -26,7 +26,7 @@
 import Foundation
 import CryptoKit
 
-/// Sui Blockchain Account
+/// MySo Blockchain Account
 public struct Account: Equatable, Hashable {
     /// Represents the type of cryptographic key associated with the account.
     /// For example, it could be `ed25519`, `secp256k1`, or `secp256r1`.
@@ -158,19 +158,19 @@ public struct Account: Equatable, Hashable {
     /// - Parameters:
     ///   - keyType: The type of cryptographic key to be used. Defaults to `.ed25519`.
     ///   - path: The file path to the JSON representation of the private key.
-    /// - Throws: `SuiError.invalidJsonData` if the data is not a valid JSON,
-    ///           or `SuiError.missingPrivateKey` if the private key is missing in the JSON data.
+    /// - Throws: `MySoError.invalidJsonData` if the data is not a valid JSON,
+    ///           or `MySoError.missingPrivateKey` if the private key is missing in the JSON data.
     public init(keyType: KeyType = .ed25519, path: String) throws {
         let fileURL = URL(fileURLWithPath: path)
         let data = try Data(contentsOf: fileURL)
         guard let json = try JSONSerialization
             .jsonObject(with: data, options: []) as? [String: Any]
         else {
-            throw SuiError.customError(message: "Invalid JSON data")
+            throw MySoError.customError(message: "Invalid JSON data")
         }
 
         guard let privateKeyHex = json["private_key"] as? String else {
-            throw SuiError.customError(message: "Missing Private Key")
+            throw MySoError.customError(message: "Missing Private Key")
         }
 
         try self.init(
@@ -269,7 +269,7 @@ public struct Account: Equatable, Hashable {
     /// - Parameters:
     ///    - path: A string representing the file path to store the account information.
     ///
-    /// - Throws: An error of type SuiError if there is an issue writing to the file.
+    /// - Throws: An error of type MySoError if there is an issue writing to the file.
     public func store(_ path: String) throws {
         let data: [String: String] = [
             "account_address": self.publicKey.hex(),
@@ -286,7 +286,7 @@ public struct Account: Equatable, Hashable {
     /// Returns the account's account address.
     /// - Returns: An AccountAddress object
     public func address() throws -> String {
-        return try self.publicKey.toSuiAddress()
+        return try self.publicKey.toMySoAddress()
     }
 
     /// Use the private key to sign the data inputted.

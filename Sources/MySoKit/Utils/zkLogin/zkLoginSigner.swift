@@ -28,8 +28,8 @@ import BigInt
 
 /// A comprehensive zkLogin signer that can sign transactions and personal messages
 public class ZkLoginSigner {
-    /// The Sui provider for network operations
-    private let provider: SuiProvider
+    /// The MySo provider for network operations
+    private let provider: MySoProvider
 
     /// The ephemeral keypair used for signing
     private let ephemeralKeyPair: Account
@@ -45,13 +45,13 @@ public class ZkLoginSigner {
 
     /// Initialize a new ZkLoginAuthenticator
     /// - Parameters:
-    ///   - provider: The Sui provider for network operations
+    ///   - provider: The MySo provider for network operations
     ///   - ephemeralKeyPair: The ephemeral keypair used for signing
     ///   - zkLoginSignature: The zkLogin signature structure template
     ///   - userAddress: The user's zkLogin address
     ///   - graphQLClient: Optional GraphQL client for signature verification
     public init(
-        provider: SuiProvider,
+        provider: MySoProvider,
         ephemeralKeyPair: Account,
         zkLoginSignature: zkLoginSignature,
         userAddress: String,
@@ -65,7 +65,7 @@ public class ZkLoginSigner {
     }
 
     /// Get the zkLogin address for this signer
-    /// - Returns: The Sui address string
+    /// - Returns: The MySo address string
     public func getAddress() -> String {
         return userAddress
     }
@@ -126,8 +126,8 @@ public class ZkLoginSigner {
     /// - Returns: The transaction execution response
     public func signAndExecuteTransaction(
         transactionBlock: inout TransactionBlock,
-        options: SuiTransactionBlockResponseOptions = .init()
-    ) async throws -> SuiTransactionBlockResponse {
+        options: MySoTransactionBlockResponseOptions = .init()
+    ) async throws -> MySoTransactionBlockResponse {
         // Ensure the transaction has the zkLogin user address as sender
         try transactionBlock.setSender(sender: userAddress)
 
@@ -151,8 +151,8 @@ public class ZkLoginSigner {
 
     public func executeTransaction(
         transactionBlock: [UInt8],
-        options: SuiTransactionBlockResponseOptions = .init()
-    ) async throws -> SuiTransactionBlockResponse {
+        options: MySoTransactionBlockResponseOptions = .init()
+    ) async throws -> MySoTransactionBlockResponse {
         // Sign the transaction data with our zkLogin signer
         let serializedSignature = try signTransaction(transactionBlock)
 
@@ -175,8 +175,8 @@ public class ZkLoginSigner {
     /// - Returns: The transaction execution response
     public func signAndExecuteTransactionBlock(
         transactionBlock: inout TransactionBlock,
-        options: SuiTransactionBlockResponseOptions = .init()
-    ) async throws -> SuiTransactionBlockResponse {
+        options: MySoTransactionBlockResponseOptions = .init()
+    ) async throws -> MySoTransactionBlockResponse {
         var txBlock = transactionBlock
         return try await signAndExecuteTransaction(transactionBlock: &txBlock, options: options)
     }
@@ -191,7 +191,7 @@ public class ZkLoginSigner {
         signature: zkLoginSignature
     ) async throws -> Bool {
         guard self.graphQLClient != nil else {
-            throw SuiError.customError(message: "GraphQL client required for verification")
+            throw MySoError.customError(message: "GraphQL client required for verification")
         }
 
         let publicKey = try getPublicKey()
@@ -211,7 +211,7 @@ public class ZkLoginSigner {
         signature: zkLoginSignature
     ) async throws -> Bool {
         guard self.graphQLClient != nil else {
-            throw SuiError.customError(message: "GraphQL client required for verification")
+            throw MySoError.customError(message: "GraphQL client required for verification")
         }
 
         let publicKey = try getPublicKey()

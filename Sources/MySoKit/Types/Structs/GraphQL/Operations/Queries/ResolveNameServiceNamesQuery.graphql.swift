@@ -7,15 +7,15 @@ public class ResolveNameServiceNamesQuery: GraphQLQuery {
   public static let operationName: String = "resolveNameServiceNames"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query resolveNameServiceNames($address: SuiAddress!, $limit: Int, $cursor: String) { address(address: $address) { __typename suinsRegistrations(first: $limit, after: $cursor) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename domain } } } }"#
+      #"query resolveNameServiceNames($address: MysAddress!, $limit: Int, $cursor: String) { address(address: $address) { __typename mysnsRegistrations(first: $limit, after: $cursor) { __typename pageInfo { __typename hasNextPage endCursor } nodes { __typename domain } } } }"#
     ))
 
-  public var address: SuiAddressApollo
+  public var address: MySoAddressApollo
   public var limit: GraphQLNullable<Int>
   public var cursor: GraphQLNullable<String>
 
   public init(
-    address: SuiAddressApollo,
+    address: MySoAddressApollo,
     limit: GraphQLNullable<Int>,
     cursor: GraphQLNullable<String>
   ) {
@@ -39,7 +39,7 @@ public class ResolveNameServiceNamesQuery: GraphQLQuery {
       .field("address", Address?.self, arguments: ["address": .variable("address")])
     ] }
 
-    /// Look-up an Account by its SuiAddressApollo.
+    /// Look-up an Account by its MySoAddressApollo.
     public var address: Address? { __data["address"] }
 
     /// Address
@@ -52,24 +52,24 @@ public class ResolveNameServiceNamesQuery: GraphQLQuery {
       public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.Address }
       public static var __selections: [ApolloAPI.Selection] { [
         .field("__typename", String.self),
-        .field("suinsRegistrations", SuinsRegistrations.self, arguments: [
+        .field("mysnsRegistrations", MySonsRegistrations.self, arguments: [
           "first": .variable("limit"),
           "after": .variable("cursor")
         ])
       ] }
 
-      /// The SuinsRegistration NFTs owned by this address. These grant the owner the capability to
+      /// The MySonsRegistration NFTs owned by this address. These grant the owner the capability to
       /// manage the associated domain.
-      public var suinsRegistrations: SuinsRegistrations { __data["suinsRegistrations"] }
+      public var mysnsRegistrations: MySonsRegistrations { __data["mysnsRegistrations"] }
 
-      /// Address.SuinsRegistrations
+      /// Address.MySonsRegistrations
       ///
-      /// Parent Type: `SuinsRegistrationConnection`
-      public struct SuinsRegistrations: MySoKit.SelectionSet {
+      /// Parent Type: `MySonsRegistrationConnection`
+      public struct MySonsRegistrations: MySoKit.SelectionSet {
         public let __data: DataDict
         public init(_dataDict: DataDict) { __data = _dataDict }
 
-        public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.SuinsRegistrationConnection }
+        public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.MySonsRegistrationConnection }
         public static var __selections: [ApolloAPI.Selection] { [
           .field("__typename", String.self),
           .field("pageInfo", PageInfo.self),
@@ -81,7 +81,7 @@ public class ResolveNameServiceNamesQuery: GraphQLQuery {
         /// A list of nodes.
         public var nodes: [Node] { __data["nodes"] }
 
-        /// Address.SuinsRegistrations.PageInfo
+        /// Address.MySonsRegistrations.PageInfo
         ///
         /// Parent Type: `PageInfo`
         public struct PageInfo: MySoKit.SelectionSet {
@@ -101,20 +101,20 @@ public class ResolveNameServiceNamesQuery: GraphQLQuery {
           public var endCursor: String? { __data["endCursor"] }
         }
 
-        /// Address.SuinsRegistrations.Node
+        /// Address.MySonsRegistrations.Node
         ///
-        /// Parent Type: `SuinsRegistration`
+        /// Parent Type: `MySonsRegistration`
         public struct Node: MySoKit.SelectionSet {
           public let __data: DataDict
           public init(_dataDict: DataDict) { __data = _dataDict }
 
-          public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.SuinsRegistration }
+          public static var __parentType: any ApolloAPI.ParentType { MySoKit.Objects.MySonsRegistration }
           public static var __selections: [ApolloAPI.Selection] { [
             .field("__typename", String.self),
             .field("domain", String.self)
           ] }
 
-          /// Domain name of the SuinsRegistration object
+          /// Domain name of the MySonsRegistration object
           public var domain: String { __data["domain"] }
         }
       }

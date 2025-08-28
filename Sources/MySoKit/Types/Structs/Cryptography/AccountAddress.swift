@@ -26,7 +26,7 @@
 import Foundation
 import CryptoSwift
 
-/// The Sui Blockchain Account Address
+/// The MySo Blockchain Account Address
 public struct AccountAddress: KeyProtocol, Equatable, CustomStringConvertible, Hashable {
     /// The address data itself
     public let address: Data
@@ -38,7 +38,7 @@ public struct AccountAddress: KeyProtocol, Equatable, CustomStringConvertible, H
         self.address = address
 
         if address.count != AccountAddress.length {
-            throw SuiError.customError(message: "Invalid address length \(address.count), expected \(AccountAddress.length)")
+            throw MySoError.customError(message: "Invalid address length \(address.count), expected \(AccountAddress.length)")
         }
     }
 
