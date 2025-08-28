@@ -27,30 +27,20 @@ MySoKit is a Swift SDK natively designed to make developing for the MySo Blockch
 - [x] Air drop MySo tokens.
 - [x] Merge and Split coins.
 - [x] Publish modules.
-- [x] Transfer objects.
 - [x] Execute move calls.
 - [x] Retrieving objects, transactions, checkpoints, coins, and events.
 - [x] Local Transaction Building.
 - [x] Local, custom, dev, test, and main net compatiblity.
 - [x] ED25519, SECP256K1, SECP256R1, and zkLogin Key and HD Wallet generation.
 - [x] zkLogin support, transaction signing, signature parsing.
-- [x] MySoNS support.
-- [x] Kiosk Support.
 - [x] Native Swift BCS Implementation.
 - [x] Comprehensive Unit and End To End Test coverage.
-
-## ToDo
-
-- [ ] Complete documentation of MySoKit.
-- [ ] Implement Resolve Name Service Names.
-- [ ] Reimplementation of GitHub Action workflows for Swift versions 5.9 - 6.0.
-- [ ] Reimplementation of GraphQL Endpoints for Swift 6.0 Concurrency Restrictions
 
 ## Requirements
 
 | Platform | Minimum Swift Version | Installation | Status |
 | --- | --- | --- | --- |
-| iOS 17.0+ / macOS 14.0+ / tvOS 17.0+ / watchOS 10.0+ | 5.9 | [Swift Package Manager](#swift-package-manager) | Fully Tested |
+| iOS 26.0+ / macOS 14.0+ / tvOS 17.0+ / watchOS 10.0+ | 5.9 | [Swift Package Manager](#swift-package-manager) | Fully Tested |
 
 ## Installation
 
