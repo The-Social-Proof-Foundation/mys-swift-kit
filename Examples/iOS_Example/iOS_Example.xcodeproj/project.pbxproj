@@ -11,7 +11,7 @@
 		7D657D9E2A000964008D3754 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D657D9D2A000964008D3754 /* ContentView.swift */; };
 		7D657DA02A000965008D3754 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7D657D9F2A000965008D3754 /* Assets.xcassets */; };
 		7D657DA32A000965008D3754 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7D657DA22A000965008D3754 /* Preview Assets.xcassets */; };
-		7D657DAC2A000984008D3754 /* SuiKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7D657DAB2A000984008D3754 /* SuiKit */; };
+		7D657DAC2A000984008D3754 /* MySoKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7D657DAB2A000984008D3754 /* MySoKit */; };
 		7D657DB22A0546DE008D3754 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D657DB12A0546DE008D3754 /* HomeViewModel.swift */; };
 		7D657DB52A05B47F008D3754 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D657DB32A05B47F008D3754 /* HomeView.swift */; };
 		7D657DB62A05B47F008D3754 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D657DB42A05B47F008D3754 /* AccountView.swift */; };
@@ -27,7 +27,7 @@
 		7D657D9D2A000964008D3754 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7D657D9F2A000965008D3754 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7D657DA22A000965008D3754 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		7D657DAA2A000977008D3754 /* SuiKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SuiKit; path = ../..; sourceTree = "<group>"; };
+		7D657DAA2A000977008D3754 /* MySoKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MySoKit; path = ../..; sourceTree = "<group>"; };
 		7D657DB12A0546DE008D3754 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		7D657DB32A05B47F008D3754 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		7D657DB42A05B47F008D3754 /* AccountView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
@@ -42,7 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D657DAC2A000984008D3754 /* SuiKit in Frameworks */,
+				7D657DAC2A000984008D3754 /* MySoKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,7 +90,7 @@
 		7D657DA92A000977008D3754 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7D657DAA2A000977008D3754 /* SuiKit */,
+				7D657DAA2A000977008D3754 /* MySoKit */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -133,7 +133,7 @@
 			);
 			name = iOS_Example;
 			packageProductDependencies = (
-				7D657DAB2A000984008D3754 /* SuiKit */,
+				7D657DAB2A000984008D3754 /* MySoKit */,
 			);
 			productName = iOS_Example;
 			productReference = 7D657D982A000964008D3754 /* iOS_Example.app */;
@@ -402,9 +402,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		7D657DAB2A000984008D3754 /* SuiKit */ = {
+		7D657DAB2A000984008D3754 /* MySoKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = SuiKit;
+			productName = MySoKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

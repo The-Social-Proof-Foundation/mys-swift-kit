@@ -1,8 +1,8 @@
 //
 //  MintNFTView.swift
-//  SuiKit
+//  MySoKit
 //
-//  Copyright (c) 2024-2025 OpenDive
+//  Copyright (c) 2025 The Social Proof Foundation, LLC.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal

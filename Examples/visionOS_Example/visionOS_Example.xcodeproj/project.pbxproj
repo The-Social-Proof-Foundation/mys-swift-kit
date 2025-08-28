@@ -11,13 +11,13 @@
 		7DB5B3C92D437E4B00E6DDAB /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 7DB5B3C82D437E4B00E6DDAB /* AppAuth */; };
 		7DB5B3CB2D437E4B00E6DDAB /* AppAuthCore in Frameworks */ = {isa = PBXBuildFile; productRef = 7DB5B3CA2D437E4B00E6DDAB /* AppAuthCore */; };
 		7DB5B3CE2D437EA000E6DDAB /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 7DB5B3CD2D437EA000E6DDAB /* FirebaseAuth */; };
-		7DB5B3D22D437EBB00E6DDAB /* SuiKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7DB5B3D12D437EBB00E6DDAB /* SuiKit */; };
+		7DB5B3D22D437EBB00E6DDAB /* MySoKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7DB5B3D12D437EBB00E6DDAB /* MySoKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		7DB5B3B02D437E1D00E6DDAB /* visionOS_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = visionOS_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DB5B3B42D437E1D00E6DDAB /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
-		7DB5B3D02D437EAF00E6DDAB /* SuiKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SuiKit; path = ../..; sourceTree = "<group>"; };
+		7DB5B3D02D437EAF00E6DDAB /* MySoKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MySoKit; path = ../..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -46,7 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7DB5B3D22D437EBB00E6DDAB /* SuiKit in Frameworks */,
+				7DB5B3D22D437EBB00E6DDAB /* MySoKit in Frameworks */,
 				7DB5B3C92D437E4B00E6DDAB /* AppAuth in Frameworks */,
 				7DB5B3B62D437E1D00E6DDAB /* RealityKitContent in Frameworks */,
 				7DB5B3CB2D437E4B00E6DDAB /* AppAuthCore in Frameworks */,
@@ -86,7 +86,7 @@
 		7DB5B3CF2D437EAF00E6DDAB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7DB5B3D02D437EAF00E6DDAB /* SuiKit */,
+				7DB5B3D02D437EAF00E6DDAB /* MySoKit */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -115,7 +115,7 @@
 				7DB5B3C82D437E4B00E6DDAB /* AppAuth */,
 				7DB5B3CA2D437E4B00E6DDAB /* AppAuthCore */,
 				7DB5B3CD2D437EA000E6DDAB /* FirebaseAuth */,
-				7DB5B3D12D437EBB00E6DDAB /* SuiKit */,
+				7DB5B3D12D437EBB00E6DDAB /* MySoKit */,
 			);
 			productName = visionOS_Example;
 			productReference = 7DB5B3B02D437E1D00E6DDAB /* visionOS_Example.app */;
@@ -413,9 +413,9 @@
 			package = 7DB5B3CC2D437EA000E6DDAB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
 		};
-		7DB5B3D12D437EBB00E6DDAB /* SuiKit */ = {
+		7DB5B3D12D437EBB00E6DDAB /* MySoKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = SuiKit;
+			productName = MySoKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

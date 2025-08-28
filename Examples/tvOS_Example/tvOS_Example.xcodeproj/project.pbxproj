@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7DB5B39C2D43189600E6DDAB /* SuiKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7DB5B39B2D43189600E6DDAB /* SuiKit */; };
+		7DB5B39C2D43189600E6DDAB /* MySoKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7DB5B39B2D43189600E6DDAB /* MySoKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		7DB5B3882D4315C300E6DDAB /* tvOS_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tvOS_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		7DB5B39A2D4315CF00E6DDAB /* SuiKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SuiKit; path = ../..; sourceTree = "<group>"; };
+		7DB5B39A2D4315CF00E6DDAB /* MySoKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MySoKit; path = ../..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -28,7 +28,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7DB5B39C2D43189600E6DDAB /* SuiKit in Frameworks */,
+				7DB5B39C2D43189600E6DDAB /* MySoKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,7 +55,7 @@
 		7DB5B3992D4315CE00E6DDAB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7DB5B39A2D4315CF00E6DDAB /* SuiKit */,
+				7DB5B39A2D4315CF00E6DDAB /* MySoKit */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -80,7 +80,7 @@
 			);
 			name = tvOS_Example;
 			packageProductDependencies = (
-				7DB5B39B2D43189600E6DDAB /* SuiKit */,
+				7DB5B39B2D43189600E6DDAB /* MySoKit */,
 			);
 			productName = tvOS_Example;
 			productReference = 7DB5B3882D4315C300E6DDAB /* tvOS_Example.app */;
@@ -336,9 +336,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		7DB5B39B2D43189600E6DDAB /* SuiKit */ = {
+		7DB5B39B2D43189600E6DDAB /* MySoKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = SuiKit;
+			productName = MySoKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

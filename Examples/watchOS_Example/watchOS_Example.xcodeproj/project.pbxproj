@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		7DB5B35A2D43064800E6DDAB /* watchOS_Example Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 7DB5B3592D43064800E6DDAB /* watchOS_Example Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		7DB5B3732D43067900E6DDAB /* SuiKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7DB5B3722D43067900E6DDAB /* SuiKit */; };
-		7DB5B3752D43068100E6DDAB /* SuiKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7DB5B3742D43068100E6DDAB /* SuiKit */; };
+		7DB5B3732D43067900E6DDAB /* MySoKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7DB5B3722D43067900E6DDAB /* MySoKit */; };
+		7DB5B3752D43068100E6DDAB /* MySoKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7DB5B3742D43068100E6DDAB /* MySoKit */; };
 		7DB5B3782D43094600E6DDAB /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 7DB5B3772D43094600E6DDAB /* QRCode */; };
 		7DB5B37A2D43094600E6DDAB /* QRCodeDetector in Frameworks */ = {isa = PBXBuildFile; productRef = 7DB5B3792D43094600E6DDAB /* QRCodeDetector */; };
 		7DB5B37E2D43094600E6DDAB /* QRCodeStatic in Frameworks */ = {isa = PBXBuildFile; productRef = 7DB5B37D2D43094600E6DDAB /* QRCodeStatic */; };
@@ -42,7 +42,7 @@
 /* Begin PBXFileReference section */
 		7DB5B3492D43064600E6DDAB /* watchOS_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = watchOS_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DB5B3592D43064800E6DDAB /* watchOS_Example Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "watchOS_Example Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7DB5B3712D43066000E6DDAB /* SuiKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SuiKit; path = ../..; sourceTree = "<group>"; };
+		7DB5B3712D43066000E6DDAB /* MySoKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MySoKit; path = ../..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -63,7 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7DB5B3752D43068100E6DDAB /* SuiKit in Frameworks */,
+				7DB5B3752D43068100E6DDAB /* MySoKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,7 +74,7 @@
 				7DB5B37A2D43094600E6DDAB /* QRCodeDetector in Frameworks */,
 				7DB5B3782D43094600E6DDAB /* QRCode in Frameworks */,
 				7DB5B37E2D43094600E6DDAB /* QRCodeStatic in Frameworks */,
-				7DB5B3732D43067900E6DDAB /* SuiKit in Frameworks */,
+				7DB5B3732D43067900E6DDAB /* MySoKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,7 +103,7 @@
 		7DB5B3702D43066000E6DDAB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7DB5B3712D43066000E6DDAB /* SuiKit */,
+				7DB5B3712D43066000E6DDAB /* MySoKit */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -130,7 +130,7 @@
 			);
 			name = watchOS_Example;
 			packageProductDependencies = (
-				7DB5B3742D43068100E6DDAB /* SuiKit */,
+				7DB5B3742D43068100E6DDAB /* MySoKit */,
 			);
 			productName = watchOS_Example;
 			productReference = 7DB5B3492D43064600E6DDAB /* watchOS_Example.app */;
@@ -153,7 +153,7 @@
 			);
 			name = "watchOS_Example Watch App";
 			packageProductDependencies = (
-				7DB5B3722D43067900E6DDAB /* SuiKit */,
+				7DB5B3722D43067900E6DDAB /* MySoKit */,
 				7DB5B3772D43094600E6DDAB /* QRCode */,
 				7DB5B3792D43094600E6DDAB /* QRCodeDetector */,
 				7DB5B37D2D43094600E6DDAB /* QRCodeStatic */,
@@ -530,13 +530,13 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		7DB5B3722D43067900E6DDAB /* SuiKit */ = {
+		7DB5B3722D43067900E6DDAB /* MySoKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = SuiKit;
+			productName = MySoKit;
 		};
-		7DB5B3742D43068100E6DDAB /* SuiKit */ = {
+		7DB5B3742D43068100E6DDAB /* MySoKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = SuiKit;
+			productName = MySoKit;
 		};
 		7DB5B3772D43094600E6DDAB /* QRCode */ = {
 			isa = XCSwiftPackageProductDependency;

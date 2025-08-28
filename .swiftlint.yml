@@ -15,11 +15,11 @@ included: # paths to include during linting. `--path` is ignored if present.
 excluded: # paths to ignore during linting. Takes precedence over `included`.
   - .build
   - Package.resolved  
-  - Sources/secp256k1sui
+  - Sources/secp256k1myso
   - gqls
-  - Sources/SuiKit/Types/Structs/GraphQL/Fragments/*.graphql.swift
-  - Sources/SuiKit/Types/Structs/GraphQL/Operations/**/*.graphql.swift
-  - Sources/SuiKit/Types/Structs/GraphQL/Schema/**/*.graphql.swift
+  - Sources/MySoKit/Types/Structs/GraphQL/Fragments/*.graphql.swift
+  - Sources/MySoKit/Types/Structs/GraphQL/Operations/**/*.graphql.swift
+  - Sources/MySoKit/Types/Structs/GraphQL/Schema/**/*.graphql.swift
 
 # configurable rules can be customized from this configuration file
 # binary rules can set their severity level

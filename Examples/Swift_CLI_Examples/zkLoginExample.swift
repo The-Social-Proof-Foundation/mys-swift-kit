@@ -1,8 +1,8 @@
 //
 //  zkLoginExample.swift
-//  SuiKit
+//  MySoKit
 //
-//  Copyright (c) 2024-2025 OpenDive
+//  Copyright (c) 2025 The Social Proof Foundation, LLC.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,9 +24,9 @@
 //
 
 import Foundation
-import SuiKit
+import MySoKit
 
-/// A comprehensive example of using the zkLogin flow in SuiKit
+/// A comprehensive example of using the zkLogin flow in MySoKit
 /// This example demonstrates the complete zkLogin authentication and transaction flow
 class ZkLoginExample {
     // Configuration
@@ -52,17 +52,17 @@ class ZkLoginExample {
         // Set up network URLs
         switch network {
         case .devnet:
-            self.networkUrl = URL(string: "https://fullnode.devnet.sui.io:443")!
-            self.proofServiceUrl = proofServiceUrl ?? URL(string: "https://prover-dev.mystenlabs.com/v1")!
-            self.saltServiceUrl = saltServiceUrl ?? URL(string: "https://salt.api.mystenlabs.com/get_salt")!
+            self.networkUrl = URL(string: "https://fullnode.testnet.mysocial.network:443")!
+            self.proofServiceUrl = proofServiceUrl ?? URL(string: "https://zklogin-prover-testnet.up.railway.app/v1")!
+            self.saltServiceUrl = saltServiceUrl ?? URL(string: "https://salt.testnet.mysocial.network/get_salt")!
         case .testnet:
-            self.networkUrl = URL(string: "https://fullnode.testnet.sui.io:443")!
-            self.proofServiceUrl = proofServiceUrl ?? URL(string: "https://prover.testnet.sui.io/v1")!
-            self.saltServiceUrl = saltServiceUrl ?? URL(string: "https://salt.api.mystenlabs.com/get_salt")!
+            self.networkUrl = URL(string: "https://fullnode.testnet.mysocial.network:443")!
+            self.proofServiceUrl = proofServiceUrl ?? URL(string: "https://zklogin-prover-testnet.up.railway.app/v1")!
+            self.saltServiceUrl = saltServiceUrl ?? URL(string: "https://salt.testnet.mysocial.network/get_salt")!
         case .mainnet:
-            self.networkUrl = URL(string: "https://fullnode.mainnet.sui.io:443")!
-            self.proofServiceUrl = proofServiceUrl ?? URL(string: "https://prover.mainnet.sui.io/v1")!
-            self.saltServiceUrl = saltServiceUrl ?? URL(string: "https://salt.api.mystenlabs.com/get_salt")!
+            self.networkUrl = URL(string: "https://fullnode.mainnet.mysocial.network:443")!
+            self.proofServiceUrl = proofServiceUrl ?? URL(string: "https://zklogin-prover-mainnet.up.railway.app/v1")!
+            self.saltServiceUrl = saltServiceUrl ?? URL(string: "https://salt.mainnet.mysocial.network/get_salt")!
         }
 
         // Initialize services

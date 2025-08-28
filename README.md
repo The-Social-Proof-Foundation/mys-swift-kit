@@ -13,7 +13,7 @@ MySoKit is a Swift SDK natively designed to make developing for the MySo Blockch
   - [Swift Package Manager](#swift-package-manager)
     - [SPM Through Xcode Project](#spm-through-xcode-project)
     - [SPM Through Xcode Package](#spm-through-xcode-package)
-- [Using MySoKit](#using-suikit)
+- [Using MySoKit](#using-mysokit)
 - [Development and Testing](#development-and-testing)
 - [Next Steps](#next-steps)
 - [Credits](#credits)
