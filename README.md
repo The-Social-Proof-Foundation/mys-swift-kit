@@ -178,63 +178,9 @@ catch {
 }
 ```
 
-And this is how to publish a package. (Note: it is recommended for this to be used in a CLI / MacOS enviornment)
-
-```swift
-import MySoKit 
-import SwiftyJSON
-
-do {
-    // Import Package Module JSON
-    guard let fileUrl = Bundle. main.ur(forResource: "Package", withExtension: "json") else {
-        throw NSError(domain: "Package is missing", code: -1)
-    }
-    guard let fileCompiledData = try? Data(contentsOf: fileUrl) else {
-        throw NSError(domain: "Package is corrupted", code: -1)
-    }
-    let fileData = JSON(fileCompiledData)
-
-    // Create new wallet
-    let newWallet = try Wallet()
-
-    // Create Signer and Provider
-    let provider = MySoProvider()
-    let signer = RawSigner(account: newWallet.accounts[0], provider: provider)
-
-    // Create transaction block
-    var tx = try TransactionBlock()
-
-    // Prepare Publish
-    let publishObject = try tx.publish(
-        modules: fileData["modules"].arrayValue as! [String], 
-        dependencies: fileData["dependencies"].arrayValue as! [String]
-    )
-
-    // Prepare Transfer Object
-    try tx.transferObjects([publishObject], try newWallet.accounts[0].address())
-
-    // Execute transaction
-    var result = try await signer.signAndExecuteTransaction(transactionBlock: &tx)
-    result = try await provider.waitForTransaction(tx: result.digest)
-    print(result)
-} catch {
-    print("Error: \(error)")
-}
-```
-
 ## Development And Testing
 
 We welcome anyone to contribute to the project through posting issues, if they encounter any bugs / glitches while using MySoKit; and as well with creating pull issues that add any additional features to MySoKit.
-
-## Next Steps
-
-* In the near future, there will be full documentation outlining how a user can fully utilize MySoKit.
-* As well, more features listed in [ToDo](#todo) will be fully implemented.
-* More examples, from other platforms, will be uploaded for developers to be able to focus more on implementing the end user experience, and less time figuring out their project's architecture.
-
-## Credits
-
-Credit goes to [The Social Proof Foundation](https://mysocial.network) for providing the needed infrastructure for the MySocial blockchain, as well with their extensive RPC and MySocial Move documentation.
 
 ## License
 
