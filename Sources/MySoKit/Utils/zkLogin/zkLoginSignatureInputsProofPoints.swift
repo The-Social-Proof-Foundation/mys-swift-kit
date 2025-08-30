@@ -33,7 +33,7 @@ public struct zkLoginSignatureInputsProofPoints: KeyProtocol, Equatable, Codable
     public init(
         a: [String],
         b: [[String]],
-        c: [String],
+        c: [String]
     ) {
         self.a = a
         self.b = b
