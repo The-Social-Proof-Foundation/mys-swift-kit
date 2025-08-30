@@ -83,7 +83,7 @@ public class RemoteZkProofService: ZkProofService {
             "jwt": jwt,
             "extendedEphemeralPublicKey": Data(ephemeralPublicKey).base64EncodedString(),
             "maxEpoch": String(maxEpoch),
-            "jwtRandomness": Data(jwtRandomness).base64EncodedString(),
+            "jwtRandomness": zkLoginNonce.toBigIntBE(bytes: Data(jwtRandomness)).description,
             "salt": userSalt,
             "keyClaimName": "sub"
         ]
