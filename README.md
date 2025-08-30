@@ -14,6 +14,7 @@ MySoKit is a Swift SDK natively designed to make developing for the MySo Blockch
     - [SPM Through Xcode Project](#spm-through-xcode-project)
     - [SPM Through Xcode Package](#spm-through-xcode-package)
 - [Using MySoKit](#using-mysokit)
+- [zkLogin Authentication](docs/zkLogin.md)
 - [Development and Testing](#development-and-testing)
 - [Next Steps](#next-steps)
 - [Credits](#credits)
@@ -82,7 +83,7 @@ do {
     // Create transaction block
     var tx = try TransactionBlock()
 
-    // Split coin and prepare transaction (e.g., sending 1K Droplets to an account)
+    // Split coin and prepare transaction (e.g., sending 1K MySo to an account)
     let coin = try tx.splitCoin(tx.gas, [try tx.pure(value: .number(1_000))])
     try tx.transferObjects([coin], try newWallet.accounts[0].address())
 
