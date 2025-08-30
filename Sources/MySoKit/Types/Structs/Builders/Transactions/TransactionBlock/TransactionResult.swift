@@ -43,7 +43,7 @@ public class TransactionResult: Sequence, IteratorProtocol {
     /// - Parameter index: The index representing the position of the transaction argument.
     public init(index: UInt16, amount: UInt16? = nil) {
         self.transactionArgument = TransactionArgument.result(
-            Result(index: index)
+            TransactionResultIndex(index: index)
         )
         self.count = amount ?? 1
         self.nestedResults = []
@@ -62,10 +62,10 @@ public class TransactionResult: Sequence, IteratorProtocol {
         if let existingResult = nestedResults[safe: (index + 1)] {
             return existingResult
         }
-        if case .result(let result) = transactionArgument {
+        if case .result(let transactionResultIndex) = transactionArgument {
             let nestedResult = TransactionArgument.nestedResult(
                 NestedResult(
-                    index: result.index,
+                    index: transactionResultIndex.index,
                     resultIndex: resultIndex
                 )
             )

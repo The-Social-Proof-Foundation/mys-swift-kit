@@ -9,7 +9,7 @@ import Foundation
 
 public enum TransactionObjectArgument: KeyProtocol {
     case gasCoin
-    case result(Result)
+    case result(TransactionResultIndex)
     case nestedResult(NestedResult)
     case input(TransactionBlockInput)
 
@@ -17,8 +17,8 @@ public enum TransactionObjectArgument: KeyProtocol {
         switch transactionArgument {
         case .gasCoin:
             self = .gasCoin
-        case .result(let result):
-            self = .result(result)
+        case .result(let transactionResultIndex):
+            self = .result(transactionResultIndex)
         case .nestedResult(let nestedResult):
             self = .nestedResult(nestedResult)
         case .input(let input):
@@ -31,8 +31,8 @@ public enum TransactionObjectArgument: KeyProtocol {
         switch self {
         case .gasCoin:
             return .gasCoin
-        case .result(let result):
-            return .result(result)
+        case .result(let transactionResultIndex):
+            return .result(transactionResultIndex)
         case .nestedResult(let nestedResult):
             return .nestedResult(nestedResult)
         case .input(let input):
@@ -47,9 +47,9 @@ public enum TransactionObjectArgument: KeyProtocol {
         case .input(let transactionBlockInput):
             try Serializer.u8(serializer, UInt8(1))
             try Serializer._struct(serializer, value: transactionBlockInput)
-        case .result(let result):
+        case .result(let transactionResultIndex):
             try Serializer.u8(serializer, UInt8(2))
-            try Serializer._struct(serializer, value: result)
+            try Serializer._struct(serializer, value: transactionResultIndex)
         case .nestedResult(let nestedResult):
             try Serializer.u8(serializer, UInt8(3))
             try Serializer._struct(serializer, value: nestedResult)

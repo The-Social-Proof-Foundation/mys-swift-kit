@@ -25,8 +25,8 @@
 
 import Foundation
 
-public struct Result: KeyProtocol {
-    /// The index representing the position of the `Result` in a collection.
+public struct TransactionResultIndex: KeyProtocol {
+    /// The index representing the position of the transaction result in a collection.
     public let index: UInt16
 
     public func serialize(_ serializer: Serializer) throws {
@@ -35,8 +35,8 @@ public struct Result: KeyProtocol {
 
     public static func deserialize(
         from deserializer: Deserializer
-    ) throws -> Result {
-        return Result(
+    ) throws -> TransactionResultIndex {
+        return TransactionResultIndex(
             index: try Deserializer.u16(deserializer)
         )
     }

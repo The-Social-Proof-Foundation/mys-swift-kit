@@ -35,7 +35,7 @@ public enum TransactionArgument: KeyProtocol {
     case input(TransactionBlockInput)
 
     /// Represents the result of the transaction.
-    case result(Result)
+    case result(TransactionResultIndex)
 
     /// Represents a nested result within a transaction.
     case nestedResult(NestedResult)
@@ -66,7 +66,7 @@ public enum TransactionArgument: KeyProtocol {
             return .gasCoin
         }
         if input["Result"].exists() {
-            return .result(Result(index: input["Result"].uInt16Value))
+            return .result(TransactionResultIndex(index: input["Result"].uInt16Value))
         }
         if input["NestedResult"].exists() {
             let nestedResult = input["NestedResult"].arrayValue
@@ -87,9 +87,9 @@ public enum TransactionArgument: KeyProtocol {
         case .input(let transactionBlockInput):
             try Serializer.u8(serializer, UInt8(1))
             try Serializer._struct(serializer, value: transactionBlockInput)
-        case .result(let result):
+        case .result(let transactionResultIndex):
             try Serializer.u8(serializer, UInt8(2))
-            try Serializer._struct(serializer, value: result)
+            try Serializer._struct(serializer, value: transactionResultIndex)
         case .nestedResult(let nestedResult):
             try Serializer.u8(serializer, UInt8(3))
             try Serializer._struct(serializer, value: nestedResult)
