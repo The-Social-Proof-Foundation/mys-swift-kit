@@ -97,9 +97,29 @@ public class ZkLoginSigner {
         // Sign with the ephemeral keypair
         let ephemeralSignature = try ephemeralKeyPair.sign(Data(bytes))
 
-        // Create a complete zkLogin signature with the user signature
+        // Create a complete zkLogin signature with the proper user signature structure
         var completeSignature = zkLoginSignatureTemplate
-        completeSignature.userSignature = ephemeralSignature.signature.bytes
+        
+        // Build proper user signature: [scheme_flag] + [signature_bytes] + [public_key_bytes]
+        print("🔧 [USER SIG DEBUG] Building complete user signature...")
+        print("🔧 [USER SIG DEBUG] Ephemeral signature bytes: \(ephemeralSignature.signature.bytes.count)")
+        print("🔧 [USER SIG DEBUG] Ephemeral public key bytes: \(try ephemeralKeyPair.publicKey.toMySoBytes().count)")
+        
+        var userSignatureBytes = [UInt8]()
+        
+        // Add scheme flag (Ed25519 = 0x00)
+        userSignatureBytes.append(0x00) // Ed25519 scheme flag
+        
+        // Add signature bytes (64 bytes for Ed25519)
+        userSignatureBytes.append(contentsOf: ephemeralSignature.signature.bytes)
+        
+        // Add public key bytes (32 bytes for Ed25519)
+        userSignatureBytes.append(contentsOf: try ephemeralKeyPair.publicKey.toMySoBytes())
+        
+        completeSignature.userSignature = userSignatureBytes
+        
+        print("✅ [USER SIG DEBUG] Complete user signature: \(userSignatureBytes.count) bytes")
+        print("🔧 [USER SIG DEBUG] Breakdown: 1 (scheme) + \(ephemeralSignature.signature.bytes.count) (sig) + \(try ephemeralKeyPair.publicKey.toMySoBytes().count) (pubkey)")
 
         return completeSignature
     }
