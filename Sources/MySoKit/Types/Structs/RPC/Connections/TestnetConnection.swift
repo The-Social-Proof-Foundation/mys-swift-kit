@@ -26,7 +26,7 @@
 import Foundation
 
 public struct TestnetConnection: ConnectionProtocol {
-    public var fullNode: String = "http://fullnode.testnet.mysocial.network:9000"
+    public var fullNode: String = "http://fullnode.testnet.mysocial.network:8082"
     public var faucet: String? = "https://faucet.mysocial.network/gas"
     public var graphql: String? = "https://mys-graphql-rpc-testnet.up.railway.app/"
 
