@@ -80,8 +80,11 @@ public class ZkLoginSigner {
         )
         let iss = try JWTUtilities.extractClaimValue(claim: issClaimJWT, claimName: "iss") as String
 
+        // Convert Data addressSeed back to BigInt (simplified approach)
+        let addressSeedString = ZkLoginAuthenticator.dataToDecimalString(zkLoginSignatureTemplate.inputs.addressSeed)
+        
         return try zkLoginPublicIdentifier(
-            addressSeed: BigInt(zkLoginSignatureTemplate.inputs.addressSeed)!,
+            addressSeed: BigInt(addressSeedString)!,
             iss: iss,
             client: graphQLClient
         )
@@ -256,12 +259,30 @@ extension ZkLoginAuthenticator {
         )
         let iss = try JWTUtilities.extractClaimValue(claim: issClaimJWT, claimName: "iss") as String
 
+        // Convert Data addressSeed back to BigInt (simplified approach)
+        let addressSeedString = ZkLoginAuthenticator.dataToDecimalString(signature.inputs.addressSeed)
+        
         let publicKey = try zkLoginPublicIdentifier(
-            addressSeed: BigInt(signature.inputs.addressSeed)!,
+            addressSeed: BigInt(addressSeedString)!,
             iss: iss,
             client: graphQLClient
         )
 
         return (publicKey: publicKey, signature: signature)
+    }
+    
+    /// Convert Data back to decimal string (simplified approach)
+    public static func dataToDecimalString(_ data: Data) -> String {
+        // For simplicity, convert the last 8 bytes to UInt64
+        let bytes = [UInt8](data)
+        var result: UInt64 = 0
+        
+        // Take the last 8 bytes for UInt64 conversion
+        let startIndex = max(0, bytes.count - 8)
+        for i in startIndex..<bytes.count {
+            result = (result << 8) + UInt64(bytes[i])
+        }
+        
+        return String(result)
     }
 }

@@ -24,39 +24,88 @@
 //
 
 import Foundation
+import CryptoKit
 
 /// Represents the inputs for a zkLogin signature
 public struct zkLoginSignatureInputs: KeyProtocol, Equatable, Codable {
     public var proofPoints: zkLoginSignatureInputsProofPoints
     public var issBase64Details: zkLoginSignatureInputsClaim
     public var headerBase64: String
-    public var addressSeed: String
+    public var addressSeed: Data  // Changed from String to Data for large numbers
 
     public init(
         proofPoints: zkLoginSignatureInputsProofPoints,
         issBase64Details: zkLoginSignatureInputsClaim,
         headerBase64: String,
-        addressSeed: String
+        addressSeed: Data
     ) {
         self.proofPoints = proofPoints
         self.issBase64Details = issBase64Details
         self.headerBase64 = headerBase64
         self.addressSeed = addressSeed
     }
+    
+    // Constructor for string addressSeed (convert to Data)
+    public init(
+        proofPoints: zkLoginSignatureInputsProofPoints,
+        issBase64Details: zkLoginSignatureInputsClaim,
+        headerBase64: String,
+        addressSeedString: String
+    ) {
+        self.proofPoints = proofPoints
+        self.issBase64Details = issBase64Details
+        self.headerBase64 = headerBase64
+        self.addressSeed = Self.addressSeedStringToData(addressSeedString)
+    }
+    
+    private static func addressSeedStringToData(_ addressSeed: String) -> Data {
+        // Convert large decimal string to 32-byte Data using hash
+        let hash = SHA256.hash(data: addressSeed.data(using: .utf8) ?? Data())
+        var data = Data(count: 32)
+        let hashBytes = Array(hash)
+        
+        for (index, byte) in hashBytes.enumerated() {
+            if index < 32 {
+                data[index] = byte
+            }
+        }
+        
+        return data
+    }
 
     public func serialize(_ serializer: Serializer) throws {
+        print("🔧 [INPUTS DEBUG] zkLoginSignatureInputs.serialize() called")
+        print("🔧 [INPUTS DEBUG] About to serialize proof points...")
         try Serializer._struct(serializer, value: self.proofPoints)
+        print("✅ [INPUTS DEBUG] Proof points serialized")
+        
+        print("🔧 [INPUTS DEBUG] About to serialize issBase64Details...")
         try Serializer._struct(serializer, value: self.issBase64Details)
+        print("✅ [INPUTS DEBUG] issBase64Details serialized")
+        
+        print("🔧 [INPUTS DEBUG] About to serialize headerBase64...")
         try Serializer.str(serializer, self.headerBase64)
-        try Serializer.str(serializer, self.addressSeed)
+        print("✅ [INPUTS DEBUG] headerBase64 serialized")
+        
+        print("🔧 [INPUTS DEBUG] About to serialize addressSeed as 32-byte Data...")
+        // Serialize addressSeed as 32-byte Data directly
+        try serializer.sequence([UInt8](self.addressSeed), Serializer.u8)
+        print("✅ [INPUTS DEBUG] addressSeed serialized as 32-byte Data")
+        print("✅ [INPUTS DEBUG] zkLoginSignatureInputs.serialize() completed")
     }
 
     public static func deserialize(from deserializer: Deserializer) throws -> zkLoginSignatureInputs {
+        let proofPoints = try zkLoginSignatureInputsProofPoints.deserialize(from: deserializer)
+        let issBase64Details = try zkLoginSignatureInputsClaim.deserialize(from: deserializer)
+        let headerBase64 = try Deserializer.string(deserializer)
+        let addressSeedBytes = try deserializer.sequence(valueDecoder: Deserializer.u8)
+        let addressSeed = Data(addressSeedBytes)
+        
         return zkLoginSignatureInputs(
-            proofPoints: try zkLoginSignatureInputsProofPoints.deserialize(from: deserializer),
-            issBase64Details: try zkLoginSignatureInputsClaim.deserialize(from: deserializer),
-            headerBase64: try Deserializer.string(deserializer),
-            addressSeed: try Deserializer.string(deserializer)
+            proofPoints: proofPoints,
+            issBase64Details: issBase64Details,
+            headerBase64: headerBase64,
+            addressSeed: addressSeed
         )
     }
 }

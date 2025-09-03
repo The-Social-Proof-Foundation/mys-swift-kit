@@ -150,7 +150,7 @@ public class ZkLoginAuthenticator {
             proofPoints: proofPoints,
             issBase64Details: issBase64Details,
             headerBase64: headerBase64,
-            addressSeed: "" // Will be populated from the proofPoints
+            addressSeedString: "" // Will be populated from the proofPoints
         )
 
         // Create the zkLoginSignature (without user signature, that will be added at transaction time)

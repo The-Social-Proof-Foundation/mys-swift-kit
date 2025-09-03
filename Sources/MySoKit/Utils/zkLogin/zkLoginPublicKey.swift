@@ -52,8 +52,11 @@ public struct zkLoginPublicIdentifier: PublicKeyProtocol {
         )
         let iss = try JWTUtilities.extractClaimValue(claim: issClaimJWT, claimName: "iss") as String
 
+        // Convert Data addressSeed back to BigInt
+        let addressSeedString = ZkLoginAuthenticator.dataToDecimalString(data.inputs.addressSeed)
+        
         // Initialize with address seed and issuer
-        try self.init(addressSeed: BigInt(data.inputs.addressSeed)!, iss: iss, client: nil)
+        try self.init(addressSeed: BigInt(addressSeedString)!, iss: iss, client: nil)
     }
 
     public init(addressSeed: BigInt, iss: String, client: GraphQLClientProtocol? = nil) throws {
@@ -212,9 +215,12 @@ public struct zkLoginPublicIdentifier: PublicKeyProtocol {
         )
         let iss = try JWTUtilities.extractClaimValue(claim: issClaimJWT, claimName: "iss") as String
 
+        // Convert Data addressSeed back to BigInt
+        let addressSeedString = ZkLoginAuthenticator.dataToDecimalString(signature.inputs.addressSeed)
+        
         // Create a new public identifier from the signature data
         let publicKey = try zkLoginPublicIdentifier(
-            addressSeed: BigInt(signature.inputs.addressSeed)!,
+            addressSeed: BigInt(addressSeedString)!,
             iss: iss,
             client: self.client
         )

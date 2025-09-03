@@ -72,33 +72,18 @@ public struct zkLoginSignature: KeyProtocol, Equatable {
         )
     }
 
-    /// Serialize the zkLogin signature for transaction submission in MySocial protobuf format
+    /// Serialize the zkLogin signature for transaction submission
     /// - Returns: Base64 encoded serialized signature
     public func serialize() -> String {
         let serializer = Serializer()
         do {
-            print("🔧 [BLOCKCHAIN SUBMIT] Serializing zkLogin signature in MySocial protobuf format...")
+            print("🔧 [BLOCKCHAIN SUBMIT] Serializing zkLogin signature with 32-byte Data format...")
             
-            // Serialize proof points in MySocial protobuf format
-            try serializeProtobufProofPoints(serializer, proofPoints: self.inputs.proofPoints)
-            
-            // Serialize issBase64Details
-            try Serializer._struct(serializer, value: self.inputs.issBase64Details)
-            
-            // Serialize headerBase64
-            try Serializer.str(serializer, self.inputs.headerBase64)
-            
-            // Serialize addressSeed as 32-byte protobuf field element
-            try serializeProtobufAddressSeed(serializer, addressSeed: self.inputs.addressSeed)
-            
-            // Serialize maxEpoch
-            try Serializer.u64(serializer, self.maxEpoch)
-            
-            // Serialize userSignature
-            try serializer.sequence(self.userSignature, Serializer.u8)
-            
+            // Serialize the entire zkLoginSignature struct (now using Data format)
+            try self.serialize(serializer)
             let bytes = serializer.output()
-            print("✅ [BLOCKCHAIN SUBMIT] Successfully serialized in MySocial protobuf format")
+            
+            print("✅ [BLOCKCHAIN SUBMIT] Successfully serialized with 32-byte Data format")
 
             // Create result with signature scheme flag (0x05) as first byte
             var signatureBytes = Data(count: bytes.count + 1)
@@ -108,73 +93,9 @@ public struct zkLoginSignature: KeyProtocol, Equatable {
             return signatureBytes.base64EncodedString()
             
         } catch {
-            print("❌ [BLOCKCHAIN SUBMIT] Protobuf serialization failed: \(error)")
+            print("❌ [BLOCKCHAIN SUBMIT] Serialization failed: \(error)")
             return Data().base64EncodedString() // Return empty signature in case of error
         }
-    }
-    
-    /// Serialize proof points in MySocial protobuf format (32-byte big-endian field elements)
-    private func serializeProtobufProofPoints(_ serializer: Serializer, proofPoints: zkLoginSignatureInputsProofPoints) throws {
-        print("🔧 [PROTOBUF] Converting proof points to 32-byte big-endian format...")
-        
-        // Serialize a points (CircomG1)
-        for decimalString in proofPoints.a {
-            let fieldElement = try decimalStringTo32ByteArray(decimalString)
-            try serializer.sequence(fieldElement, Serializer.u8)
-        }
-        
-        // Serialize b points (CircomG2) 
-        for pointPair in proofPoints.b {
-            for decimalString in pointPair {
-                let fieldElement = try decimalStringTo32ByteArray(decimalString)
-                try serializer.sequence(fieldElement, Serializer.u8)
-            }
-        }
-        
-        // Serialize c points (CircomG1)
-        for decimalString in proofPoints.c {
-            let fieldElement = try decimalStringTo32ByteArray(decimalString)
-            try serializer.sequence(fieldElement, Serializer.u8)
-        }
-        
-        print("✅ [PROTOBUF] Proof points converted to 32-byte format")
-    }
-    
-    /// Serialize address seed in MySocial protobuf format (32-byte big-endian field element)
-    private func serializeProtobufAddressSeed(_ serializer: Serializer, addressSeed: String) throws {
-        print("🔧 [PROTOBUF] Converting address seed to 32-byte big-endian format...")
-        let fieldElement = try decimalStringTo32ByteArray(addressSeed)
-        try serializer.sequence(fieldElement, Serializer.u8)
-        print("✅ [PROTOBUF] Address seed converted to 32-byte format")
-    }
-    
-    /// Convert decimal string to 32-byte big-endian byte array
-    private func decimalStringTo32ByteArray(_ decimalString: String) throws -> [UInt8] {
-        // Handle the special case of "1" and "0"
-        if decimalString == "1" {
-            var bytes = [UInt8](repeating: 0, count: 32)
-            bytes[31] = 1
-            return bytes
-        } else if decimalString == "0" {
-            return [UInt8](repeating: 0, count: 32)
-        }
-        
-        // For larger numbers, we need proper big integer conversion
-        // For now, use a simplified approach for UInt64 range
-        guard let value = UInt64(decimalString) else {
-            throw MySoError.customError(message: "Cannot convert decimal string to UInt64: \(decimalString)")
-        }
-        
-        var bytes = [UInt8](repeating: 0, count: 32)
-        var tempValue = value
-        
-        // Fill bytes from right to left (big-endian)
-        for i in (0..<8).reversed() {
-            bytes[24 + i] = UInt8(tempValue & 0xFF)
-            tempValue >>= 8
-        }
-        
-        return bytes
     }
 
     /// Parse a serialized zkLogin signature string
@@ -204,8 +125,9 @@ public struct zkLoginSignature: KeyProtocol, Equatable {
         // Read headerBase64
         let headerBase64 = try Deserializer.string(deserializer)
 
-        // Read addressSeed
-        let addressSeed = try Deserializer.string(deserializer)
+        // Read addressSeed (now as Data bytes)
+        let addressSeedBytes = try deserializer.sequence(valueDecoder: Deserializer.u8)
+        let addressSeed = Data(addressSeedBytes)
 
         // Create inputs struct
         let inputs = zkLoginSignatureInputs(
