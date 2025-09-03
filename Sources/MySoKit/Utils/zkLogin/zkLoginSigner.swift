@@ -135,11 +135,11 @@ public class ZkLoginSigner {
         let bytes = try await transactionBlock.build(self.provider)
 
         // Sign the transaction data with our zkLogin signer
-        let serializedSignature = try signTransaction(bytes.bytes)
+        let serializedSignature = try signTransaction([UInt8](bytes))
 
         // Execute the transaction with the zkLogin signature
         var resp = try await provider.executeTransactionBlock(
-            transactionBlock: bytes.bytes,
+            transactionBlock: [UInt8](bytes),
             signature: serializedSignature,
             options: options
         )
