@@ -190,7 +190,19 @@ public struct MySoProvider {
             )
         )
         let errorValue = self.hasErrors(JSON(data))
-        guard !(errorValue.hasError) else { throw MySoError.customError(message: "RPC Error: \(errorValue.localizedDescription)") }
+        guard !(errorValue.hasError) else { 
+            // Capture the raw blockchain response for debugging
+            let rawResponse = String(data: data, encoding: .utf8) ?? "No response text"
+            print("🚨 [RAW BLOCKCHAIN ERROR] ===== ACTUAL BLOCKCHAIN RESPONSE =====")
+            print("🚨 [RAW BLOCKCHAIN ERROR] Method: mys_executeTransactionBlock")
+            print("🚨 [RAW BLOCKCHAIN ERROR] Error details: \(errorValue.localizedDescription)")
+            print("🚨 [RAW BLOCKCHAIN ERROR] Raw response: \(rawResponse)")
+            print("🚨 [RAW BLOCKCHAIN ERROR] Transaction size: \(transactionBlock.count) bytes")
+            print("🚨 [RAW BLOCKCHAIN ERROR] Signature length: \(signature.count) chars")
+            print("🚨 [RAW BLOCKCHAIN ERROR] ===== END BLOCKCHAIN RESPONSE =====")
+            
+            throw MySoError.customError(message: "Blockchain Error: \(errorValue.localizedDescription) | Raw: \(rawResponse)")
+        }
         return MySoTransactionBlockResponse(input: JSON(data)["result"])
     }
 
@@ -1414,11 +1426,22 @@ public struct MySoProvider {
 
     private func hasErrors(_ data: JSON) -> RPCErrorValue {
         if data["error"].exists() {
+            let errorMessage = data["error"]["message"].stringValue
+            let errorCode = data["error"]["code"].intValue
+            
+            // Enhanced logging for blockchain errors
+            print("🚨 [BLOCKCHAIN ERROR] ===== DETAILED BLOCKCHAIN ERROR =====")
+            print("🚨 [BLOCKCHAIN ERROR] Error code: \(errorCode)")
+            print("🚨 [BLOCKCHAIN ERROR] Error message: \(errorMessage)")
+            print("🚨 [BLOCKCHAIN ERROR] Full error object: \(data["error"])")
+            print("🚨 [BLOCKCHAIN ERROR] Complete response: \(data)")
+            print("🚨 [BLOCKCHAIN ERROR] ===== END BLOCKCHAIN ERROR =====")
+            
             return RPCErrorValue(
                 id: data["id"].intValue,
                 error: ErrorMessage(
-                    message: data["error"]["message"].stringValue,
-                    code: data["error"]["code"].intValue
+                    message: errorMessage,
+                    code: errorCode
                 ),
                 jsonrpc: data["jsonrpc"].stringValue,
                 hasError: true

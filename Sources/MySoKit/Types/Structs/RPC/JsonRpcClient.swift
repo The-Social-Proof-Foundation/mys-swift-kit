@@ -103,10 +103,22 @@ public struct JsonRpcClient {
         do {
             let requestData = try JSONEncoder().encode(request)
             requestUrl.httpBody = requestData
-            let (data, _) = try await URLSession.shared.data(for: requestUrl)
+            print("🔧 [RPC DEBUG] Sending request to: \(url)")
+            print("🔧 [RPC DEBUG] Request method: \(request.method)")
+            let (data, response) = try await URLSession.shared.data(for: requestUrl)
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                print("🔧 [RPC DEBUG] Response status: \(httpResponse.statusCode)")
+                if httpResponse.statusCode != 200 {
+                    let responseText = String(data: data, encoding: .utf8) ?? "No response text"
+                    print("🚨 [RPC ERROR] HTTP \(httpResponse.statusCode): \(responseText)")
+                }
+            }
+            
             return data
         } catch {
-            throw MySoError.customError(message: "Encoding error")
+            print("🚨 [RPC ERROR] Network error: \(error)")
+            throw MySoError.customError(message: "Network error: \(error.localizedDescription)")
         }
     }
 
