@@ -724,7 +724,7 @@ public struct MySoProvider {
     ) async throws -> [CoinBalance] {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
-            MySoRequest("mysx_getAllBalances", [
+            MySoRequest("mysox_getAllBalances", [
                 AnyCodable(try account.publicKey.toMySoAddress())
             ])
         )
@@ -762,7 +762,7 @@ public struct MySoProvider {
     ) async throws -> PaginatedCoins {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
-            MySoRequest("mysx_getAllCoins", [
+            MySoRequest("mysox_getAllCoins", [
                 AnyCodable(try account.toMySoAddress()),
                 AnyCodable(cursor),
                 AnyCodable(limit)
@@ -803,7 +803,7 @@ public struct MySoProvider {
     ) async throws -> CoinBalance {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
-            MySoRequest("mysx_getBalance", [
+            MySoRequest("mysox_getBalance", [
                 AnyCodable(try account.toMySoAddress()),
                 AnyCodable(coinType)
             ])
@@ -833,7 +833,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mysx_getCoinMetadata",
+                "mysox_getCoinMetadata",
                 [
                     AnyCodable(coinType)
                 ]
@@ -870,7 +870,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mysx_getCoins",
+                "mysox_getCoins",
                 [
                     AnyCodable(account),
                     AnyCodable(coinType),
@@ -912,7 +912,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mysx_getCommitteeInfo",
+                "mysox_getCommitteeInfo",
                 [
                     AnyCodable(epoch)
                 ]
@@ -948,7 +948,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mysx_getDynamicFieldObject",
+                "mysox_getDynamicFieldObject",
                 [
                     AnyCodable(parentId),
                     AnyCodable(name)
@@ -974,7 +974,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mysx_getDynamicFieldObject",
+                "mysox_getDynamicFieldObject",
                 [
                     AnyCodable(parentId),
                     AnyCodable(name)
@@ -1008,7 +1008,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mysx_getDynamicFields",
+                "mysox_getDynamicFields",
                 [
                     AnyCodable(parentId),
                     AnyCodable(cursor),
@@ -1052,7 +1052,7 @@ public struct MySoProvider {
     public func info() async throws -> JSON {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
-            MySoRequest("mysx_getLatestMysSystemState", [])
+            MySoRequest("mysox_getLatestMySoSystemState", [])
         )
         return try JSONDecoder().decode(JSON.self, from: data)["result"]
     }
@@ -1063,7 +1063,7 @@ public struct MySoProvider {
     public func getMySoSystemState() async throws -> JSON {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
-            MySoRequest("mysx_getLatestMysSystemState", [])
+            MySoRequest("mysox_getLatestMySoSystemState", [])
         )
         return try JSONDecoder().decode(JSON.self, from: data)["result"]
     }
@@ -1071,7 +1071,7 @@ public struct MySoProvider {
     /// Return the list of objects owned by an address.
     ///
     /// If the address owns more than `QUERY_MAX_RESULT_LIMIT` objects, the pagination is not accurate, because previous page may have been updated when the next page is fetched.
-    /// Please use mysx_queryObjects if this is a concern.
+    /// Please use mysox_queryObjects if this is a concern.
     /// - Parameters:
     ///   - owner: The identifier of the owner.
     ///   - filter: An optional filter to apply to the owned objects.
@@ -1092,7 +1092,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mysx_getOwnedObjects",
+                "mysox_getOwnedObjects",
                 [
                     AnyCodable(owner),
                     AnyCodable(
@@ -1125,7 +1125,7 @@ public struct MySoProvider {
     public func getReferenceGasPrice() async throws -> BigInt {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
-            MySoRequest("mysx_getReferenceGasPrice", [])
+            MySoRequest("mysox_getReferenceGasPrice", [])
         )
         return BigInt(JSON(data)["result"].stringValue, radix: 10)!
     }
@@ -1140,7 +1140,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mysx_getStakes",
+                "mysox_getStakes",
                 [
                     AnyCodable(owner)
                 ]
@@ -1194,7 +1194,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mysx_getStakesByIds",
+                "mysox_getStakesByIds",
                 [
                     AnyCodable(stakes)
                 ]
@@ -1243,7 +1243,7 @@ public struct MySoProvider {
     public func totalSupply(_ coinType: String) async throws -> BigInt {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
-            MySoRequest("mysx_getTotalSupply", [AnyCodable(coinType)])
+            MySoRequest("mysox_getTotalSupply", [AnyCodable(coinType)])
         )
         let resultString = try JSONDecoder().decode(JSON.self, from: data)["result"]["value"].stringValue
         guard let result = BigInt(resultString, radix: 10) else { throw NSError(domain: "Unable to convert to BigInt", code: -1) }
@@ -1257,7 +1257,7 @@ public struct MySoProvider {
     public func getValidatorsApy() async throws -> ValidatorApys {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
-            MySoRequest("mysx_getValidatorsApy", [])
+            MySoRequest("mysox_getValidatorsApy", [])
         )
         let result = JSON(data)["result"]
         return ValidatorApys(input: result)
@@ -1280,7 +1280,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mysx_queryEvents",
+                "mysox_queryEvents",
                 [
                     AnyCodable(query == nil ? MySoEventFilter.all([]) : query),
                     AnyCodable(cursor),
@@ -1321,7 +1321,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mysx_queryTransactionBlocks",
+                "mysox_queryTransactionBlocks",
                 [
                     AnyCodable(
                         MySoTransactionBlockResponseQuery(
@@ -1355,7 +1355,7 @@ public struct MySoProvider {
     public func resolveNameserviceAddress(name: String) async throws -> AccountAddress {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
-            MySoRequest("mysx_resolveNameServiceAddress", [])
+            MySoRequest("mysox_resolveNameServiceAddress", [])
         )
         return try AccountAddress.fromHex(JSON(data)["result"].stringValue)
     }
@@ -1372,7 +1372,7 @@ public struct MySoProvider {
         tx: String,
         options: MySoTransactionBlockResponseOptions? = nil
     ) async throws -> MySoTransactionBlockResponse {
-        let maxRetries = 30  // Reduced from 60
+        let maxRetries = 30
         var retryCount = 0
         var delay: UInt64 = 500_000_000  // Start with 0.5 seconds
         let maxDelay: UInt64 = 8_000_000_000  // Max 8 seconds

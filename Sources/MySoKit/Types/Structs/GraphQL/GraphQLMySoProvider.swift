@@ -694,7 +694,7 @@ public struct GraphQLMySoProvider {
     /// Return the list of objects owned by an address.
     ///
     /// If the address owns more than `QUERY_MAX_RESULT_LIMIT` objects, the pagination is not accurate, because previous page may have been updated when the next page is fetched.
-    /// Please use mysx_queryObjects if this is a concern.
+    /// Please use mysox_queryObjects if this is a concern.
     /// - Parameters:
     ///   - owner: The identifier of the owner.
     ///   - filter: An optional filter to apply to the owned objects.
