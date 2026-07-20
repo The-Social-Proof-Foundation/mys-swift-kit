@@ -8,7 +8,12 @@ let package = Package(
     products: [
         .library(
             name: "MySoKit",
-            targets: ["MySoKit"]),
+            targets: ["MySoKit"]
+        ),
+        .library(
+            name: "MyDataCrypto",
+            targets: ["MyDataCrypto"]
+        ),
     ],
     dependencies: [
         .package(url: "https://github.com/MarcoDotIO/UInt256.git", from: "1.0.0"),
@@ -19,7 +24,8 @@ let package = Package(
         .package(url: "https://github.com/tesseract-one/Bip39.swift.git", from: "0.1.1"),
         .package(url: "https://github.com/auth0/JWTDecode.swift", from: "3.1.0"),
         .package(url: "https://github.com/attaswift/BigInt.git", from: "5.3.0"),
-        .package(url: "https://github.com/apollographql/apollo-ios.git", exact: "1.17.0")
+        .package(url: "https://github.com/apollographql/apollo-ios.git", exact: "1.17.0"),
+        .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", from: "1.8.0"),
     ],
     targets: [
         .target(
@@ -40,10 +46,48 @@ let package = Package(
                 "secp256k1myso"
             ]
         ),
+        .target(
+            name: "CBlst",
+            path: "Sources/CBlst",
+            exclude: [
+                "src",
+                "build/bindings_trim.pl",
+                "build/refresh.sh",
+                "build/srcroot.go",
+                "build/cheri",
+                "build/coff",
+                "build/win64"
+            ],
+            sources: [
+                "blst_amalg.c",
+                "build/assembly.S"
+            ],
+            publicHeadersPath: "include",
+            cSettings: [
+                .headerSearchPath("src"),
+                .headerSearchPath("include"),
+                .headerSearchPath("build"),
+                .define("__BLST_PORTABLE__"),
+                .unsafeFlags(["-Wno-unused-function", "-O2", "-fno-builtin"])
+            ]
+        ),
+        .target(
+            name: "MyDataCrypto",
+            dependencies: [
+                "CBlst",
+                .product(name: "CryptoSwift", package: "CryptoSwift")
+            ],
+            path: "Sources/MyDataCrypto",
+            exclude: ["README.md"],
+            resources: [
+                .copy("Fixtures")
+            ]
+        ),
         .testTarget(
             name: "MySoKitTests",
             dependencies: ["MySoKit"],
             path: "Tests",
+            exclude: ["MyDataCryptoTests"],
             resources: [
                 .copy("Resources/coin-metadata.json"),
                 .copy("Resources/display-test.json"),
@@ -55,6 +99,14 @@ let package = Package(
                 .copy("Resources/kiosk.json"),
                 .copy("Resources/serializer.json"),
                 .copy("Resources/serializer-upgrade.json")
+            ]
+        ),
+        .testTarget(
+            name: "MyDataCryptoTests",
+            dependencies: ["MyDataCrypto"],
+            path: "Tests/MyDataCryptoTests",
+            resources: [
+                .copy("Fixtures")
             ]
         ),
     ]
