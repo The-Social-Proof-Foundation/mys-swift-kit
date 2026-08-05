@@ -28,4 +28,22 @@ enum MyDataDEM {
 			throw MyDataError.decryptionFailed("AES-GCM open failed")
 		}
 	}
+
+	/// AES-GCM encrypt — returns WebCrypto layout `ciphertext||tag`.
+	static func aesGcm256Encrypt(key: Data, plaintext: Data, aad: Data) throws -> Data {
+		guard key.count == 32 else { throw MyDataError.decryptionFailed("DEM key length") }
+		let symmetric = SymmetricKey(data: key)
+		let nonce = try AES.GCM.Nonce(data: aesGcmIV)
+		let sealed: AES.GCM.SealedBox
+		do {
+			if aad.isEmpty {
+				sealed = try AES.GCM.seal(plaintext, using: symmetric, nonce: nonce)
+			} else {
+				sealed = try AES.GCM.seal(plaintext, using: symmetric, nonce: nonce, authenticating: aad)
+			}
+		} catch {
+			throw MyDataError.decryptionFailed("AES-GCM seal failed")
+		}
+		return sealed.ciphertext + sealed.tag
+	}
 }

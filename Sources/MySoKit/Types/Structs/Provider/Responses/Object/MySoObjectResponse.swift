@@ -69,10 +69,23 @@ public struct MySoObjectResponse: Equatable {
     public init?(input: JSON) {
         var error: ObjectResponseError?
         if input["error"].exists() {
-            error = ObjectResponseError.parseJSON(input["error"])
+            error = ObjectResponseError.parseJSON(input["error"]) ?? .unknown
         }
-        let data = input["data"]
-        self.error = error
-        self.data = MySoObjectData(data: data)
+        // `data: null` (or missing) must not become an empty MySoObjectData with
+        // blank digest — that serializes as "invalid length 0, expected … 32".
+        if input["data"].exists(), input["data"].type != .null {
+            self.data = MySoObjectData(data: input["data"])
+            self.error = error
+        } else {
+            self.data = nil
+            if let error {
+                self.error = error
+            } else {
+                let oid = input["error"]["object_id"].string
+                    ?? input["error"]["objectId"].string
+                    ?? ""
+                self.error = .notExist(objectId: oid)
+            }
+        }
     }
 }

@@ -29,11 +29,14 @@ import Foundation
 /// It holds a main `transactionArgument` and a collection of `nestedResults`
 /// representing the sub-results associated with the main transaction argument.
 public class TransactionResult: Sequence, IteratorProtocol {
-// public class TransactionResult {
     /// Represents the main transaction argument which holds a result.
     let transactionArgument: TransactionArgument
 
-    var count: UInt16
+    /// Remaining nested results to yield from `next()` (ascending `resultIndex`).
+    private var remaining: UInt16
+
+    /// Total nested result count requested at init (stable; not mutated by iteration).
+    private let totalCount: UInt16
 
     /// An array holding the nested results, each represented by a `TransactionArgument`.
     var nestedResults: [TransactionArgument]
@@ -45,7 +48,9 @@ public class TransactionResult: Sequence, IteratorProtocol {
         self.transactionArgument = TransactionArgument.result(
             TransactionResultIndex(index: index)
         )
-        self.count = amount ?? 1
+        let count = amount ?? 1
+        self.totalCount = count
+        self.remaining = count
         self.nestedResults = []
     }
 
@@ -58,9 +63,13 @@ public class TransactionResult: Sequence, IteratorProtocol {
     ///            corresponding to the `resultIndex`, or `nil` if the main `transactionArgument`
     ///            is not of type `.result`.
     public func nestedResultFor(_ resultIndex: UInt16) -> TransactionArgument? {
-        let index = Int(resultIndex)
-        if let existingResult = nestedResults[safe: (index + 1)] {
-            return existingResult
+        if let existing = nestedResults.first(where: {
+            if case .nestedResult(let nested) = $0 {
+                return nested.resultIndex == resultIndex
+            }
+            return false
+        }) {
+            return existing
         }
         if case .result(let transactionResultIndex) = transactionArgument {
             let nestedResult = TransactionArgument.nestedResult(
@@ -75,14 +84,20 @@ public class TransactionResult: Sequence, IteratorProtocol {
         return nil
     }
 
+    /// Nested results in ascending `resultIndex` order (`0 ..< totalCount`).
+    public func nestedResultsInOrder() -> [TransactionArgument] {
+        (0..<totalCount).compactMap { nestedResultFor($0) }
+    }
+
     // Conform to Sequence
     public func makeIterator() -> TransactionResult {
         return self
     }
 
     public func next() -> TransactionArgument? {
-        guard !(self.count == 0) else { return nil }
-        defer { self.count -= 1 }
-        return self.nestedResultFor(UInt16(self.count - 1))
+        guard remaining > 0 else { return nil }
+        let resultIndex = totalCount - remaining
+        remaining -= 1
+        return nestedResultFor(resultIndex)
     }
 }

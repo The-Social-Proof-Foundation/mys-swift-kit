@@ -117,11 +117,11 @@ public struct ED25519PublicKey: Equatable, PublicKeyProtocol {
     }
 
     public func toSerializedSignature(signature: Signature) throws -> String {
-        var serializedSignature = Data(count: signature.signature.count + self.key.count)
-        serializedSignature[0] = SignatureSchemeFlags.SIGNATURE_SCHEME_TO_FLAG["ED25519"]!
-        serializedSignature[1..<signature.signature.count] = signature.signature
-        serializedSignature[1+signature.signature.count..<1+signature.signature.count+self.key.count] = self.key
-
+        // Wire format: flag (1) || signature || pubkey
+        var serializedSignature = Data()
+        serializedSignature.append(SignatureSchemeFlags.SIGNATURE_SCHEME_TO_FLAG["ED25519"]!)
+        serializedSignature.append(signature.signature)
+        serializedSignature.append(self.key)
         return serializedSignature.base64EncodedString()
     }
 

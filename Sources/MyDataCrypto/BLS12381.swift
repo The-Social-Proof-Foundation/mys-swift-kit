@@ -1,5 +1,6 @@
 import CBlst
 import Foundation
+import Security
 
 /// Thin BLS12-381 wrappers matching `@socialproof/mydata` `bls12381` usage.
 /// Backend: portable blst (byte-compatible with `@noble/curves` for MyData encodings).
@@ -25,6 +26,19 @@ public struct MyDataScalar: Equatable, Sendable {
 
 	public static func fromBigEndian(_ data: Data) throws -> MyDataScalar {
 		try MyDataScalar(bytes: data)
+	}
+
+	/// Uniform random scalar in the BLS12-381 Fr field (MyData `Scalar.random`).
+	public static func random() throws -> MyDataScalar {
+		for _ in 0..<32 {
+			var bytes = [UInt8](repeating: 0, count: size)
+			let status = SecRandomCopyBytes(kSecRandomDefault, bytes.count, &bytes)
+			guard status == errSecSuccess else { continue }
+			if let scalar = try? MyDataScalar(bytes: Data(bytes)) {
+				return scalar
+			}
+		}
+		throw MyDataError.invalidScalar
 	}
 }
 

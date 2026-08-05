@@ -54,15 +54,25 @@ public enum ObjectResponseError: Error, Equatable {
     /// - Parameter input: The JSON object containing the error information.
     /// - Returns: An `ObjectResponseError` value if the JSON object contains valid information, or `nil` otherwise.
     public static func parseJSON(_ input: JSON) -> ObjectResponseError? {
+        // Fullnode JSON uses both camelCase and snake_case field names / codes
+        // (`notExist` vs `notExists`, `objectId` vs `object_id`).
+        let objectId =
+            input["objectId"].string
+            ?? input["object_id"].string
+            ?? ""
         switch input["code"].stringValue {
-        case "notExist":
-            return .notExist(objectId: input["objectId"].stringValue)
+        case "notExist", "notExists":
+            return .notExist(objectId: objectId)
         case "dynamicFieldNotFound":
-            return .dynamicFieldNotFound(parentObjectId: input["parentObjectId"].stringValue)
+            return .dynamicFieldNotFound(
+                parentObjectId: input["parentObjectId"].string
+                    ?? input["parent_object_id"].string
+                    ?? ""
+            )
         case "deleted":
             return .deleted(
                 digest: input["digest"].stringValue,
-                objectId: input["objectId"].stringValue,
+                objectId: objectId,
                 version: input["version"].stringValue
             )
         case "unknown":

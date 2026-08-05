@@ -45,8 +45,8 @@ public struct Coin {
     /// Struct name for ID.
     public static let idStructName = "ID"
 
-    /// Type argument for MYS.
-    public static let mysoTypeArg = "0x2::mys::MYS"
+    /// Type argument for native MYSO (gas / payments).
+    public static let mysoTypeArg = "0x2::myso::MYSO"
 
     /// Query for validators event.
     public static let validatorsEventQuery = "0x3::validator_set::ValidatorEpochInfoEventV2"

@@ -61,7 +61,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mys_devInspectTransactionBlock",
+                "myso_devInspectTransactionBlock",
                 [
                     AnyCodable(senderAddress),
                     AnyCodable(devInspectTxBytes),
@@ -85,7 +85,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mys_dryRunTransactionBlock",
+                "myso_dryRunTransactionBlock",
                 [
                     AnyCodable(transactionBlock.toBase64())
                 ]
@@ -144,7 +144,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mys_executeTransactionBlock",
+                "myso_executeTransactionBlock",
                 [
                     AnyCodable(transactionBlock),
                     AnyCodable([signature]),
@@ -180,7 +180,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mys_executeTransactionBlock",
+                "myso_executeTransactionBlock",
                 [
                     AnyCodable(transactionBlock.toBase64()),
                     AnyCodable([signature]),
@@ -213,7 +213,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mys_getChainIdentifier",
+                "myso_getChainIdentifier",
                 []
             )
         )
@@ -230,7 +230,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mys_getCheckpoint",
+                "myso_getCheckpoint",
                 [
                     AnyCodable(id)
                 ]
@@ -257,7 +257,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mys_getCheckpoints",
+                "myso_getCheckpoints",
                 [
                     AnyCodable(cursor),
                     AnyCodable(limit),
@@ -289,7 +289,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mys_getEvents",
+                "myso_getEvents",
                 [
                     AnyCodable(transactionDigest)
                 ]
@@ -316,7 +316,7 @@ public struct MySoProvider {
     public func getLatestCheckpointSequenceNumber() async throws -> String {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
-            MySoRequest("mys_getLatestCheckpointSequenceNumber", [])
+            MySoRequest("myso_getLatestCheckpointSequenceNumber", [])
         )
         let errorValue = self.hasErrors(JSON(data))
         guard !(errorValue.hasError) else { throw MySoError.customError(message: "RPC Error: \(errorValue.localizedDescription)") }
@@ -332,7 +332,7 @@ public struct MySoProvider {
     ) async throws -> [TransactionEffectsModifiedAtVersions] {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
-            MySoRequest("mys_getLoadedChildObjects", [AnyCodable(digest)])
+            MySoRequest("myso_getLoadedChildObjects", [AnyCodable(digest)])
         )
         let errorValue = self.hasErrors(JSON(data))
         guard !(errorValue.hasError) else { throw MySoError.customError(message: "RPC Error: \(errorValue.localizedDescription)") }
@@ -355,7 +355,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mys_getMoveFunctionArgTypes",
+                "myso_getMoveFunctionArgTypes",
                 [
                     AnyCodable(package),
                     AnyCodable(module),
@@ -394,7 +394,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mys_getNormalizedMoveFunction",
+                "myso_getNormalizedMoveFunction",
                 [
                     AnyCodable(package),
                     AnyCodable(moduleName),
@@ -421,7 +421,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mys_getNormalizedMoveModule",
+                "myso_getNormalizedMoveModule",
                 [
                     AnyCodable(package),
                     AnyCodable(module)
@@ -444,7 +444,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mys_getNormalizedMoveModulesByPackage",
+                "myso_getNormalizedMoveModulesByPackage",
                 [
                     AnyCodable(package)
                 ]
@@ -471,7 +471,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mys_getNormalizedMoveStruct",
+                "myso_getNormalizedMoveStruct",
                 [
                     AnyCodable(package),
                     AnyCodable(module),
@@ -499,7 +499,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mys_getObject",
+                "myso_getObject",
                 [
                     AnyCodable(objectId),
                     AnyCodable(options)
@@ -522,7 +522,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mys_getProtocolConfig",
+                "myso_getProtocolConfig",
                 [
                     AnyCodable(version)
                 ]
@@ -560,7 +560,7 @@ public struct MySoProvider {
     public func getTotalTransactionBlocks() async throws -> BigInt {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
-            MySoRequest("mys_getTotalTransactionBlocks", [])
+            MySoRequest("myso_getTotalTransactionBlocks", [])
         )
         return BigInt(JSON(data)["result"].stringValue, radix: 10)!
     }
@@ -579,7 +579,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mys_getTransactionBlock",
+                "myso_getTransactionBlock",
                 [
                     AnyCodable(digest),
                     AnyCodable(options)
@@ -609,7 +609,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mys_multiGetObjects",
+                "myso_multiGetObjects",
                 [
                     AnyCodable(ids),
                     AnyCodable(options)
@@ -644,7 +644,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mys_multiGetTransactionBlocks",
+                "myso_multiGetTransactionBlocks",
                 [
                     AnyCodable(digests),
                     AnyCodable(options)
@@ -673,7 +673,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mys_tryGetPastObject",
+                "myso_tryGetPastObject",
                 [
                     AnyCodable(id),
                     AnyCodable(version),
@@ -702,7 +702,7 @@ public struct MySoProvider {
         let data = try await JsonRpcClient.sendMySoJsonRpc(
             try self.getServerUrl(),
             MySoRequest(
-                "mys_tryMultiGetPastObjects",
+                "myso_tryMultiGetPastObjects",
                 [
                     AnyCodable(objects),
                     AnyCodable(options)
@@ -856,7 +856,7 @@ public struct MySoProvider {
     /// Return all Coin<`coin_type`> objects owned by an address.
     /// - Parameters:
     ///   - account: The account whose coins are to be retrieved.
-    ///   - coinType: Optional type name for the coin (e.g., 0x168da5bf1f48dafc111b0a488fa454aca95e0b5e::usdc::USDC), default to 0x2::mys::MYS if not specified.
+    ///   - coinType: Optional type name for the coin (e.g., 0x168da5bf1f48dafc111b0a488fa454aca95e0b5e::usdc::USDC), default to 0x2::myso::MYSO if not specified.
     ///   - cursor: Optional. A cursor for pagination.
     ///   - limit: Optional. A limit on the number of coins to be retrieved.
     /// - Throws: `MySoError` if there is any error in the JSON RPC call or the response.

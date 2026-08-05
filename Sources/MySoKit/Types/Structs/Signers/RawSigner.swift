@@ -221,11 +221,11 @@ public struct RawSigner: SignerWithProviderProtocol {
         guard let encryptionType = SignatureSchemeFlags.SIGNATURE_SCHEME_TO_FLAG[signatureScheme.rawValue] else {
             throw MySoError.customError(message: "Cannot find signature type for \(signatureScheme.rawValue)")
         }
-        var serializedSignature = Data(count: signature.signature.count + pubKeyData.count)
-        serializedSignature[0] = encryptionType
-        serializedSignature[1..<signature.signature.count] = signature.signature
-        serializedSignature[1+signature.signature.count..<1+signature.signature.count+pubKeyData.count] = pubKeyData
-
+        // Wire format: flag (1) || signature || pubkey
+        var serializedSignature = Data()
+        serializedSignature.append(encryptionType)
+        serializedSignature.append(signature.signature)
+        serializedSignature.append(pubKeyData)
         return serializedSignature.base64EncodedString()
     }
 }

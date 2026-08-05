@@ -79,9 +79,12 @@ public struct MySoObjectRef: KeyProtocol {
         let account = try AccountAddress.fromHex(self.objectId)
         try Serializer._struct(serializer, value: account)
         try Serializer.u64(serializer, UInt64(version) ?? 0)
-        if let dataDigest = digest.base58DecodedData {
-            try Serializer.toBytes(serializer, Data(dataDigest))
+        guard let dataDigest = digest.base58DecodedData, dataDigest.count == 32 else {
+            throw MySoError.customError(
+                message: "Invalid object digest (expected 32-byte base58): \(digest)"
+            )
         }
+        try Serializer.toBytes(serializer, Data(dataDigest))
     }
 
     public static func deserialize(

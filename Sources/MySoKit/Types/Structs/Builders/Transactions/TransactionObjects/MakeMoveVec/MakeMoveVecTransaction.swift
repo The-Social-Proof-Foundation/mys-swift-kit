@@ -30,30 +30,31 @@ public struct MakeMoveVecTransaction: KeyProtocol, TransactionProtocol {
     /// An array of TransactionArguments representing objects involved in the transaction.
     public let objects: [TransactionArgument]
 
-    /// Represents the type of Move Normalized Struct. It's optional and could be nil.
-    public let type: MySoMoveNormalizedStructType?
+    /// Optional element TypeTag. Required for pure (non-object) elements such as `address`.
+    public let typeTag: TypeTag?
 
     /// Initializes a new instance of `MakeMoveVecTransaction`.
     /// - Parameters:
     ///   - objects: An array of `TransactionArgument` representing objects in the transaction.
-    ///   - type: A string representing the type of `MySoMoveNormalizedStructType`.
+    ///   - type: A string TypeTag (`address`, `u64`, `0x2::coin::Coin<…>`, …).
     /// - Throws: If initialization fails due to type conversion.
     public init(objects: [TransactionArgument], type: String?) throws {
         self.objects = objects
         if let type = type {
-            self.type = try Coin.getCoinStructTag(coinTypeArg: type)
+            let trimmed = type.trimmingCharacters(in: .whitespacesAndNewlines)
+            self.typeTag = trimmed.isEmpty ? nil : try TypeTag(stringValue: trimmed)
         } else {
-            self.type = nil
+            self.typeTag = nil
         }
     }
 
     /// Initializes a new instance of `MakeMoveVecTransaction`.
     /// - Parameters:
     ///   - objects: An array of `TransactionArgument` representing objects in the transaction.
-    ///   - type: An optional instance of `MySoMoveNormalizedStructType`.
-    public init(objects: [TransactionArgument], type: MySoMoveNormalizedStructType?) {
+    ///   - typeTag: An optional element `TypeTag`.
+    public init(objects: [TransactionArgument], typeTag: TypeTag?) {
         self.objects = objects
-        self.type = type
+        self.typeTag = typeTag
     }
 
     /// Initializes a new instance of `MakeMoveVecTransaction` from JSON.
@@ -62,22 +63,29 @@ public struct MakeMoveVecTransaction: KeyProtocol, TransactionProtocol {
     public init?(input: JSON) {
         let vec = input.arrayValue
         self.objects = vec[0].arrayValue.compactMap { TransactionArgument.fromJSON($0) }
-        self.type = try? Coin.getCoinStructTag(coinTypeArg: vec[1].stringValue)
+        let typeString = vec.count > 1 ? vec[1].stringValue : ""
+        if typeString.isEmpty {
+            self.typeTag = nil
+        } else {
+            self.typeTag = try? TypeTag(stringValue: typeString)
+        }
     }
 
     public func serialize(_ serializer: Serializer) throws {
-        try serializer.uleb128(0)
+        // BCS: MakeMoveVec { type: Option<TypeTag>, objects: Vec<Argument> }
+        try serializer._optional(typeTag) { ser, tag in
+            try Serializer._struct(ser, value: tag)
+        }
         try serializer.sequence(objects, Serializer._struct)
-        if let type { try Serializer._struct(serializer, value: type) }
     }
 
     public static func deserialize(
         from deserializer: Deserializer
     ) throws -> MakeMoveVecTransaction {
-        _ = Deserializer.uleb128(deserializer)
+        let typeTag: TypeTag? = try deserializer._optional { try TypeTag.deserialize(from: $0) }
         return MakeMoveVecTransaction(
             objects: try deserializer.sequence(valueDecoder: Deserializer._struct),
-            type: try? Deserializer._struct(deserializer)
+            typeTag: typeTag
         )
     }
 }

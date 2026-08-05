@@ -62,8 +62,8 @@ public struct ResolvedConstants {
     /// Represents the standard name for the `ID` struct.
     public static let idStructName = "ID"
 
-    /// Represents a string combining the MYS framework address and the standard MYS string.
-    public static let mysoTypeArg = "\(ResolvedConstants.mysoFrameworkAddress)::mys::MYS"
+    /// Native MYSO coin type used for gas payment.
+    public static let mysoTypeArg = "\(ResolvedConstants.mysoFrameworkAddress)::myso::MYSO"
 
     /// Represents a string that can be used to query validators event.
     public static let validatorsEventQuery = "\(ResolvedConstants.mysoSystemAddress)::validator_set::ValidatorEpochInfoEventV2"

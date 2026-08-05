@@ -105,6 +105,13 @@ public struct TypeTag: KeyProtocol, Equatable {
         } else if stringValue == "u256" {
             self.type = Self.u256
             self.value = nil
+        } else if stringValue == "address" {
+            // Primitive Move type — must not go through AccountAddress.fromHex("address").
+            self.type = Self.accountAddress
+            self.value = nil
+        } else if stringValue == "signer" {
+            self.type = Self.signer
+            self.value = nil
         } else {
             throw MySoError.notImplemented
         }
@@ -181,7 +188,10 @@ public struct TypeTag: KeyProtocol, Equatable {
         } else if variant == TypeTag.u256 {
             return TypeTag(type: Self.u256)
         } else if variant == TypeTag.accountAddress {
-            return try TypeTag(value: try AccountAddressTag.deserialize(from: deserializer))
+            // Move TypeTag::Address has no payload (unlike AccountAddress values).
+            return TypeTag(type: Self.accountAddress)
+        } else if variant == TypeTag.signer {
+            return TypeTag(type: Self.signer)
         } else if variant == TypeTag._struct {
             return try TypeTag(value: try StructTag.deserialize(from: deserializer))
         } else {

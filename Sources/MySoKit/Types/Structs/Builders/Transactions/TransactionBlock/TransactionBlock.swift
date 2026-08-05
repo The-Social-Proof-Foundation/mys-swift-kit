@@ -238,11 +238,10 @@ public class TransactionBlock {
             // Add the main transaction argument to the results array
             results.append(transactionResult.transactionArgument)
         } else {
-            // Iterate over the nested results and add them to the results array
-            for nestedResult in transactionResult {
-                results.append(nestedResult)
-            }
-            results.reverse()
+            // NestedResult resultIndex 0..<n in order (group, history, log, …).
+            // Do not reverse: prior high-to-low iteration + reverse paired with a
+            // broken nestedResults[index+1] cache and duplicated the wrong slots.
+            results.append(contentsOf: transactionResult.nestedResultsInOrder())
         }
 
         return results
@@ -556,7 +555,7 @@ public class TransactionBlock {
 
         let coins = try await provider.getCoins(
             account: gasOwner,
-            coinType: "0x2::mys::MYS"
+            coinType: Coin.mysoTypeArg
         )
 
         let filteredCoins = coins.data.filter { coin in
@@ -748,11 +747,19 @@ public class TransactionBlock {
             for i in 0..<objectsToResolve.count {
                 var objectToResolve = objectsToResolve[i]
 
-                guard let object = objectsById[objectToResolve.id] else { continue }
+                guard let object = objectsById[objectToResolve.id] else {
+                    throw MySoError.customError(
+                        message: "Object not returned by multiGetObjects: \(objectToResolve.id)"
+                    )
+                }
 
                 // Update the input value in the objectsToResolve array based on the initial shared version or object reference
                 guard let initialSharedVersion = object.getSharedObjectInitialVersion() else {
-                    guard let objRef = object.getObjectReference() else { continue }
+                    guard let objRef = object.getObjectReference() else {
+                        throw MySoError.customError(
+                            message: "Object missing shared version and object ref: \(objectToResolve.id). After a localnet reset, refresh MESSAGING_* genesis IDs in xcconfig."
+                        )
+                    }
                     objectToResolve.input.value = .callArg(
                         Input(
                             type: .object(

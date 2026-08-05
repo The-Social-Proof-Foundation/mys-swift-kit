@@ -109,12 +109,12 @@ public struct SECP256R1PublicKey: PublicKeyProtocol {
     }
 
     public func toSerializedSignature(signature: Signature) throws -> String {
+        // Wire format: flag (1) || signature || pubkey
         let rawBytes = self.key.compressedRepresentation
-        var serializedSignature = Data(count: signature.signature.count + rawBytes.count)
-        serializedSignature[0] = SignatureSchemeFlags.SIGNATURE_SCHEME_TO_FLAG["SECP256R1"]!
-        serializedSignature[1..<signature.signature.count] = signature.signature
-        serializedSignature[1+signature.signature.count..<1+signature.signature.count+rawBytes.count] = rawBytes
-
+        var serializedSignature = Data()
+        serializedSignature.append(SignatureSchemeFlags.SIGNATURE_SCHEME_TO_FLAG["SECP256R1"]!)
+        serializedSignature.append(signature.signature)
+        serializedSignature.append(rawBytes)
         return serializedSignature.base64EncodedString()
     }
 
